@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/22 16:30:15 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/11/22 22:20:45 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ CC			?= gcc
 CFLAGS	+= -std=c99
 CFLAGS	+= -Wall -Wextra -Werror -Wfloat-equal -Wundef
 CFLAGS	+= -Wpointer-arith -Wunreachable-code -Winit-self
-CFLAGS	+= -pedantic
 CFLAGS	+= -O3 -march=native -pipe -flto
 
 LIBS		:= -ltermcap
@@ -32,9 +31,14 @@ endif
 
 SRC_BASE :=	\
 msh_main	\
+msh_strsplit \
 msh_exec	\
-msh_utils	\
-msh_strsplit	\
+builtins/builtin_cd \
+builtins/builtin_echo \
+builtins/builtin_env \
+builtins/builtin_setenv \
+builtins/builtin_unsetenv
+# msh_utils	\
 builtins/msh_echo \
 builtins/msh_cd \
 builtins/msh_extra \
