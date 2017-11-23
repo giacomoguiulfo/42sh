@@ -1,5 +1,5 @@
 .\" 42sh - A 42 school project
-.TH man 42 "2 June 2017" "1.0"
+.TH man 42 "22 Nov 2017" "1.0"
 .SH NAME
 42sh \- The return of the Vengeance from the past!
 .SH SYNOPSIS
@@ -17,11 +17,8 @@
 Giacomo Guiulfo
 gguiulfo@student.42.us.org
 
-Brandon Montoya
-bmontoya@student.42.us.org
-
-Anhelina Shulha
-ashulha@student.42.us.org
-
 Robin Schramm
 rschramm@student.42.us.org
+
+Akinfemi Akinaluko
+aakin-al@student.42.us.org
