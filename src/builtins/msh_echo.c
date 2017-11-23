@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_sh.h"
 #include <unistd.h>
 
 int		echo_env(char *str, t_darr *newenvp)

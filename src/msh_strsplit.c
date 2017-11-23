@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_sh.h"
 
 static void	msh_count_quotes(char **line, int *words, char quote, int *ret)
 {

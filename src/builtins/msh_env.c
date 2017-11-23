@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_sh.h"
 #include <stdlib.h>
 
 int		msh_displ_env(t_darr *newenvp)
