@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "hash.h"
+#include <math.h>
 
 /*
 * Brief summary
@@ -30,7 +32,7 @@ size_t				hash(char *name)
 	i = 1;
 	while(name && *name && i)
 	{
-		res += *name * ft_pow(10 , i);
+		res += *name * pow(10 , i);
 		name++;
 	}
 	return (res);
@@ -68,7 +70,7 @@ t_hash_table		*hash_init(int capacity)
 
 	hash_table = (t_hash_table *)malloc(sizeof(t_hash_table));
 	hash_table->capacity = capacity;
-	hash_table->binaries = (t_bin **)ft_memalloc(capacity, sizeof(t_bin *));
+	hash_table->binaries = (t_bin **)malloc(capacity * sizeof(t_bin *));
 	return (hash_table);
 }
 
@@ -112,7 +114,7 @@ int					hash_insert(t_hash_table *ht, char *name, char *path)
 * @return : binary path upon success and NULL if not found
 */
 
-char				*hash_search(t_hash_table *ht, char *name)
+t_bin				*hash_search(t_hash_table *ht, char *name)
 {
 	size_t		index;
 	t_bin		*bin;
@@ -124,13 +126,13 @@ char				*hash_search(t_hash_table *ht, char *name)
 	if (!bin)
 		return (0);
 	if (strcmp(bin->name, name) == 0)
-		return (bin->path);
+		return (bin);
 	else
 	{
 		while (bin)
 		{
 			if (strcmp(bin->name, name) == 0)
-				return (bin->path);
+				return (bin);
 			bin = bin->next;
 		}
 	}

@@ -37,8 +37,9 @@ typedef struct		s_hash_table
 * Function prototypes
 */
 
-void                free_hash(t_hash *hash_table);
+void                free_hash(t_hash_table *hash_table);
+void                ft_bin_lstdel(t_bin *bin);
 t_hash_table		*hash_init(int capacity);
 int					hash_insert(t_hash_table *ht, char *name, char *path);
-char				*hash_search(t_hash_table *ht, char *name);
+t_bin				*hash_search(t_hash_table *ht, char *name);
 t_bin				*new_bin(char *name, char *path);

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "hash.h"
 
 /*
 * Functions to free binary hash table
@@ -22,7 +23,7 @@
 * @param bin: list to be deleted
 */
 
-static void     ft_bin_lstdel(t_bin *bin)
+void            ft_bin_lstdel(t_bin *bin)
 {
     t_bin   *temp;
 
@@ -44,7 +45,7 @@ static void     ft_bin_lstdel(t_bin *bin)
 * @param hash_table: hash table to be freed
 */
 
-void            free_hash(t_hash *hash_table)
+void            free_hash(t_hash_table *hash_table)
 {
     int     i;
     t_bin   *bin;
