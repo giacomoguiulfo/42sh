@@ -79,11 +79,7 @@ void	move_end(t_input *data)
 
 void	move_right(t_terminal *config, t_input *data)
 {
-	size_t size;
-
-	size = (data->cursor_col * config->width) + data->cursor_col;
-	ft_printf("row: %zu col: %zu\n", data->cursor_row, data->cursor_col);
-	if (data->cursor_row == 0 && data->cursor_col + 1 == config->width - config->prompt_size)
+	if (data->cursor_row == 0 && data->cursor_col + 1 == config->width)
 		my_tputs(MOVEDN);
 	else if (data->cursor_row > 0 && data->cursor_col + 1 == config->width)
 		my_tputs(MOVEDN);
@@ -252,30 +248,37 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 	}
 	blah = data->line_size;
 	row = 0;
-	while (blah > config->width)
+	if (blah < config->width - config->prompt_size)
 	{
-		blah -= config->width;
-		row++;
+		data->end_col = config->prompt_size + blah;
+		data->end_row = 0;
 	}
-	while (blah > config->width - config->prompt_size)
+	else
 	{
-		row++;
-		blah -= config->width - config->prompt_size;
+		blah += config->prompt_size;
+		while (blah > config->width)
+		{
+			row++;
+			blah -= config->width;
+		}
+		data->end_row = row;
+		data->end_col = blah;
 	}
-	data->end_col = blah;
-	data->end_row = row;
 }
 
 void	get_terminal_meta(t_terminal *config, t_input *data)
 {
 	get_window_size(config);
 	get_cursor_pos(config, data);
-	
-	ft_printf("\ncursor row: %zu, cursor col: %zu\n", data->cursor_row, data->cursor_col);
+
+	/*	
+	ft_printf("cursor_pos: %zu\n", data->cursor_pos);
+	ft_printf("cursor row: %zu, cursor col: %zu\n", data->cursor_row, data->cursor_col);
+	ft_printf("end row: %zu, end col: %zu\n", data->end_row, data->end_col);
 	ft_printf("height: %zu, width: %zu\n", config->height, config->width);
 	ft_printf("line length: %zu, prompt size: %zu\n", data->line_size, config->prompt_size);
 	msh_put_arrow();
-	ft_printf("%s", data->line_buff);
+	ft_printf("%s", data->line_buff);*/
 }
 
 void	clear_add_line(size_t delete)
