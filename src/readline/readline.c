@@ -38,14 +38,29 @@ void	my_tputs(char *cmd)
 	tputs(tgetstr(cmd, NULL), 1, to_function);
 }
 
-void	move_home(t_input *data)
+void	move_right(t_terminal *config, t_input *data)
 {
+	if (data->cursor_row == 0 && data->cursor_col + 1 == config->width)
+		my_tputs(MOVEDN);
+	else if (data->cursor_row > 0 && data->cursor_col + 1 == config->width)
+		my_tputs(MOVEDN);
+	else
+		my_tputs(MOVERIGHT);
+}
+
+void	move_home(t_terminal *config, t_input *data)
+{
+	while (data->cursor_col < config->width - 1)
+	{
+		move_right(config, data);
+		data->cursor_col++;
+	}
 	while (data->cursor_row > 0)
 	{
 		my_tputs(MOVEUP);
 		data->cursor_row--;
 	}
-	while (data->cursor_col > 0)
+	while (data->cursor_col > config->prompt_size)
 	{
 		my_tputs(MOVELEFT);
 		data->cursor_col--;
@@ -75,16 +90,6 @@ void	move_end(t_input *data)
 			data->cursor_col++;
 		}
 	}
-}
-
-void	move_right(t_terminal *config, t_input *data)
-{
-	if (data->cursor_row == 0 && data->cursor_col + 1 == config->width)
-		my_tputs(MOVEDN);
-	else if (data->cursor_row > 0 && data->cursor_col + 1 == config->width)
-		my_tputs(MOVEDN);
-	else
-		my_tputs(MOVERIGHT);
 }
 
 void	clear_line(t_input *data)
@@ -168,7 +173,7 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == HOME)
 	{
-		move_home(data);
+		move_home(config, data);
 		data->cursor_pos = 0;
 	}
 	else if (data->char_buff[2] == END)
