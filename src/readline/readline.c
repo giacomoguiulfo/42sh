@@ -86,10 +86,8 @@ void	move_right(t_terminal *config, t_input *data)
 	{
 		my_tputs(MOVEDN);
 	}
-	else if (data->cursor_col < size)
-	{
+	else
 		my_tputs(MOVERIGHT);
-	}
 }
 
 void	clear_line(t_input *data)
@@ -267,10 +265,12 @@ void	get_terminal_meta(t_terminal *config, t_input *data)
 {
 	get_window_size(config);
 	get_cursor_pos(config, data);
+	/*
 	ft_printf("\nc row: %zu, c col%zu\n", data->cursor_row, data->cursor_col);
-	ft_printf("line length: %zu\n", data->line_size);
+	ft_printf("height: %zu, width: %zu\n", config->height, config->width);
+	ft_printf("line length: %zu, prompt size: %zu\n", data->line_size, config->prompt_size);
 	msh_put_arrow();
-	ft_printf("%s", data->line_buff);
+	ft_printf("%s", data->line_buff);*/
 }
 
 void	clear_add_line(size_t delete)
@@ -288,23 +288,20 @@ void	clear_add_line(size_t delete)
 
 void	clear_add_line_2(t_terminal *config, size_t line_size, size_t cursor_pos)
 {
-	int x;
+	size_t x;
 
-	x = (int)cursor_pos;
-	while (x < (int)line_size)
+	x = cursor_pos;
+	while (x < line_size)
 	{
 		move_right(config, &config->data);
 		x++;
 	}
-	move_right(config, &config->data);
-	while (x >= 0)
+	while (x > 0)
 	{
 		my_tputs(MOVELEFT);
 		my_tputs("dc");
 		x--;
 	}
-	my_tputs(MOVELEFT);
-	my_tputs("dc");
 }
 
 void	restore_cursor_pos(t_input *data)
@@ -321,8 +318,8 @@ void	restore_cursor_pos(t_input *data)
 
 void	delete(t_terminal *config, t_input *data)
 {
-	//char *tmp;
-	//size_t new_length;
+	char *tmp;
+	size_t new_length;
 
 	if (data->line_size == data->cursor_pos)
 		clear_add_line(data->line_size);
@@ -330,7 +327,7 @@ void	delete(t_terminal *config, t_input *data)
 	{
 		clear_add_line_2(config, data->line_size, data->cursor_pos);
 	}
-	/*tmp = data->line_buff + (data->cursor_pos - 1);
+	tmp = data->line_buff + (data->cursor_pos - 1);
 	*tmp = '\0';
 	new_length = ft_strlen(data->line_buff) + ft_strlen(tmp + 1);
 	ft_memmove(tmp, tmp + 1, ft_strlen(tmp + 1));
@@ -351,7 +348,7 @@ void	delete(t_terminal *config, t_input *data)
 		data->cursor_pos--;
 		restore_cursor_pos(data);
 		//ft_printf("\nline length: %zu, cursor_pos: %zu\n", data->line_size, data->cursor_pos);
-	}*/
+	}
 }
 
 void	insert(t_input *data)
