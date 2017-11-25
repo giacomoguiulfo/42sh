@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 21:57:23 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/22 22:21:27 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/23 17:13:10 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		msh_run_builtins(char **args)
 	while (g_builtins[i].name)
 	{
 		if (ft_strcmp(g_builtins[i].name, args[0]) == 0)
-			return (g_builtins[i].f());
+			return (g_builtins[i].f(args, shell_singleton()->env));
 		i++;
 	}
 	return (-1);
@@ -108,6 +108,7 @@ int		msh_execute(char **args)
 	if (args[0] == NULL)
 		return (1);
 	ret = msh_run_builtins(args);
+	ft_printf("ret: %d", ret);
 	// if (ret != -1)
 	// {
 	// 	return (ret);
