@@ -227,20 +227,20 @@ void	default_terminal(void)
 	tcsetattr(0, TCSADRAIN, &revert);
 	return ;
 }
-
-void	get_row_col(t_terminal *config, size_t *col, size_t *row)
+/*
+void	get_row_col(t_terminal *config,size_t *col, size_t *row)
 {
-	while (*col > config->width)
+	while (blah > config->width)
 	{
 		*col = *col - config->width;
 		*row = *row + 1;
 	}
-	while (*col > config->width - config->prompt_size)
+	while (blah > config->width - config->prompt_size)
 	{
 		*col = config->width - config->prompt_size;
 		*row = *row + 1;
 	}
-}
+}*/
 
 void	get_cursor_pos(t_terminal *config, t_input *data)
 {
@@ -249,12 +249,30 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 
 	blah = data->cursor_pos;
 	row = 0;
-	get_row_col(config, &blah, &row);
+	while (blah > config->width)
+	{
+		blah -= config->width;
+		row++;
+	}
+	while (blah > config->width - config->prompt_size)
+	{
+		row++;
+		blah -= config->width - config->prompt_size;
+	}
 	data->cursor_col = blah;
 	data->cursor_row = row;
 	blah = data->line_size;
 	row = 0;
-	get_row_col(config, &blah, &row);
+	while (blah > config->width)
+	{
+		blah -= config->width;
+		row++;
+	}
+	while (blah > config->width - config->prompt_size)
+	{
+		row++;
+		blah -= config->width - config->prompt_size;
+	}
 	data->end_col = blah;
 	data->end_row = row;
 }
