@@ -82,16 +82,12 @@ void	move_right(t_terminal *config, t_input *data)
 	size_t size;
 
 	size = (data->cursor_col * config->width) + data->cursor_col;
-	//ft_printf("%zu\n", data->cursor_col);
-	//ft_printf("size: %zu\n", size);
 	if (data->cursor_col + 1 == config->width - config->prompt_size)
 	{
-		//ft_putstr("DOWN\n");
 		my_tputs(MOVEDN);
 	}
 	else if (data->cursor_col < size)
 	{
-		//ft_printf("%zu\n", data->cursor_col);
 		my_tputs(MOVERIGHT);
 	}
 }
@@ -232,6 +228,20 @@ void	default_terminal(void)
 	return ;
 }
 
+void	get_row_col(t_terminal *config, size_t *col, size_t *row)
+{
+	while (*col > config->width)
+	{
+		*col = *col - config->width;
+		*row = *row + 1;
+	}
+	while (*col > config->width - config->prompt_size)
+	{
+		*col = config->width - config->prompt_size;
+		*row = *row + 1;
+	}
+}
+
 void	get_cursor_pos(t_terminal *config, t_input *data)
 {
 	size_t blah;
@@ -239,30 +249,12 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 
 	blah = data->cursor_pos;
 	row = 0;
-	while (blah > config->width)
-	{
-		blah -= config->width;
-		row++;
-	}
-	while (blah > config->width - config->prompt_size)
-	{
-		row++;
-		blah -= config->width - config->prompt_size;
-	}
+	get_row_col(config, &blah, &row);
 	data->cursor_col = blah;
 	data->cursor_row = row;
 	blah = data->line_size;
 	row = 0;
-	while (blah > config->width)
-	{
-		blah -= config->width;
-		row++;
-	}
-	while (blah > config->width - config->prompt_size)
-	{
-		row++;
-		blah -= config->width - config->prompt_size;
-	}
+	get_row_col(config, &blah, &row);
 	data->end_col = blah;
 	data->end_row = row;
 }
@@ -285,7 +277,6 @@ void	delete(t_input *data)
 	data->line_size--;
 	data->line_buff[data->line_size] = '\0';
 	data->cursor_pos--;
-	//ft_printf("\n-> %s\n", data->line_buff);
 }
 
 void	insert(t_input *data)
@@ -302,7 +293,6 @@ void	insert(t_input *data)
 	my_tputs("ei");
 	data->cursor_pos++;
 	data->line_size++;
-	//ft_printf("\n-> %s\n", data->line_buff);
 }
 
 t_cmds	history_constructor(void)
