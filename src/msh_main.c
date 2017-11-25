@@ -71,11 +71,6 @@ void	msh_loop(void)
 	while (config.status)
 	{
 		config.prompt_size = msh_put_arrow();
-		ft_printf("prompt size: %zu\n", config.prompt_size);
-		ft_printf("starting location: %zu\n", config.prompt_size + 1);
-		ft_printf("first line size: %zu\n", config.width - config.prompt_size + 1);
-		ft_printf("additional lines: %zu\n", config.width);
-		msh_put_arrow();
 		line = readline(&config);
 		if (!line)
 			break ;

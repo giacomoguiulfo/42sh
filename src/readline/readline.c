@@ -283,6 +283,19 @@ void	get_terminal_meta(t_terminal *config, t_input *data)
 	get_cursor_pos(config, data);
 }
 
+void	clear_add_line(t_input *data)
+{
+	size_t x;
+
+	x = data->line_size;
+	while (x > 0)
+	{
+		my_tputs(MOVELEFT);
+		my_tputs("dc");
+		x--;
+	}
+}
+
 void	delete(t_input *data)
 {
 	char *tmp;
