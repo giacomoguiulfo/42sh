@@ -70,7 +70,7 @@ t_hash_table		*hash_init(int capacity)
 
 	hash_table = (t_hash_table *)malloc(sizeof(t_hash_table));
 	hash_table->capacity = capacity;
-	hash_table->binaries = (t_bin **)malloc(capacity * sizeof(t_bin *));
+	hash_table->binaries = (t_bin **)calloc(capacity, sizeof(t_bin *));
 	return (hash_table);
 }
 
@@ -92,7 +92,7 @@ int					hash_insert(t_hash_table *ht, char *name, char *path)
 		return (-1);
 	index = hash(name) % ht->capacity;
 	head = ht->binaries[index];
-	if (head == 0)
+	if (!head)
 	{
 		head = new_bin(name, path);
 		ht->binaries[index] = head;
