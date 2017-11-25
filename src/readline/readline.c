@@ -237,42 +237,34 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 	size_t blah;
 	size_t row;
 
-	ft_putstr("b~~infinite loop?\n");
-	ft_printf("%zu\n", data->cursor_pos);
 	blah = data->cursor_pos;
 	row = 0;
+	while (blah > config->width)
+	{
+		blah -= config->width;
+		row++;
+	}
 	while (blah > config->width - config->prompt_size)
 	{
-		while (blah > config->width)
-		{
-			row++;
-			blah -= config->width;
-			ft_printf("first loop innner %zu\n", data->cursor_pos);
-		}
 		row++;
 		blah -= config->width - config->prompt_size;
-		ft_putstr("first loop outer\n");
 	}
-	ft_putstr("Middle\n");
 	data->cursor_col = blah;
 	data->cursor_row = row;
 	blah = data->line_size;
 	row = 0;
+	while (blah > config->width)
+	{
+		blah -= config->width;
+		row++;
+	}
 	while (blah > config->width - config->prompt_size)
 	{
-		while (blah > config->width)
-		{
-			row++;
-			blah -= config->width;
-			ft_putstr("second loop innner\n");
-		}
-		ft_putstr("second loop outer\n");
 		row++;
 		blah -= config->width - config->prompt_size;
 	}
 	data->end_col = blah;
 	data->end_row = row;
-	ft_putstr("~~infinite loop?\n");
 }
 
 void	get_terminal_meta(t_terminal *config, t_input *data)
@@ -402,8 +394,6 @@ char	*readline(t_terminal *config)
 		else if (config->data.char_buff[0] == 27)
 			move_cursor(config, &config->data, &config->data.history);
 		ft_bzero((void*)config->data.char_buff, 5);
-		//ft_printf("cursor pos: %zu\n", config->data.cursor_pos);
-		//ft_printf("\ncursor_col: %zu, cursor_row %zu\n", config->data.cursor_col, config->data.cursor_row);
 	}
 	if (!(valid_string(config->data.line_buff)))
 		return (NULL);
