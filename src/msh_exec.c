@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 21:57:23 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/23 17:13:10 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/25 03:00:14 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_strfmap	g_builtins[] =
 	{"env", &builtin_env},
 	{"setenv", &builtin_setenv},
 	{"unsetenv", &builtin_unsetenv},
+	{"exit", &builtin_exit},
 	{NULL, NULL}
 };
 
@@ -108,7 +109,7 @@ int		msh_execute(char **args)
 	if (args[0] == NULL)
 		return (1);
 	ret = msh_run_builtins(args);
-	ft_printf("ret: %d", ret);
+	ft_printf("ret: %d\n", ret);
 	// if (ret != -1)
 	// {
 	// 	return (ret);

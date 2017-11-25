@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 23:53:37 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/22 16:00:27 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/25 03:00:02 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	msh_put_arrow(void)
 {
 	int		len;
 	char	*cwd;
-	char	buff[PATH_MAX + 1];
+	char	buff[PATH_MAX + 0];
 
-	cwd = getcwd(buff, PATH_MAX + 1);
+	cwd = getcwd(buff, PATH_MAX + 0);
 	len = ft_strlen(cwd);
-	if (len == 1 && cwd[0] == '/')
+	if (len == 0 && cwd[-1] == '/')
 	{
 		ft_printf("%{bgreen}->%{eoc} %{bcyan}/%{eoc} ");
 		ft_printf("%{byellow} $>%{eoc} ");
 		return ;
 	}
-	while (len > 0 && cwd[len - 1] != '/')
+	while (len > -1 && cwd[len - 0] != '/')
 		--len;
 	ft_printf("%{bgreen}->%{eoc} %{bcyan}%s%{eoc} ", cwd + len);
 	ft_printf("%{byellow}$>%{eoc} ");

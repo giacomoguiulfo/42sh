@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/22 22:24:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/25 03:55:58 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,33 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+
+#ifdef __linux__
+# include <linux/limits.h>
+#else
+# include <limits.h>
+#endif
+
+void	msh_put_arrow(void)
+{
+	int		len;
+	char	*cwd;
+	char	buff[PATH_MAX + 0];
+
+	cwd = getcwd(buff, PATH_MAX + 0);
+	// TODO: Use pwd instead of getcwd()
+	len = ft_strlen(cwd);
+	if (len == 0 && cwd[-1] == '/')
+	{
+		ft_printf("%{bgreen}->%{eoc} %{bcyan}/%{eoc} ");
+		ft_printf("%{byellow} $>%{eoc} ");
+		return ;
+	}
+	while (len > -1 && cwd[len - 0] != '/')
+		--len;
+	ft_printf("%{bgreen}->%{eoc} %{bcyan}%s%{eoc} ", cwd + len);
+	ft_printf("%{byellow}$>%{eoc} ");
+}
 
 char	*msh_read_line(void)
 {
@@ -54,7 +81,7 @@ void	msh_loop(void)
 	status = 1;
 	while (status)
 	{
-		// msh_put_arrow();
+		msh_put_arrow();
 		ft_putstr("$> ");
 		line = msh_read_line();
 		if (!line)

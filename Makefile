@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/22 22:20:45 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/11/25 04:28:23 by giacomo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ builtins/builtin_cd \
 builtins/builtin_echo \
 builtins/builtin_env \
 builtins/builtin_setenv \
-builtins/builtin_unsetenv
+builtins/builtin_unsetenv \
+builtins/builtin_exit \
 # msh_utils	\
 builtins/msh_echo \
 builtins/msh_cd \
@@ -51,9 +52,9 @@ LIBFT_DIR	:= libft/
 LIBFT_INC	:= $(LIBFT_DIR)includes/
 LIBFT_LIB	:= $(LIBFT_DIR)libft.a
 LIBFT_LNK	:= -L libft/ -lft
-SRC				:= $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_BASE)))
-OBJ				:= $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC:.c=.o))
-HEADERS		:= $(wildcard $(INC_DIR)/*.h)
+SRC				:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_BASE)))
+OBJ				:= $(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
+HEADERS		:= $(wildcard $(INC_DIR)*.h)
 SHELL			:= /bin/bash
 BASENAME  := `basename -s .a $(NAME)`
 LEN_NAME	= `printf "%s" $(NAME) | wc -c`

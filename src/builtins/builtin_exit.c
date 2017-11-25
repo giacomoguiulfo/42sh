@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 21:55:15 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/25 00:38:15 by giacomo          ###   ########.fr       */
+/*   Created: 2017/11/25 00:24:57 by giacomo           #+#    #+#             */
+/*   Updated: 2017/11/25 00:38:08 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include <unistd.h>
+#include <stdlib.h>
 
-int builtin_cd();
-int builtin_echo();
-int builtin_env();
-int builtin_setenv();
-int builtin_unsetenv();
-int builtin_exit();
-
-#endif
+int builtin_exit()
+{
+    exit(EXIT_SUCCESS);
+    return (1);
+}
