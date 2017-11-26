@@ -75,21 +75,28 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 
 	blah = data->cursor_pos;
 	row = 0;
-	if (data->cursor_pos < config->width - config->prompt_size)
+	if (config->width < config->prompt_size)
 	{
-		data->cursor_col = config->prompt_size + data->cursor_pos;
-		data->cursor_row = 0;
+		ft_putstr("LOL\n");
 	}
 	else
 	{
-		blah += config->prompt_size;
-		while (blah > config->width)
+		if (data->cursor_pos < config->width - config->prompt_size)
 		{
-			row++;
-			blah -= config->width;
+			data->cursor_col = config->prompt_size + data->cursor_pos;
+			data->cursor_row = 0;
 		}
-		data->cursor_col = blah;
-		data->cursor_row = row;
+		else
+		{
+			blah += config->prompt_size;
+			while (blah > config->width)
+			{
+				row++;
+				blah -= config->width;
+			}
+			data->cursor_col = blah;
+			data->cursor_row = row;
+		}
 	}
 	blah = data->line_size;
 	row = 0;
@@ -113,9 +120,7 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 
 void	move_right(t_terminal *config, t_input *data)
 {
-	if (data->cursor_row == 0 && data->cursor_col + 1 == config->width)
-		my_tputs(MOVEDN);
-	else if (data->cursor_row > 0 && data->cursor_col + 1 == config->width)
+	if (data->cursor_col + 1 == config->width)
 		my_tputs(MOVEDN);
 	else
 		my_tputs(MOVERIGHT);
@@ -123,30 +128,35 @@ void	move_right(t_terminal *config, t_input *data)
 
 void	move_home(t_terminal *config, t_input *data)
 {
-	while (data->cursor_col < config->width - 1)
-	{
-		move_right(config, data);
-		data->cursor_col++;
-	}
-	while (data->cursor_row > 0)
-	{
-		my_tputs(MOVEUP);
-		data->cursor_row--;
-	}
-	while (data->cursor_col > config->prompt_size)
+	size_t x;
+
+	x = data->cursor_pos;
+	config->width = 0;
+	while (x > 0)
 	{
 		my_tputs(MOVELEFT);
-		data->cursor_col--;
+		x--;
 	}
 }
 
 void	move_end(t_terminal *config, t_input *data)
 {
-	while (data->cursor_pos < data->line_size)
+	size_t x;
+
+	x = data->cursor_pos;
+	while (x < data->line_size)
 	{
 		move_right(config, data);
-		data->cursor_pos++;
+		if (data->cursor_col + 1 == config->width)
+		{
+			data->cursor_col = 0;
+			data->cursor_row++;
+		}
+		else
+			data->cursor_col++;
+		x++;
 	}
+	data->cursor_pos = data->line_size;
 }
 
 void	clear_line(t_terminal *config, t_input *data)
@@ -157,8 +167,20 @@ void	clear_line(t_terminal *config, t_input *data)
 	while (x < data->line_size)
 	{
 		move_right(config, data);
+		if (data->cursor_col + 1 == config->width)
+		{
+			data->cursor_col = 0;
+			data->cursor_row++;
+		}
+		else
+			data->cursor_col++;
 		x++;
 	}
+	ft_printf("\ncursor_col: %zu, cursor_row: %zu\n", data->cursor_col, data->cursor_row);
+	ft_printf("line length: %zu, cursor_pos: %zu\n", data->line_size, x);
+	msh_put_arrow();
+	ft_printf("%s", data->line_buff);
+	data->cursor_pos = data->line_size;
 }
 
 void	history_dn(t_terminal *config, t_input *data, t_cmds *history)
@@ -349,16 +371,7 @@ void	delete(t_terminal *config, t_input *data)
 {
 	//char *tmp;
 	//size_t new_length;
-
-	if (data->line_size == data->cursor_pos)
-		clear_line(config, data);
-	else
-	{
-		config->width = 0;
-		clear_line(config, data);
-	}
-	data->cursor_pos = 0;
-	data->line_size = 0;
+	clear_line(config, data);
 	/*
 	tmp = data->line_buff + (data->cursor_pos - 1);
 	*tmp = '\0';
@@ -384,7 +397,7 @@ void	delete(t_terminal *config, t_input *data)
 	}*/
 }
 
-void	insert(t_terminal *config, t_input *data)
+void	insert(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
 
@@ -393,9 +406,9 @@ void	insert(t_terminal *config, t_input *data)
 	ft_strcat(buff, data->line_buff + data->cursor_pos);
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
-	clear_line(config, data);
-	//my_tputs("sc");
-	//my_tputs("rc");
+	my_tputs("im");
+	ft_putstr(data->char_buff);
+	my_tputs("ei");
 	data->cursor_pos++;
 	data->line_size++;
 }
@@ -407,7 +420,7 @@ char	*readline(t_terminal *config)
 	{
 		get_terminal_meta(config, &config->data);
 		if (ft_isprint(config->data.char_buff[0]))
-			insert(config, &config->data);
+			insert(&config->data);
 		else if (config->data.char_buff[0] == DELETE && config->data.cursor_pos != 0)
 			delete(config, &config->data);
 		else if (config->data.char_buff[0] == 27)
