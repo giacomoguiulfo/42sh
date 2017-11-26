@@ -70,52 +70,26 @@ void	get_window_size(t_terminal *config)
 
 void	get_cursor_pos(t_terminal *config, t_input *data)
 {
-	size_t blah;
-	size_t row;
+	data->cursor_row = (data->cursor_pos + config->prompt_size) / config->width;
+	data->cursor_col = (data->cursor_pos + config->prompt_size) % config->width;
+	data->end_row = (data->line_size + config->prompt_size) / config->width;
+	data->end_col = (data->line_size + config->prompt_size) % config->width;
+	/*ft_printf("\nprompt size: %zu, first row size: %zu\n", config->prompt_size, config->width - config->prompt_size);
+	ft_printf("c-row: %zu, c-col: %zu\n", data->cursor_row, data->cursor_col);
+	ft_printf("e-row: %zu, e-col: %zu\n", data->end_row, data->end_col);
+	msh_put_arrow();
+	ft_putstr(data->line_buff);*/
+}
 
-	blah = data->cursor_pos;
-	row = 0;
-	if (config->width < config->prompt_size)
-	{
-		ft_putstr("LOL\n");
-	}
-	else
-	{
-		if (data->cursor_pos < config->width - config->prompt_size)
-		{
-			data->cursor_col = config->prompt_size + data->cursor_pos;
-			data->cursor_row = 0;
-		}
-		else
-		{
-			blah += config->prompt_size;
-			while (blah > config->width)
-			{
-				row++;
-				blah -= config->width;
-			}
-			data->cursor_col = blah;
-			data->cursor_row = row;
-		}
-	}
-	blah = data->line_size;
-	row = 0;
-	if (blah < config->width - config->prompt_size)
-	{
-		data->end_col = config->prompt_size + blah;
-		data->end_row = 0;
-	}
-	else
-	{
-		blah += config->prompt_size;
-		while (blah > config->width)
-		{
-			row++;
-			blah -= config->width;
-		}
-		data->end_row = row;
-		data->end_col = blah;
-	}
+void	jump(size_t x, size_t y)
+{
+	char *gotostr;
+	char buff[1024];
+	char *ptr;
+
+	ptr = buff;
+	gotostr = tgetstr("cm", &ptr);
+	my_tputs(tgoto(gotostr, x, y));
 }
 
 void	move_right(t_terminal *config, t_input *data)
@@ -126,12 +100,11 @@ void	move_right(t_terminal *config, t_input *data)
 		my_tputs(MOVERIGHT);
 }
 
-void	move_home(t_terminal *config, t_input *data)
+void	move_home(t_input *data)
 {
 	size_t x;
 
 	x = data->cursor_pos;
-	config->width = 0;
 	while (x > 0)
 	{
 		my_tputs(MOVELEFT);
@@ -304,7 +277,7 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == HOME)
 	{
-		move_home(config, data);
+		move_home(data);
 		data->cursor_pos = 0;
 	}
 	else if (data->char_buff[2] == END)
