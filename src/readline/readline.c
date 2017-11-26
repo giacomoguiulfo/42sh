@@ -347,9 +347,8 @@ void	delete(t_terminal *config, t_input *data)
 	ft_bzero((void*)buff, LINE_BUFF_SIZE);
 	tmp = &data->line_buff[data->cursor_pos - 1];
 	*tmp = '\0';
-	ft_strcpy(buff, data->line_buff);
-	ft_strcat(buff, tmp + 1);
-	ft_strcpy(data->line_buff, buff);
+	ft_strcpy(buff, tmp + 1);
+	ft_strcpy(data->line_buff + data->cursor_pos, buff);
 	old_cursor_pos = data->cursor_pos;
 	clear_line(config, data);
 	my_tputs("im");
