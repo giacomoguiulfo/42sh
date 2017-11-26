@@ -100,13 +100,19 @@ void	move_left()
 void	move_home(t_input *data)
 {
 	size_t x;
+	size_t y;
 
+	if (data->cursor_col == 0)
+		y = 1;
+	else
+		y = 0;
 	x = data->cursor_pos;
-	while (x > 0)
+	while (x > y)
 	{
 		move_left();
 		x--;
 	}
+	data->cursor_pos = 0;
 }
 
 void	move_end(t_terminal *config, t_input *data)
@@ -132,10 +138,15 @@ void	move_end(t_terminal *config, t_input *data)
 void	clear_line(t_terminal *config, t_input *data)
 {
 	size_t x;
+	size_t y;
 
 	move_end(config, data);
+	if (data->cursor_col == 0)
+		y = 1;
+	else
+		y = 0;
 	x = data->cursor_pos;
-	while (x > 0)
+	while (x > y)
 	{
 		if (x % config->width == 0 && x / config->width > 0)
 		{
@@ -277,12 +288,10 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	else if (data->char_buff[2] == HOME)
 	{
 		move_home(data);
-		data->cursor_pos = 0;
 	}
 	else if (data->char_buff[2] == END)
 	{
 		move_end(config, data);
-		data->cursor_pos = data->line_size;
 	}
 	else if (data->char_buff[2] == UP)
 	{
@@ -342,20 +351,17 @@ void	delete(t_terminal *config, t_input *data)
 	ft_strcat(buff, tmp + 1);
 	ft_strcpy(data->line_buff, buff);
 	old_cursor_pos = data->cursor_pos;
-	//ft_printf("\nold cursor_pos: %zu\n", old_cursor_pos);
-	//ft_printf("old line size: %zu,", data->line_size);
 	clear_line(config, data);
-	//ft_fputstr(data->line_buff);
+	my_tputs("im");
+	ft_fputstr(data->line_buff);
+	my_tputs("ei");
 	data->line_size = ft_strlen(data->line_buff);
-	//ft_printf("new line: %zu\n", data->line_size);
 	data->cursor_pos = data->line_size;
 	while (data->cursor_pos > old_cursor_pos - 1)
 	{
 		move_left();
 		data->cursor_pos--;
 	}
-	//ft_printf("new cursor_pos: %zu\n", data->cursor_pos);
-	//ft_putstr("finish\n");
 }
 
 void	insert(t_input *data)
@@ -368,7 +374,7 @@ void	insert(t_input *data)
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
 	my_tputs("im");
-	ft_putstr(data->char_buff);
+	ft_fputstr(data->char_buff);
 	my_tputs("ei");
 	data->cursor_pos++;
 	data->line_size++;

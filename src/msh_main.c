@@ -68,6 +68,7 @@ void	msh_loop(void)
 	t_terminal config;
 
 	sh_init(&config);
+	ft_printf("Terminal h: %zu, w: %zu\n", config.height, config.width);
 	while (config.status)
 	{
 		config.prompt_size = msh_put_arrow();
