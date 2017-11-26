@@ -74,11 +74,6 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 	data->cursor_col = (data->cursor_pos + config->prompt_size) % config->width;
 	data->end_row = (data->line_size + config->prompt_size) / config->width;
 	data->end_col = (data->line_size + config->prompt_size) % config->width;
-	/*ft_printf("\nprompt size: %zu, first row size: %zu\n", config->prompt_size, config->width - config->prompt_size);
-	ft_printf("c-row: %zu, c-col: %zu\n", data->cursor_row, data->cursor_col);
-	ft_printf("e-row: %zu, e-col: %zu\n", data->end_row, data->end_col);
-	msh_put_arrow();
-	ft_putstr(data->line_buff);*/
 }
 
 void	jump(size_t x, size_t y)
@@ -344,6 +339,7 @@ void	delete(t_terminal *config, t_input *data)
 {
 	//char *tmp;
 	//size_t new_length;
+	ft_putstr("inside\n");
 	clear_line(config, data);
 	/*
 	tmp = data->line_buff + (data->cursor_pos - 1);
@@ -394,7 +390,7 @@ char	*readline(t_terminal *config)
 		get_terminal_meta(config, &config->data);
 		if (ft_isprint(config->data.char_buff[0]))
 			insert(&config->data);
-		else if (config->data.char_buff[0] == DELETE && config->data.cursor_pos != 0)
+		else if (config->data.char_buff[0] == DELETE)
 			delete(config, &config->data);
 		else if (config->data.char_buff[0] == 27)
 			move_cursor(config, &config->data, &config->data.history);
