@@ -76,23 +76,17 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 	data->end_col = (data->line_size + config->prompt_size) % config->width;
 }
 
-void	jump(size_t x, size_t y)
-{
-	char *gotostr;
-	char buff[1024];
-	char *ptr;
-
-	ptr = buff;
-	gotostr = tgetstr("cm", &ptr);
-	my_tputs(tgoto(gotostr, x, y));
-}
-
 void	move_right(t_terminal *config, t_input *data)
 {
 	if (data->cursor_col + 1 == config->width)
 		my_tputs(MOVEDN);
 	else
 		my_tputs(MOVERIGHT);
+}
+
+void	move_left()
+{
+	my_tputs(MOVELEFT);
 }
 
 void	move_home(t_input *data)
@@ -102,7 +96,7 @@ void	move_home(t_input *data)
 	x = data->cursor_pos;
 	while (x > 0)
 	{
-		my_tputs(MOVELEFT);
+		move_left();
 		x--;
 	}
 }
@@ -131,24 +125,17 @@ void	clear_line(t_terminal *config, t_input *data)
 {
 	size_t x;
 
+	move_end(config, data);
 	x = data->cursor_pos;
-	while (x < data->line_size)
+	while (x > 0)
 	{
-		move_right(config, data);
-		if (data->cursor_col + 1 == config->width)
-		{
-			data->cursor_col = 0;
-			data->cursor_row++;
-		}
-		else
-			data->cursor_col++;
-		x++;
+		my_tputs("dc");
+		move_left();
+		my_tputs("dc");
+		x--;
 	}
-	ft_printf("\ncursor_col: %zu, cursor_row: %zu\n", data->cursor_col, data->cursor_row);
-	ft_printf("line length: %zu, cursor_pos: %zu\n", data->line_size, x);
-	msh_put_arrow();
-	ft_printf("%s", data->line_buff);
-	data->cursor_pos = data->line_size;
+	data->cursor_pos = 0;
+	data->line_size = 0;
 }
 
 void	history_dn(t_terminal *config, t_input *data, t_cmds *history)
@@ -267,7 +254,7 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == LEFT && data->cursor_pos > 0)
 	{
-		my_tputs(MOVELEFT);
+		move_left();
 		data->cursor_pos--;
 	}
 	else if (data->char_buff[2] == HOME)
@@ -304,9 +291,6 @@ int		raw_terminal(t_terminal *config)
 	change.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &change);
 	get_window_size(config);
-	ft_printf("window dimensions:\n");
-	ft_printf("h: %zu, w: %zu\n", config->height, config->width);
-	my_tputs(SAVEPOS);
 	return (1);
 }
 
@@ -324,46 +308,11 @@ void	get_terminal_meta(t_terminal *config, t_input *data)
 {
 	get_window_size(config);
 	get_cursor_pos(config, data);
-
-	/*	
-	ft_printf("cursor_pos: %zu\n", data->cursor_pos);
-	ft_printf("cursor row: %zu, cursor col: %zu\n", data->cursor_row, data->cursor_col);
-	ft_printf("end row: %zu, end col: %zu\n", data->end_row, data->end_col);
-	ft_printf("height: %zu, width: %zu\n", config->height, config->width);
-	ft_printf("line length: %zu, prompt size: %zu\n", data->line_size, config->prompt_size);
-	msh_put_arrow();
-	ft_printf("%s", data->line_buff);*/
 }
 
 void	delete(t_terminal *config, t_input *data)
 {
-	//char *tmp;
-	//size_t new_length;
-	ft_putstr("inside\n");
 	clear_line(config, data);
-	/*
-	tmp = data->line_buff + (data->cursor_pos - 1);
-	*tmp = '\0';
-	new_length = ft_strlen(data->line_buff) + ft_strlen(tmp + 1);
-	ft_memmove(tmp, tmp + 1, ft_strlen(tmp + 1));
-	if (data->line_size == data->cursor_pos)
-	{
-		ft_putstr(data->line_buff);
-		data->line_size--;
-		data->line_buff[data->line_size] = '\0';
-		data->cursor_pos--;
-	}
-	else
-	{
-		//ft_printf("\nline length: %zu, cursor_pos: %zu\n", data->line_size, data->cursor_pos);
-		//data->line_size--;
-		data->line_buff[new_length] = '\0';
-		ft_putstr(data->line_buff);
-		data->line_size--;
-		data->cursor_pos--;
-		restore_cursor_pos(data);
-		//ft_printf("\nline length: %zu, cursor_pos: %zu\n", data->line_size, data->cursor_pos);
-	}*/
 }
 
 void	insert(t_input *data)
