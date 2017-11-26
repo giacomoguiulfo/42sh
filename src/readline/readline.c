@@ -27,6 +27,14 @@ void	input_constructor(t_input *data)
 	data->cursor_row = 0;
 }
 
+void	ft_fputstr(char *str)
+{
+	int x;
+
+	x = ft_strlen(str);
+	write(1, str, x);
+}
+
 int		ft_intputchar(int c)
 {
 	write(1, &c, 1);
@@ -129,11 +137,20 @@ void	clear_line(t_terminal *config, t_input *data)
 	x = data->cursor_pos;
 	while (x > 0)
 	{
-		my_tputs("dc");
-		move_left();
-		my_tputs("dc");
+		if (x % config->width == 0 && x / config->width > 0)
+		{
+			my_tputs("dc");
+			move_left();
+			my_tputs("dc");
+		}
+		else
+		{
+			move_left();
+			my_tputs("dc");
+		}
 		x--;
 	}
+	my_tputs("dc");
 	data->cursor_pos = 0;
 	data->line_size = 0;
 }
@@ -312,7 +329,33 @@ void	get_terminal_meta(t_terminal *config, t_input *data)
 
 void	delete(t_terminal *config, t_input *data)
 {
+	char	buff[LINE_BUFF_SIZE];
+	char	*tmp;
+	size_t	old_cursor_pos;
+
+	if (data->cursor_pos == 0)
+		return ;
+	ft_bzero((void*)buff, LINE_BUFF_SIZE);
+	tmp = &data->line_buff[data->cursor_pos - 1];
+	*tmp = '\0';
+	ft_strcpy(buff, data->line_buff);
+	ft_strcat(buff, tmp + 1);
+	ft_strcpy(data->line_buff, buff);
+	old_cursor_pos = data->cursor_pos;
+	//ft_printf("\nold cursor_pos: %zu\n", old_cursor_pos);
+	//ft_printf("old line size: %zu,", data->line_size);
 	clear_line(config, data);
+	//ft_fputstr(data->line_buff);
+	data->line_size = ft_strlen(data->line_buff);
+	//ft_printf("new line: %zu\n", data->line_size);
+	data->cursor_pos = data->line_size;
+	while (data->cursor_pos > old_cursor_pos - 1)
+	{
+		move_left();
+		data->cursor_pos--;
+	}
+	//ft_printf("new cursor_pos: %zu\n", data->cursor_pos);
+	//ft_putstr("finish\n");
 }
 
 void	insert(t_input *data)
