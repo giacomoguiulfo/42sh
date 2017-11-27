@@ -129,31 +129,8 @@ void	move_end(t_input *data)
 
 void	clear_line(t_terminal *config, t_input *data)
 {
-	size_t x;
-	size_t y;
-
-	move_end(data);
-	if (data->cursor_col == 0)
-		y = 1;
-	else
-		y = 0;
-	x = data->cursor_pos;
-	while (x > y)
-	{
-		if (x % config->width == 0 && x / config->width > 0)
-		{
-			my_tputs("dc");
-			move_left();
-			my_tputs("dc");
-		}
-		else
-		{
-			move_left();
-			my_tputs("dc");
-		}
-		x--;
-	}
-	my_tputs("dc");
+	move_home(config, data);
+	my_tputs("cd");
 	data->cursor_pos = 0;
 	data->line_size = 0;
 }
@@ -163,6 +140,7 @@ void	history_dn(t_terminal *config, t_input *data, t_cmds *history)
 	clear_line(config, data);
 	if (!history->current || !history->current->cmd)
 	{
+		clear_line(config, data);
 		history->current = history->end;
 	}
 	else if (history->current->cmd)
@@ -171,10 +149,11 @@ void	history_dn(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	if (history->current && history->current->cmd)
 	{
-		ft_printf("%s", history->current->cmd);
-		ft_bzero(data->line_buff, data->line_size);
+		ft_fputstr(history->current->cmd);
 		data->line_size = ft_strlen(history->current->cmd);
 		data->cursor_pos = data->line_size;
+		move_end(data);
+		ft_bzero(data->line_buff, data->line_size);
 		ft_strcpy(data->line_buff, history->current->cmd);
 	}
 	else
@@ -190,6 +169,7 @@ void	history_up(t_terminal *config, t_input *data, t_cmds *history)
 	clear_line(config, data);
 	if (!history->current || !history->current->cmd)
 	{
+		clear_line(config, data);
 		history->current = history;
 	}
 	else if (history->current->cmd)
@@ -198,10 +178,11 @@ void	history_up(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	if (history->current && history->current->cmd)
 	{
-		ft_printf("%s", history->current->cmd);
-		ft_bzero(data->line_buff, data->line_size);
+		ft_fputstr(history->current->cmd);
 		data->line_size = ft_strlen(history->current->cmd);
 		data->cursor_pos = data->line_size;
+		move_end(data);
+		ft_bzero(data->line_buff, data->line_size);
 		ft_strcpy(data->line_buff, history->current->cmd);
 	}
 	else
