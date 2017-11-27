@@ -97,41 +97,33 @@ void	move_left()
 	my_tputs(MOVELEFT);
 }
 
-void	move_home(t_input *data)
+void	move_home(t_terminal *config, t_input *data)
 {
-	size_t x;
-	size_t y;
+	size_t row;
+	size_t col;
 
-	if (data->cursor_col == 0)
-		y = 1;
-	else
-		y = 0;
-	x = data->cursor_pos;
-	while (x > y)
-	{
-		move_left();
-		x--;
-	}
+	if (data->cursor_pos == 0)
+		return ;
+	row = data->cursor_row;
+	col = config->prompt_size % config->width;
+	while (row-- > 0)
+		my_tputs("up");
+	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
 	data->cursor_pos = 0;
 }
 
-void	move_end(t_terminal *config, t_input *data)
+void	move_end(t_input *data)
 {
-	size_t x;
+	size_t row;
+	size_t col;
 
-	x = data->cursor_pos;
-	while (x < data->line_size)
-	{
-		move_right(config, data);
-		if (data->cursor_col + 1 == config->width)
-		{
-			data->cursor_col = 0;
-			data->cursor_row++;
-		}
-		else
-			data->cursor_col++;
-		x++;
-	}
+	if (data->cursor_pos == data->line_size)
+		return ;
+	row = data->end_row;
+	col = data->end_col;
+	while (row-- > 0)
+		my_tputs("do");
+	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
 	data->cursor_pos = data->line_size;
 }
 
@@ -140,7 +132,7 @@ void	clear_line(t_terminal *config, t_input *data)
 	size_t x;
 	size_t y;
 
-	move_end(config, data);
+	move_end(data);
 	if (data->cursor_col == 0)
 		y = 1;
 	else
@@ -287,11 +279,11 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == HOME)
 	{
-		move_home(data);
+		move_home(config, data);
 	}
 	else if (data->char_buff[2] == END)
 	{
-		move_end(config, data);
+		move_end(data);
 	}
 	else if (data->char_buff[2] == UP)
 	{
@@ -359,7 +351,7 @@ void	delete(t_input *data)
 	data->line_size--;
 }
 
-void	clear_line_insert(t_input *data)
+void	clear_insert(t_input *data)
 {
 	size_t top;
 
@@ -370,55 +362,45 @@ void	clear_line_insert(t_input *data)
 	my_tputs("cd");
 }
 
-void	return_cursor_pos(t_input *data)
-{
-	size_t bot;
-	size_t go;
-	size_t end;
-
-	bot = (data->config->prompt_size + data->line_size) / data->config->width;
-	go = 0;
-	end = bot - data->cursor_row;
-	while (go < end)
-	{
-		my_tputs("up");
-		go++;
-	}
-}
-
 void	print_end_col_pad(size_t cursor_col)
 {
 	tputs(tgetstr("do", NULL), 1, ft_intputchar);
 	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
 }
 
-void	insert(t_input *data)
+void	gather_position_data(t_terminal *config, t_input *data)
+{
+	data->end_col = (config->prompt_size + data->line_size) % config->width;
+	data->end_row = (config->prompt_size + data->line_size) / config->width;
+	data->cursor_row = (config->prompt_size + data->cursor_pos) / config->width;
+	data->cursor_col = (config->prompt_size + data->cursor_pos) % config->width;
+}
+
+void	build_buffer(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
-	size_t	end_col;
-	size_t	end_row;
-	size_t	cursor_row;
-	size_t	cursor_col;
-	size_t	x;
 
-	ft_bzero((void*)buff, LINE_BUFF_SIZE);
 	ft_strcpy(buff, data->char_buff);
 	ft_strcat(buff, data->line_buff + data->cursor_pos);
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
-	clear_line_insert(data);
+}
+
+void	insert(t_terminal *config, t_input *data)
+{
+	size_t	x;
+
+	clear_insert(data);
+	build_buffer(data);
 	msh_put_arrow();
 	ft_fputstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;
-	end_col = (data->config->prompt_size + data->line_size) % data->config->width;
-	end_row = (data->config->prompt_size + data->line_size) / data->config->width;
-	cursor_row = (data->config->prompt_size + data->cursor_pos) / data->config->width;
-	cursor_col = (data->config->prompt_size + data->cursor_pos) % data->config->width;
-	if (end_col == 0)
-		print_end_col_pad(cursor_col);
-	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
-	x = end_row - cursor_row;
+	gather_position_data(config, data);
+	if (data->end_col == 0)
+		print_end_col_pad(data->cursor_col);
+	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_intputchar);
+	x = data->end_row - data->cursor_row;
 	while (x-- > 0)
 	{
 		tputs(tgetstr("up", NULL), 1, ft_intputchar);
@@ -432,7 +414,7 @@ char	*readline(t_terminal *config)
 	{
 		get_terminal_meta(config, &config->data);
 		if (ft_isprint(config->data.char_buff[0]))
-			insert(&config->data);
+			insert(config, &config->data);
 		else if (config->data.char_buff[0] == DELETE)
 			delete(&config->data);
 		else if (config->data.char_buff[0] == 27)
