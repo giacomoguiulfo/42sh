@@ -368,11 +368,13 @@ void	insert(t_input *data)
 	ft_strcat(buff, data->line_buff + data->cursor_pos);
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
-	my_tputs("im");
-	ft_fputstr(data->char_buff);
-	my_tputs("ei");
+	my_tputs("cr");
+	my_tputs("cd");
+	msh_put_arrow();
+	ft_fputstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;
+	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col + 1), 1, ft_intputchar);
 }
 
 char	*readline(t_terminal *config)

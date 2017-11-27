@@ -59,7 +59,7 @@ void	sh_init(t_terminal *config)
 	raw_terminal(config);
 	config->newenvp = ft_darr_init(sizeof(char *), 50);
 	config->status = 1;
-	config->data->config = config;
+	config->data.config = config;
 }
 
 void	msh_loop(void)
