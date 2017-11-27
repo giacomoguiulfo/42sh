@@ -363,31 +363,66 @@ void	clear_line_insert(t_input *data)
 {
 	size_t top;
 
+	my_tputs("cr");
 	top = data->cursor_row;
-	while (top > 0)
+	while (top-- > 0)
+		tputs(tgetstr("up", NULL), 1, ft_intputchar);
+	my_tputs("cd");
+}
+
+void	return_cursor_pos(t_input *data)
+{
+	size_t bot;
+	size_t go;
+	size_t end;
+
+	bot = (data->config->prompt_size + data->line_size) / data->config->width;
+	go = 0;
+	end = bot - data->cursor_row;
+	while (go < end)
 	{
 		my_tputs("up");
-		top--;
+		go++;
 	}
+}
+
+void	print_end_col_pad(size_t cursor_col)
+{
+	tputs(tgetstr("do", NULL), 1, ft_intputchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
 }
 
 void	insert(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
+	size_t	end_col;
+	size_t	end_row;
+	size_t	cursor_row;
+	size_t	cursor_col;
+	size_t	x;
 
 	ft_bzero((void*)buff, LINE_BUFF_SIZE);
 	ft_strcpy(buff, data->char_buff);
 	ft_strcat(buff, data->line_buff + data->cursor_pos);
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
-	my_tputs("cr");
 	clear_line_insert(data);
-	my_tputs("cd");
 	msh_put_arrow();
 	ft_fputstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;
-	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col + 1), 1, ft_intputchar);
+	end_col = (data->config->prompt_size + data->line_size) % data->config->width;
+	end_row = (data->config->prompt_size + data->line_size) / data->config->width;
+	cursor_row = (data->config->prompt_size + data->cursor_pos) / data->config->width;
+	cursor_col = (data->config->prompt_size + data->cursor_pos) % data->config->width;
+	if (end_col == 0)
+		print_end_col_pad(cursor_col);
+	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
+	x = end_row - cursor_row;
+	while (x-- > 0)
+	{
+		tputs(tgetstr("up", NULL), 1, ft_intputchar);
+	}
 }
 
 char	*readline(t_terminal *config)
