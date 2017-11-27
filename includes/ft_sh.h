@@ -41,43 +41,44 @@
 #define MOVEDN "do"
 #define LINESTART "cr"
 
-typedef struct		s_cmds
+typedef struct			s_cmds
 {
-	struct s_cmds	*next;
-	struct s_cmds	*prev;
-	struct s_cmds	*end;
-	struct s_cmds	*current;
-	char			*cmd;
-}					t_cmds;
+	struct s_cmds		*next;
+	struct s_cmds		*prev;
+	struct s_cmds		*end;
+	struct s_cmds		*current;
+	char				*cmd;
+}						t_cmds;
 
-typedef struct		s_input
+typedef struct			s_input
 {
-	char			char_buff[CHAR_BUFF_SIZE];
-	char			line_buff[LINE_BUFF_SIZE];
-	size_t			line_size;
-	size_t			cursor_pos;
-	size_t			cursor_col;
-	size_t			cursor_row;
-	size_t			end_col;
-	size_t			end_row;
+	char				char_buff[CHAR_BUFF_SIZE];
+	char				line_buff[LINE_BUFF_SIZE];
+	size_t				line_size;
+	size_t				cursor_pos;
+	size_t				cursor_col;
+	size_t				cursor_row;
+	size_t				end_col;
+	size_t				end_row;
 
-	struct s_cmds	history;
-}					t_input;
+	struct s_cmds		history;
+	struct s_terminal 	*config;
+}						t_input;
 
-typedef struct		s_terminal
+typedef struct			s_terminal
 {
-	t_darr			*newenvp;
-	int				status;
+	t_darr				*newenvp;
+	int					status;
 
-	struct termios	term;
-	struct winsize	window_size;
-	char			*name;
-	size_t			width;
-	size_t			height;
+	struct termios		term;
+	struct winsize		window_size;
+	char				*name;
+	size_t				width;
+	size_t				height;
 
-	struct s_input	data;
-	size_t			prompt_size;
-}					t_terminal;
+	struct s_input		data;
+	size_t				prompt_size;
+}						t_terminal;
 
 
 /*
