@@ -359,6 +359,18 @@ void	delete(t_input *data)
 	data->line_size--;
 }
 
+void	clear_line_insert(t_input *data)
+{
+	size_t top;
+
+	top = data->cursor_row;
+	while (top > 0)
+	{
+		my_tputs("up");
+		top--;
+	}
+}
+
 void	insert(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
@@ -369,6 +381,7 @@ void	insert(t_input *data)
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
 	my_tputs("cr");
+	clear_line_insert(data);
 	my_tputs("cd");
 	msh_put_arrow();
 	ft_fputstr(data->line_buff);
