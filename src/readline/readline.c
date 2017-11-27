@@ -265,11 +265,17 @@ void	insert(t_terminal *config, t_input *data)
 
 char	*readline(t_terminal *config)
 {
+	bool continue_loop;
+
+	continue_loop = true;
 	input_constructor(&config->data);
-	while ((read(0, config->data.char_buff, 5)) && config->data.char_buff[0] != ENTER)
+	while (continue_loop == true)
 	{
+		read(0, config->data.char_buff, 5);
 		get_terminal_meta(config, &config->data);
-		if (ft_isprint(config->data.char_buff[0]))
+		if (config->data.char_buff[0] == ENTER)
+			continue_loop = false;
+		else if (ft_isprint(config->data.char_buff[0]))
 			insert(config, &config->data);
 		else if (config->data.char_buff[0] == DELETE)
 			delete(&config->data);
