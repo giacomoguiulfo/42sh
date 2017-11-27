@@ -39,7 +39,8 @@ builtins/msh_echo \
 builtins/msh_cd \
 builtins/msh_extra \
 builtins/msh_env \
-readline/readline
+readline/readline \
+readline/history
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

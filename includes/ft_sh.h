@@ -14,32 +14,32 @@
 # define FT_SH_H
 
 # include "libft.h"
-#include <unistd.h>
-#include <term.h>
-#include <termios.h>
-#include <sys/ioctl.h>
-#include <stdlib.h>
+# include <unistd.h>
+# include <term.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+# include <stdlib.h>
 
 # define MSH_RL_SIZ 1024
 
-#define LINE_BUFF_SIZE 4096
-#define CHAR_BUFF_SIZE 5
+# define LINE_BUFF_SIZE 4096
+# define CHAR_BUFF_SIZE 5
 
-#define ENTER 10
-#define DELETE 127
-#define UP 65
-#define DOWN 66
-#define LEFT 68
-#define RIGHT 67
-#define HOME 72
-#define END 70
+# define ENTER 10
+# define DELETE 127
+# define UP 65
+# define DOWN 66
+# define LEFT 68
+# define RIGHT 67
+# define HOME 72
+# define END 70
 
-#define SAVEPOS "sc"
-#define MOVERIGHT "nd"
-#define MOVELEFT "le"
-#define MOVEUP "up"
-#define MOVEDN "do"
-#define LINESTART "cr"
+# define SAVEPOS "sc"
+# define MOVERIGHT "nd"
+# define MOVELEFT "le"
+# define MOVEUP "up"
+# define MOVEDN "do"
+# define LINESTART "cr"
 
 typedef struct			s_cmds
 {
@@ -93,6 +93,15 @@ int		msh_execute(char **args, t_darr *newenvp);
 
 char	*readline(t_terminal *config);
 int		raw_terminal(t_terminal *config);
+void	my_tputs(char *cmd);
+
+void	history_add(t_cmds *head, char *cmd);
+t_cmds	history_constructor(void);
+void	history_up(t_terminal *config, t_input *data, t_cmds *history);
+void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
+
+void	move_home(t_terminal *config, t_input *data);
+void	move_end(t_input *data);
 
 /*
 ** Builtins

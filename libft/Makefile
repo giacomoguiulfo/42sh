@@ -162,6 +162,7 @@ ft_strrchr 					\
 ft_strstr					\
 ft_countwords 				\
 ft_findchr 					\
+ft_fputstr					\
 ft_free_sstr 				\
 ft_insrt_to_str 			\
 ft_putendl_fd 				\

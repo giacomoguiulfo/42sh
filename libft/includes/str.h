@@ -17,6 +17,7 @@
 
 int		ft_countwords(char const *s, char c);
 size_t	ft_findchr(const char *s, int c);
+void	ft_fputstr(char *str);
 void	ft_free_sstr(char **map);
 void	ft_insrt_to_str(char **s1, char *s2);
 void	ft_putendl_fd(char const *s, int fd);
