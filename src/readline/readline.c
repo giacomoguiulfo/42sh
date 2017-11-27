@@ -336,31 +336,27 @@ void	get_terminal_meta(t_terminal *config, t_input *data)
 	get_cursor_pos(config, data);
 }
 
-void	delete(t_terminal *config, t_input *data)
+void	delete(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
 	char	*tmp;
-	size_t	old_cursor_pos;
 
 	if (data->cursor_pos == 0)
 		return ;
-	ft_bzero((void*)buff, LINE_BUFF_SIZE);
+	ft_bzero((void*)buff, ft_strlen(data->line_buff + 1));
 	tmp = &data->line_buff[data->cursor_pos - 1];
 	*tmp = '\0';
 	ft_strcpy(buff, tmp + 1);
-	ft_strcpy(data->line_buff + data->cursor_pos, buff);
-	old_cursor_pos = data->cursor_pos;
-	clear_line(config, data);
+	ft_strcpy(data->line_buff + data->cursor_pos - 1, buff);
+	my_tputs(MOVELEFT);
+	my_tputs("cd");
+	my_tputs("sc");
 	my_tputs("im");
-	ft_fputstr(data->line_buff);
+	ft_fputstr(buff);
 	my_tputs("ei");
-	data->line_size = ft_strlen(data->line_buff);
-	data->cursor_pos = data->line_size;
-	while (data->cursor_pos > old_cursor_pos - 1)
-	{
-		move_left();
-		data->cursor_pos--;
-	}
+	my_tputs("rc");
+	data->cursor_pos--;
+	data->line_size--;
 }
 
 void	insert(t_input *data)
@@ -388,7 +384,7 @@ char	*readline(t_terminal *config)
 		if (ft_isprint(config->data.char_buff[0]))
 			insert(&config->data);
 		else if (config->data.char_buff[0] == DELETE)
-			delete(config, &config->data);
+			delete(&config->data);
 		else if (config->data.char_buff[0] == 27)
 			move_cursor(config, &config->data, &config->data.history);
 		ft_bzero((void*)config->data.char_buff, 5);
