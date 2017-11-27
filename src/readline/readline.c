@@ -86,14 +86,16 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 
 void	move_right(t_terminal *config, t_input *data)
 {
+	data->cursor_pos++;
 	if (data->cursor_col + 1 == config->width)
 		my_tputs(MOVEDN);
 	else
 		my_tputs(MOVERIGHT);
 }
 
-void	move_left()
+void	move_left(t_input *data)
 {
+	data->cursor_pos--;
 	my_tputs(MOVELEFT);
 }
 
@@ -251,12 +253,10 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	if (data->char_buff[2] == RIGHT && data->cursor_pos < data->line_size)
 	{
 		move_right(config, data);
-		data->cursor_pos++;
 	}
 	else if (data->char_buff[2] == LEFT && data->cursor_pos > 0)
 	{
-		move_left();
-		data->cursor_pos--;
+		move_left(data);
 	}
 	else if (data->char_buff[2] == HOME)
 	{
