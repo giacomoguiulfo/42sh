@@ -43,7 +43,17 @@ builtins/builtin_exit \
 builtins/msh_echo \
 builtins/msh_cd \
 builtins/msh_extra \
+<<<<<<< HEAD
 builtins/msh_env
+=======
+builtins/msh_env \
+readline/readline \
+readline/history \
+readline/move \
+readline/insert \
+readline/remove \
+readline/helpers
+>>>>>>> robin/master
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

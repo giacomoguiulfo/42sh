@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/25 01:17:26 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 01:58:06 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 # include "libft.h"
 
-# define MSH_RL_SIZ 1024
-
 typedef struct  s_shell
 {
   char          **env;
@@ -26,11 +24,29 @@ typedef struct  s_shell
 
 t_shell  *shell_singleton(void);
 
+# include <unistd.h>
+# include <term.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+# include <stdlib.h>
+
+typedef struct			s_terminal  // Added this entire struct
+{
+	t_darr				*newenvp;
+	int					status;
+
+	struct termios		term;
+	char				*name;
+	size_t				width;
+	size_t				height;
+}						t_terminal;
+
 /*
 ** Main Functions
 */
 
 int		msh_execute(char **args);
+char	*readline(size_t prompt);                 //Added
 
 /*
 ** Builtins
@@ -46,7 +62,9 @@ int		msh_execute(char **args);
 ** Utils
 */
 
-void	msh_put_arrow(void);
+int		raw_terminal(t_terminal *config);          // Added
+
+size_t	msh_put_arrow(void);
 char	**msh_strsplit(char *line);
 // char	*msh_check_bin(char *executable, char *path);
 // int		msh_envcmp(char *env, char *lookup);

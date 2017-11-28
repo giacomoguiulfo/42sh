@@ -1,6 +1,12 @@
 # Prerequisites
 *.d
 
+<<<<<<< HEAD
+=======
+# Mac files
+.*
+
+>>>>>>> robin/master
 # Object files
 *.o
 *.ko

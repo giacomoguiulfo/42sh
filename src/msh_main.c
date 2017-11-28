@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/25 03:55:58 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 01:55:47 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,54 +43,66 @@ void	msh_put_arrow(void)
 	ft_printf("%{byellow}$>%{eoc} ");
 }
 
-char	*msh_read_line(void)
+void	msh_init_envp(t_darr *newenvp)
 {
-	int		c;
-	int		bufsize;
-	int		position;
-	char	*buffer;
+	extern char	**environ;
+	size_t		i;
 
-	position = 0;
-	bufsize = MSH_RL_SIZ;
-	buffer = (char *)malloc(sizeof(char) * bufsize);
-	while (1)
-	{
-		if ((c = ft_getchar()) == EOF)
-			free(buffer);
-		if (c == EOF)
-			return (NULL);
-		if (c == '\n')
-			buffer[position] = '\0';
-		if (c == '\n')
-			return (buffer);
-		else
-			buffer[position++] = c;
-		if (position >= bufsize)
-			buffer = ft_realloc(buffer, bufsize, bufsize + MSH_RL_SIZ);
-		if (position >= bufsize)
-			bufsize += MSH_RL_SIZ;
-	}
+	i = 0;
+	while (environ[i])
+		ft_darr_push(newenvp, ft_strdup(environ[i++]));
 }
 
-void	msh_loop(void)
+	ft_darr_kill(newenvp);
+=======
+static void	sh_shutdown(t_terminal *config)
 {
-	int		status;
+	struct termios revert;
+
+	tcgetattr(0, &revert);
+	revert.c_lflag |= (ICANON | ECHO);
+	tcsetattr(0, TCSADRAIN, &revert);
+	ft_darr_kill(config->newenvp);
+	return ;
+}
+
+static int	sh_init(t_terminal *config)
+{
+	struct termios change;
+
+	if ((tgetent(NULL, getenv("TERM")) < 1))
+		return (0);
+	if ((config->name == getenv("xterm-256color")) == 0)
+		ft_dprintf(2, "Opps, problem with terminal name\n");
+	tcgetattr(0, &change);
+	change.c_lflag &= ~(ICANON | ECHO);
+	change.c_cc[VMIN] = 1;
+	change.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &change);
+	config->newenvp = ft_darr_init(sizeof(char *), 50);
+	config->status = 1;
+	return (1);
+}
+
+void	msh_loop(t_terminal *config)
+{
 	char	*line;
 	char	**args;
+	size_t	prompt;
 
-	status = 1;
-	while (status)
+	while (config->status)
 	{
-		msh_put_arrow();
-		ft_putstr("$> ");
-		line = msh_read_line();
+		prompt = msh_put_arrow();
+		line = readline(prompt);
+		ft_putchar('\n');
 		if (!line)
-			break ;
+			continue ;
 		args = msh_strsplit(line);
-		status = msh_execute(args);
+		config->status = msh_execute(args, config->newenvp);
 		free(line);
 		ft_free_sstr(args);
 	}
+>>>>>>> master
 }
 
 static void shell_init(t_shell *shell)
@@ -114,5 +126,11 @@ int			main(void)
 	t_shell *shell = shell_singleton();
 	shell_init(shell);
 	msh_loop();
+	t_terminal config;
+
+	if (!sh_init(&config))
+		return (0);
+	msh_loop(&config);
+	sh_shutdown(&config);
 	return (0);
 }

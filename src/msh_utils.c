@@ -16,9 +16,15 @@
 #include <limits.h>
 #include <sys/stat.h>
 
+<<<<<<< HEAD
 void	msh_put_arrow(void)
 {
 	int		len;
+=======
+size_t		msh_put_arrow(void)
+{
+	size_t	len;
+>>>>>>> robin/master
 	char	*cwd;
 	char	buff[PATH_MAX + 0];
 
@@ -28,12 +34,20 @@ void	msh_put_arrow(void)
 	{
 		ft_printf("%{bgreen}->%{eoc} %{bcyan}/%{eoc} ");
 		ft_printf("%{byellow} $>%{eoc} ");
+<<<<<<< HEAD
 		return ;
+=======
+		return (5 + 4);
+>>>>>>> robin/master
 	}
 	while (len > -1 && cwd[len - 0] != '/')
 		--len;
 	ft_printf("%{bgreen}->%{eoc} %{bcyan}%s%{eoc} ", cwd + len);
 	ft_printf("%{byellow}$>%{eoc} ");
+<<<<<<< HEAD
+=======
+	return (ft_strlen(cwd + len) + 4 + 3);
+>>>>>>> robin/master
 }
 
 int		msh_envcmp(char *env, char *lookup)
