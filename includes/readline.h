@@ -24,14 +24,14 @@
 # define LINE_BUFF_SIZE 4096
 # define CHAR_BUFF_SIZE 5
 
-# define DELETE 127
-# define DOWN 66
-# define END 70
-# define ENTER 10
-# define HOME 72
-# define LEFT 68
-# define RIGHT 67
-# define UP 65
+# define DELETE			127
+# define DOWN			66
+# define END			70
+# define ENTER			10
+# define HOME			72
+# define LEFT			68
+# define RIGHT			67
+# define UP				65
 
 typedef struct			s_cmds
 {
