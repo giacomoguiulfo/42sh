@@ -66,7 +66,7 @@ void	remove(t_input *data);
 
 void	history_constructor(t_cmds *history);
 void	history_add(t_cmds *head, char *cmd);
-void	history_dn(t_input *data, t_cmds *history);
+void	history_change(t_input *data, t_cmds *history, bool direction);
 void	history_up(t_input *data, t_cmds *history);
 
 void	move_cursor(t_input *data, t_cmds *history);
@@ -76,5 +76,7 @@ void	move_left(t_input *data);
 void	move_right(t_input *data);
 
 void	clear_line(t_input *data);
+void	gather_position_data(t_input *data);
+void	print_end_col_pad(size_t cursor_col);
 
 #endif

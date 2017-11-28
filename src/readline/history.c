@@ -42,53 +42,40 @@ void		cleanup_history(t_cmds *head)
 	free(head);
 }
 
-void		history_dn(t_input *data, t_cmds *history)
+static void	history_print(t_input *data, t_cmds *history)
 {
-	clear_line(data);
-	if (!history->current || !history->current->cmd)
-	{
-		history->current = history->end;
-	}
-	else if (history->current->cmd)
-	{
-		history->current = history->current->prev;
-	}
-	if (history->current && history->current->cmd)
-	{
-		ft_putstr(history->current->cmd);
-		data->line_size = ft_strlen(history->current->cmd);
-		data->cursor_pos = data->line_size;
-		move_end(data);
-		ft_bzero(data->line_buff, data->line_size);
-		ft_strcpy(data->line_buff, history->current->cmd);
-	}
-	else
-	{
-		ft_bzero(data->line_buff, data->line_size);
-		data->line_size = 0;
-		data->cursor_pos = 0;
-	}
+	ft_bzero(data->line_buff, data->line_size);
+	ft_strcpy(data->line_buff, history->current->cmd);
+	ft_putstr(history->current->cmd);
+	data->line_size = ft_strlen(history->current->cmd);
+	data->cursor_pos = data->line_size;
+	gather_position_data(data);
+	if (data->end_col == 0)
+		print_end_col_pad(data->cursor_col);
 }
 
-void		history_up(t_input *data, t_cmds *history)
+void		history_change(t_input *data, t_cmds *history, bool direction)
 {
 	clear_line(data);
+	msh_put_arrow();
+	data->cursor_pos = 0;
 	if (!history->current || !history->current->cmd)
 	{
-		history->current = history;
+		if (direction == true)
+			history->current = history;
+		else
+			return ;
 	}
 	else if (history->current->cmd)
 	{
-		history->current = history->current->next;
+		if (direction == true)
+			history->current = history->current->next;
+		else
+			history->current = history->current->prev;
 	}
 	if (history->current && history->current->cmd)
 	{
-		ft_putstr(history->current->cmd);
-		data->line_size = ft_strlen(history->current->cmd);
-		data->cursor_pos = data->line_size;
-		move_end(data);
-		ft_bzero(data->line_buff, data->line_size);
-		ft_strcpy(data->line_buff, history->current->cmd);
+		history_print(data, history);	
 	}
 	else
 	{

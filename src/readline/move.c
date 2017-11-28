@@ -26,7 +26,13 @@ void	move_right(t_input *data)
 
 void	move_left(t_input *data)
 {
-	tputs(tgetstr("le", NULL), 1, ft_putchar);
+	if (data->cursor_col == 0)
+	{
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		tputs(tgoto(tgetstr("ch", NULL), 0, data->width - 1), 1, ft_putchar);
+	}
+	else
+		tputs(tgetstr("le", NULL), 1, ft_putchar);
 	data->cursor_pos--;
 }
 
@@ -80,10 +86,10 @@ void	move_cursor(t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == UP)
 	{
-		history_up(data, history);
+		history_change(data, history, true);
 	}
 	else if (data->char_buff[2] == DOWN)
 	{
-		history_dn(data, history);
+		history_change(data, history, false);
 	}
 }

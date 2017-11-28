@@ -16,8 +16,11 @@
 
 void	clear_line(t_input *data)
 {
-	move_home(data);
+	size_t row;
+
+	row = data->cursor_row;
+	while (row-- > 0)
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+	tputs(tgetstr("cr", NULL), 1, ft_putchar);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	data->cursor_pos = 0;
-	data->line_size = 0;
 }
