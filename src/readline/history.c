@@ -13,17 +13,13 @@
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 
-t_cmds		*history_constructor(void)
+void	history_constructor(t_cmds *history)
 {
-	t_cmds	*history;
-
-	history = (t_cmds*)ft_memalloc(sizeof(t_cmds));
 	history->prev = NULL;
 	history->next = NULL;
 	history->end = NULL;
 	history->cmd = NULL;
 	history->current = NULL;
-	return (history);
 }
 
 void		cleanup_history(t_cmds *head)

@@ -57,14 +57,13 @@ typedef struct			s_input
 	size_t				prompt_size;
 	size_t				width;
 	struct winsize		window_size;
-	struct s_cmds		history;
 }						t_input;
 
 char	*readline(t_terminal *config);
 void	insert(t_input *data);
 void	remove(t_input *data);
 
-t_cmds	*history_constructor(void);
+void	history_constructor(t_cmds *history);
 void	history_add(t_cmds *head, char *cmd);
 void	history_dn(t_input *data, t_cmds *history);
 void	history_up(t_input *data, t_cmds *history);

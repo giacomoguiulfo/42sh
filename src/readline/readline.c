@@ -50,15 +50,15 @@ static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history
 	data->cursor_row = 0;
 	data->continue_loop = true;
 	if (!history)
-		history = history_constructor();
+		history_constructor(history);
 }
 
 char		*readline(t_terminal *config)
 {
-	static t_cmds	*history = NULL;
+	static t_cmds	history;
 	t_input			data;
 
-	input_constructor(config, &data, history);
+	input_constructor(config, &data, &history);
 	while (data.continue_loop == true)
 	{
 		read(0, &data.char_buff, 5);
@@ -70,12 +70,11 @@ char		*readline(t_terminal *config)
 		else if (data.char_buff[0] == DELETE)
 			remove(&data);
 		else if (data.char_buff[0] == 27)
-			move_cursor(&data, &data.history);
+			move_cursor(&data, &history);
 		ft_bzero((void*)data.char_buff, 5);
 	}
 	if (!(valid_string(data.line_buff)))
 		return (NULL);
-	history_add(&data.history, data.line_buff);
-	ft_putchar('\n');
+	history_add(&history, data.line_buff);
 	return (ft_strdup(data.line_buff));
 }

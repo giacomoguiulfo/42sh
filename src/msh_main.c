@@ -25,17 +25,18 @@ void	msh_init_envp(t_darr *newenvp)
 		ft_darr_push(newenvp, ft_strdup(environ[i++]));
 }
 
-void	default_terminal(void)
+static void	sh_shutdown(t_terminal *config)
 {
 	struct termios revert;
 
 	tcgetattr(0, &revert);
 	revert.c_lflag |= (ICANON | ECHO);
 	tcsetattr(0, TCSADRAIN, &revert);
+	ft_darr_kill(config->newenvp);
 	return ;
 }
 
-int		raw_terminal(t_terminal *config)
+int			sh_init(t_terminal *config)
 {
 	struct termios change;
 
@@ -48,14 +49,9 @@ int		raw_terminal(t_terminal *config)
 	change.c_cc[VMIN] = 1;
 	change.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &change);
-	return (1);
-}
-
-void	sh_init(t_terminal *config)
-{
-	raw_terminal(config);
 	config->newenvp = ft_darr_init(sizeof(char *), 50);
 	config->status = 1;
+	return (1);
 }
 
 void	msh_loop(t_terminal *config)
@@ -67,6 +63,7 @@ void	msh_loop(t_terminal *config)
 	{
 		config->prompt_size = msh_put_arrow();
 		line = readline(config);
+		ft_putchar('\n');
 		if (!line)
 			continue ;
 		args = msh_strsplit(line);
@@ -74,15 +71,15 @@ void	msh_loop(t_terminal *config)
 		free(line);
 		ft_free_sstr(args);
 	}
-	ft_darr_kill(config->newenvp);
 }
 
 int		main(void)
 {
 	t_terminal config;
 
-	raw_terminal(&config);
+	if (!sh_init(&config))
+		return (0);
 	msh_loop(&config);
-	default_terminal();
+	sh_shutdown(&config);
 	return (0);
 }
