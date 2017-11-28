@@ -52,9 +52,9 @@ static void	build_buffer(t_input *data)
 
 void		insert(t_input *data)
 {
-	clear_insert(data);
 	size_t	x;
 
+	clear_insert(data);
 	build_buffer(data);
 	msh_put_arrow();
 	ft_fputstr(data->line_buff);
@@ -66,7 +66,5 @@ void		insert(t_input *data)
 	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_intputchar);
 	x = data->end_row - data->cursor_row;
 	while (x-- > 0)
-	{
 		tputs(tgetstr("up", NULL), 1, ft_intputchar);
-	}
 }

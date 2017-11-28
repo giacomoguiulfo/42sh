@@ -35,11 +35,11 @@
 
 typedef struct			s_cmds
 {
+	char				*cmd;
+	struct s_cmds		*current;
+	struct s_cmds		*end;
 	struct s_cmds		*next;
 	struct s_cmds		*prev;
-	struct s_cmds		*end;
-	struct s_cmds		*current;
-	char				*cmd;
 }						t_cmds;
 
 typedef struct			s_input
