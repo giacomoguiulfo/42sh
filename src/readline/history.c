@@ -15,6 +15,7 @@
 
 void	history_constructor(t_cmds *history)
 {
+	history->init = true;
 	history->prev = NULL;
 	history->next = NULL;
 	history->end = NULL;

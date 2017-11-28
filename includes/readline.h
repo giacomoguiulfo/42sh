@@ -35,6 +35,7 @@
 
 typedef struct			s_cmds
 {
+	bool				init;
 	char				*cmd;
 	struct s_cmds		*current;
 	struct s_cmds		*end;

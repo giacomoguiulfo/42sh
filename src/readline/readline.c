@@ -49,7 +49,7 @@ static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history
 	data->cursor_col = 0;
 	data->cursor_row = 0;
 	data->continue_loop = true;
-	if (!history)
+	if (history->init == false)
 		history_constructor(history);
 }
 
