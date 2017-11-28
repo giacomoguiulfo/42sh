@@ -13,8 +13,6 @@
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 #include <term.h>
-#include <termios.h>
-#include <sys/ioctl.h>
 
 void	remove(t_input *data)
 {
