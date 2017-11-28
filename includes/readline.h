@@ -13,13 +13,13 @@
 #ifndef READLINE_H
 # define READLINE_H
 
+# include "ft_sh.h"
 # include <unistd.h>
 # include <stdbool.h>
 # include <term.h>
 # include <termios.h>
 # include <sys/ioctl.h>
 # include <stdlib.h>
-# include "ft_sh.h"
 
 # define LINE_BUFF_SIZE 4096
 # define CHAR_BUFF_SIZE 5
