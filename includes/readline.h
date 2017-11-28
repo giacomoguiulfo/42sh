@@ -60,7 +60,7 @@ typedef struct			s_input
 	struct winsize		window_size;
 }						t_input;
 
-char	*readline(t_terminal *config);
+char	*readline(size_t prompt);
 void	insert(t_input *data);
 void	remove(t_input *data);
 

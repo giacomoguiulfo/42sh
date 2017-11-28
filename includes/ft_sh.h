@@ -31,7 +31,6 @@ typedef struct			s_terminal  // Added this entire struct
 	char				*name;
 	size_t				width;
 	size_t				height;
-	size_t				prompt_size;
 }						t_terminal;
 
 /*
@@ -39,7 +38,7 @@ typedef struct			s_terminal  // Added this entire struct
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
-char	*readline(t_terminal *config);                 //Added
+char	*readline(size_t prompt);                 //Added
 
 /*
 ** Builtins

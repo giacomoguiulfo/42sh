@@ -39,9 +39,9 @@ static void	get_terminal_meta(t_input *data)
 	get_cursor_pos(data);
 }
 
-static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history)
+static void	input_constructor(t_input *data, t_cmds *history, size_t prompt)
 {
-	data->prompt_size = config->prompt_size;
+	data->prompt_size = prompt;
 	ft_bzero(data->char_buff, CHAR_BUFF_SIZE);
 	ft_bzero(data->line_buff, LINE_BUFF_SIZE);
 	data->line_size = 0;
@@ -53,12 +53,12 @@ static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history
 		history_constructor(history);
 }
 
-char		*readline(t_terminal *config)
+char		*readline(size_t prompt)
 {
 	static t_cmds	history;
 	t_input			data;
 
-	input_constructor(config, &data, &history);
+	input_constructor(&data, &history, prompt);
 	while (data.continue_loop == true)
 	{
 		read(0, &data.char_buff, 5);

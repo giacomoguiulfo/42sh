@@ -58,11 +58,12 @@ void	msh_loop(t_terminal *config)
 {
 	char	*line;
 	char	**args;
+	size_t	prompt;
 
 	while (config->status)
 	{
-		config->prompt_size = msh_put_arrow();
-		line = readline(config);
+		prompt = msh_put_arrow();
+		line = readline(prompt);
 		ft_putchar('\n');
 		if (!line)
 			continue ;
