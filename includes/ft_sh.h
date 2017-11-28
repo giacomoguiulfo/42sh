@@ -22,7 +22,7 @@
 
 # define MSH_RL_SIZ 1024
 
-typedef struct			s_terminal
+typedef struct			s_terminal  // Added this entire struct
 {
 	t_darr				*newenvp;
 	int					status;
@@ -41,7 +41,7 @@ typedef struct			s_terminal
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
-char	*readline(t_terminal *config);
+char	*readline(t_terminal *config);              // Added
 
 /*
 ** Need to be organized
@@ -63,6 +63,8 @@ int		msh_unsetenv(char **args, t_darr *newenvp);
 /*
 ** Utils
 */
+
+int		raw_terminal(t_terminal *config);          // Added
 
 size_t	msh_put_arrow(void);
 char	**msh_strsplit(char *line);

@@ -58,16 +58,16 @@ typedef struct			s_input
 }						t_input;
 
 char	*readline(t_terminal *config);
-int		raw_terminal(t_terminal *config);
-void	get_window_size(t_terminal *config);
-int		ft_intputchar(int c);
 
-void	history_add(t_cmds *head, char *cmd);
 t_cmds	*history_constructor(void);
-void	history_up(t_terminal *config, t_input *data, t_cmds *history);
+void	history_add(t_cmds *head, char *cmd);
 void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
+void	history_up(t_terminal *config, t_input *data, t_cmds *history);
 
 void	move_home(t_terminal *config, t_input *data);
 void	move_end(t_input *data);
+
+void	get_window_size(t_terminal *config);
+int		ft_intputchar(int c);
 
 #endif
