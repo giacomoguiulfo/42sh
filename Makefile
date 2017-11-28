@@ -41,7 +41,9 @@ builtins/msh_extra \
 builtins/msh_env \
 readline/readline \
 readline/history \
-readline/move
+readline/move \
+readline/insert \
+readline/remove
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

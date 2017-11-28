@@ -58,6 +58,8 @@ typedef struct			s_input
 }						t_input;
 
 char	*readline(t_terminal *config);
+void	insert(t_terminal *config, t_input *data);
+void	remove(t_input *data);
 
 t_cmds	*history_constructor(void);
 void	history_add(t_cmds *head, char *cmd);
