@@ -14,15 +14,40 @@
 # define FT_SH_H
 
 # include "libft.h"
+<<<<<<< HEAD
 
 # define MSH_RL_SIZ 1024
 
+=======
+# include <unistd.h>
+# include <term.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+# include <stdlib.h>
+
+# define MSH_RL_SIZ 1024
+
+typedef struct			s_terminal  // Added this entire struct
+{
+	t_darr				*newenvp;
+	int					status;
+
+	struct termios		term;
+	char				*name;
+	size_t				width;
+	size_t				height;
+}						t_terminal;
+>>>>>>> robin/master
 
 /*
 ** Main Functions
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
+<<<<<<< HEAD
+=======
+char	*readline(size_t prompt);                 //Added
+>>>>>>> robin/master
 
 /*
 ** Builtins
@@ -39,7 +64,13 @@ int		msh_unsetenv(char **args, t_darr *newenvp);
 ** Utils
 */
 
+<<<<<<< HEAD
 void	msh_put_arrow(void);
+=======
+int		raw_terminal(t_terminal *config);          // Added
+
+size_t	msh_put_arrow(void);
+>>>>>>> robin/master
 char	**msh_strsplit(char *line);
 char	*msh_check_bin(char *executable, char *path);
 char	*msh_get_env(t_darr *newenvp, char *look);

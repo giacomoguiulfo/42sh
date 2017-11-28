@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+<<<<<<< HEAD
 char	*msh_read_line(void)
 {
 	int		c;
@@ -44,6 +45,8 @@ char	*msh_read_line(void)
 	}
 }
 
+=======
+>>>>>>> robin/master
 void	msh_init_envp(t_darr *newenvp)
 {
 	extern char	**environ;
@@ -54,6 +57,7 @@ void	msh_init_envp(t_darr *newenvp)
 		ft_darr_push(newenvp, ft_strdup(environ[i++]));
 }
 
+<<<<<<< HEAD
 void	msh_loop(void)
 {
 	int		status;
@@ -76,10 +80,68 @@ void	msh_loop(void)
 		ft_free_sstr(args);
 	}
 	ft_darr_kill(newenvp);
+=======
+static void	sh_shutdown(t_terminal *config)
+{
+	struct termios revert;
+
+	tcgetattr(0, &revert);
+	revert.c_lflag |= (ICANON | ECHO);
+	tcsetattr(0, TCSADRAIN, &revert);
+	ft_darr_kill(config->newenvp);
+	return ;
+}
+
+static int	sh_init(t_terminal *config)
+{
+	struct termios change;
+
+	if ((tgetent(NULL, getenv("TERM")) < 1))
+		return (0);
+	if ((config->name == getenv("xterm-256color")) == 0)
+		ft_dprintf(2, "Opps, problem with terminal name\n");
+	tcgetattr(0, &change);
+	change.c_lflag &= ~(ICANON | ECHO);
+	change.c_cc[VMIN] = 1;
+	change.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &change);
+	config->newenvp = ft_darr_init(sizeof(char *), 50);
+	config->status = 1;
+	return (1);
+}
+
+void	msh_loop(t_terminal *config)
+{
+	char	*line;
+	char	**args;
+	size_t	prompt;
+
+	while (config->status)
+	{
+		prompt = msh_put_arrow();
+		line = readline(prompt);
+		ft_putchar('\n');
+		if (!line)
+			continue ;
+		args = msh_strsplit(line);
+		config->status = msh_execute(args, config->newenvp);
+		free(line);
+		ft_free_sstr(args);
+	}
+>>>>>>> robin/master
 }
 
 int		main(void)
 {
+<<<<<<< HEAD
 	msh_loop();
+=======
+	t_terminal config;
+
+	if (!sh_init(&config))
+		return (0);
+	msh_loop(&config);
+	sh_shutdown(&config);
+>>>>>>> robin/master
 	return (0);
 }
