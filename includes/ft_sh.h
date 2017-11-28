@@ -41,13 +41,7 @@ typedef struct			s_terminal  // Added this entire struct
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
-char	*readline(t_terminal *config);              // Added
-
-/*
-** Need to be organized
-*/
-
-
+char	*readline(t_terminal *config);
 
 /*
 ** Builtins

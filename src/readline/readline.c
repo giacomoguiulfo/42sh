@@ -18,7 +18,54 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
-void	input_constructor(t_input *data, t_cmds *history)
+int			ft_intputchar(int c)
+{
+	write(1, &c, 1);
+	return (1);
+}
+
+int			ft_isblank(int c)
+{
+	if (c == ' ' || c == '\n' || c == '\t' || c == '\0')
+		return (1);
+	return (0);
+}
+
+static int	valid_string(char *str)
+{
+	int x;
+
+	x = -1;
+	while (str[++x])
+	{
+		if (!(ft_isblank(str[x])))
+			return (1);
+	}
+	return (0);
+}
+
+static void	get_window_size(t_terminal *config)
+{
+	ioctl(0, TIOCGWINSZ, &config->window_size);
+	config->width = config->window_size.ws_col;
+	config->height = config->window_size.ws_row;
+}
+
+static void	get_cursor_pos(t_terminal *config, t_input *data)
+{
+	data->cursor_row = (data->cursor_pos + config->prompt_size) / config->width;
+	data->cursor_col = (data->cursor_pos + config->prompt_size) % config->width;
+	data->end_row = (data->line_size + config->prompt_size) / config->width;
+	data->end_col = (data->line_size + config->prompt_size) % config->width;
+}
+
+static void	get_terminal_meta(t_terminal *config, t_input *data)
+{
+	get_window_size(config);
+	get_cursor_pos(config, data);
+}
+
+static void	input_constructor(t_input *data, t_cmds *history)
 {
 
 	ft_bzero(data->char_buff, 5);
@@ -32,54 +79,7 @@ void	input_constructor(t_input *data, t_cmds *history)
 		history = history_constructor();
 }
 
-int		ft_intputchar(int c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int		ft_isblank(int c)
-{
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-int		valid_string(char *str)
-{
-	int x;
-
-	x = -1;
-	while (str[++x])
-	{
-		if (!(ft_isblank(str[x])))
-			return (1);
-	}
-	return (0);
-}
-
-void	get_window_size(t_terminal *config)
-{
-	ioctl(0, TIOCGWINSZ, &config->window_size);
-	config->width = config->window_size.ws_col;
-	config->height = config->window_size.ws_row;
-}
-
-void	get_cursor_pos(t_terminal *config, t_input *data)
-{
-	data->cursor_row = (data->cursor_pos + config->prompt_size) / config->width;
-	data->cursor_col = (data->cursor_pos + config->prompt_size) % config->width;
-	data->end_row = (data->line_size + config->prompt_size) / config->width;
-	data->end_col = (data->line_size + config->prompt_size) % config->width;
-}
-
-void	get_terminal_meta(t_terminal *config, t_input *data)
-{
-	get_window_size(config);
-	get_cursor_pos(config, data);
-}
-
-char	*readline(t_terminal *config)
+char		*readline(t_terminal *config)
 {
 	static t_cmds	*history = NULL;
 	t_input			data;

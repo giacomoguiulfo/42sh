@@ -44,15 +44,15 @@ typedef struct			s_cmds
 
 typedef struct			s_input
 {
+	bool				continue_loop;
 	char				char_buff[CHAR_BUFF_SIZE];
 	char				line_buff[LINE_BUFF_SIZE];
 	size_t				line_size;
-	size_t				cursor_pos;
 	size_t				cursor_col;
+	size_t				cursor_pos;
 	size_t				cursor_row;
 	size_t				end_col;
 	size_t				end_row;
-	bool				continue_loop;
 
 	struct s_cmds		history;
 }						t_input;
@@ -72,7 +72,6 @@ void	move_home(t_terminal *config, t_input *data);
 void	move_left(t_input *data);
 void	move_right(t_terminal *config, t_input *data);
 
-void	get_window_size(t_terminal *config);
 int		ft_intputchar(int c);
 
 #endif
