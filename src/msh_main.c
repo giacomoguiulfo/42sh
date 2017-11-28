@@ -15,35 +15,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*msh_read_line(void)
-{
-	int		c;
-	int		bufsize;
-	int		position;
-	char	*buffer;
-
-	position = 0;
-	bufsize = MSH_RL_SIZ;
-	buffer = (char *)malloc(sizeof(char) * bufsize);
-	while (1)
-	{
-		if ((c = ft_getchar()) == EOF)
-			free(buffer);
-		if (c == EOF)
-			return (NULL);
-		if (c == '\n')
-			buffer[position] = '\0';
-		if (c == '\n')
-			return (buffer);
-		else
-			buffer[position++] = c;
-		if (position >= bufsize)
-			buffer = ft_realloc(buffer, bufsize, bufsize + MSH_RL_SIZ);
-		if (position >= bufsize)
-			bufsize += MSH_RL_SIZ;
-	}
-}
-
 void	msh_init_envp(t_darr *newenvp)
 {
 	extern char	**environ;
@@ -87,30 +58,31 @@ void	sh_init(t_terminal *config)
 	config->status = 1;
 }
 
-void	msh_loop(void)
+void	msh_loop(t_terminal *config)
 {
 	char	*line;
 	char	**args;
-	t_terminal config;
 
-	sh_init(&config);
-	while (config.status)
+	while (config->status)
 	{
-		config.prompt_size = msh_put_arrow();
-		line = readline(&config);
+		config->prompt_size = msh_put_arrow();
+		line = readline(config);
 		if (!line)
-			break ;
+			continue ;
 		args = msh_strsplit(line);
-		config.status = msh_execute(args, config.newenvp);
+		config->status = msh_execute(args, config->newenvp);
 		free(line);
 		ft_free_sstr(args);
 	}
-	ft_darr_kill(config.newenvp);
+	ft_darr_kill(config->newenvp);
 }
 
 int		main(void)
 {
-	msh_loop();
+	t_terminal config;
+
+	raw_terminal(&config);
+	msh_loop(&config);
 	default_terminal();
 	return (0);
 }

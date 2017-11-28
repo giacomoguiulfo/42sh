@@ -26,8 +26,8 @@ void	move_right(t_input *data)
 
 void	move_left(t_input *data)
 {
-	data->cursor_pos--;
 	tputs(tgetstr("le", NULL), 1, ft_intputchar);
+	data->cursor_pos--;
 }
 
 void	move_home(t_input *data)

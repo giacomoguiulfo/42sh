@@ -39,7 +39,7 @@ typedef struct			s_terminal  // Added this entire struct
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
-char	*readline(t_terminal *config);
+char	*readline(t_terminal *config);                 //Added
 
 /*
 ** Builtins
