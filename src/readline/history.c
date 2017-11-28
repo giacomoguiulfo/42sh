@@ -15,7 +15,7 @@
 static void	clear_line(t_terminal *config, t_input *data)
 {
 	move_home(config, data);
-	my_tputs("cd");
+	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
 	data->cursor_pos = 0;
 	data->line_size = 0;
 }

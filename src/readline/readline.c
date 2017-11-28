@@ -57,14 +57,6 @@ int		valid_string(char *str)
 	return (0);
 }
 
-void	my_tputs(char *cmd)
-{
-	int (*to_function)(int);
-
-	to_function = ft_intputchar;
-	tputs(tgetstr(cmd, NULL), 1, to_function);
-}
-
 void	get_window_size(t_terminal *config)
 {
 	ioctl(0, TIOCGWINSZ, &config->window_size);
@@ -84,15 +76,15 @@ void	move_right(t_terminal *config, t_input *data)
 {
 	data->cursor_pos++;
 	if (data->cursor_col + 1 == config->width)
-		my_tputs(MOVEDN);
+		tputs(tgetstr("do", NULL), 1, ft_intputchar);
 	else
-		my_tputs(MOVERIGHT);
+		tputs(tgetstr("nd", NULL), 1, ft_intputchar);
 }
 
 void	move_left(t_input *data)
 {
 	data->cursor_pos--;
-	my_tputs(MOVELEFT);
+	tputs(tgetstr("le", NULL), 1, ft_intputchar);
 }
 
 void	move_home(t_terminal *config, t_input *data)
@@ -105,7 +97,7 @@ void	move_home(t_terminal *config, t_input *data)
 	row = data->cursor_row;
 	col = config->prompt_size % config->width;
 	while (row-- > 0)
-		my_tputs("up");
+		tputs(tgetstr("up", NULL), 1, ft_intputchar);
 	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
 	data->cursor_pos = 0;
 }
@@ -120,7 +112,7 @@ void	move_end(t_input *data)
 	row = data->end_row;
 	col = data->end_col;
 	while (row-- > 0)
-		my_tputs("do");
+		tputs(tgetstr("do", NULL), 1, ft_intputchar);
 	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
 	data->cursor_pos = data->line_size;
 }
@@ -173,13 +165,13 @@ void	delete(t_input *data)
 	*tmp = '\0';
 	ft_strcpy(buff, tmp + 1);
 	ft_strcpy(data->line_buff + data->cursor_pos - 1, buff);
-	my_tputs(MOVELEFT);
-	my_tputs("cd");
-	my_tputs("sc");
-	my_tputs("im");
+	tputs(tgetstr("le", NULL), 1, ft_intputchar);
+	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
+	tputs(tgetstr("sc", NULL), 1, ft_intputchar);
+	tputs(tgetstr("im", NULL), 1, ft_intputchar);
 	ft_fputstr(buff);
-	my_tputs("ei");
-	my_tputs("rc");
+	tputs(tgetstr("ei", NULL), 1, ft_intputchar);
+	tputs(tgetstr("rc", NULL), 1, ft_intputchar);
 	data->cursor_pos--;
 	data->line_size--;
 }
@@ -188,11 +180,11 @@ void	clear_insert(t_input *data)
 {
 	size_t top;
 
-	my_tputs("cr");
+	tputs(tgetstr("cr", NULL), 1, ft_intputchar);
 	top = data->cursor_row;
 	while (top-- > 0)
 		tputs(tgetstr("up", NULL), 1, ft_intputchar);
-	my_tputs("cd");
+	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
 }
 
 void	print_end_col_pad(size_t cursor_col)

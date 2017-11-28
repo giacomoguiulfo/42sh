@@ -93,7 +93,7 @@ int		msh_execute(char **args, t_darr *newenvp);
 char	*readline(t_terminal *config);
 int		raw_terminal(t_terminal *config);
 void	get_window_size(t_terminal *config);
-void	my_tputs(char *cmd);
+int		ft_intputchar(int c);
 
 void	history_add(t_cmds *head, char *cmd);
 t_cmds	*history_constructor(void);
