@@ -55,7 +55,7 @@ void		history_dn(t_input *data, t_cmds *history)
 	}
 	if (history->current && history->current->cmd)
 	{
-		ft_fputstr(history->current->cmd);
+		ft_putstr(history->current->cmd);
 		data->line_size = ft_strlen(history->current->cmd);
 		data->cursor_pos = data->line_size;
 		move_end(data);
@@ -83,7 +83,7 @@ void		history_up(t_input *data, t_cmds *history)
 	}
 	if (history->current && history->current->cmd)
 	{
-		ft_fputstr(history->current->cmd);
+		ft_putstr(history->current->cmd);
 		data->line_size = ft_strlen(history->current->cmd);
 		data->cursor_pos = data->line_size;
 		move_end(data);

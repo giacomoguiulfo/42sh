@@ -30,7 +30,7 @@ void	remove(t_input *data)
 	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
 	tputs(tgetstr("sc", NULL), 1, ft_intputchar);
 	tputs(tgetstr("im", NULL), 1, ft_intputchar);
-	ft_fputstr(buff);
+	ft_putstr(buff);
 	tputs(tgetstr("ei", NULL), 1, ft_intputchar);
 	tputs(tgetstr("rc", NULL), 1, ft_intputchar);
 	data->cursor_pos--;

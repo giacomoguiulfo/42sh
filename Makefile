@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/25 04:28:23 by giacomo          ###   ########.fr        #
+#    Updated: 2017/11/28 02:18:18 by giacomo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,27 +33,19 @@ SRC_BASE :=	\
 msh_main	\
 msh_strsplit \
 msh_exec	\
+msh_utils	\
 builtins/builtin_cd \
 builtins/builtin_echo \
 builtins/builtin_env \
 builtins/builtin_setenv \
 builtins/builtin_unsetenv \
 builtins/builtin_exit \
-# msh_utils	\
-builtins/msh_echo \
-builtins/msh_cd \
-builtins/msh_extra \
-<<<<<<< HEAD
-builtins/msh_env
-=======
-builtins/msh_env \
 readline/readline \
 readline/history \
 readline/move \
 readline/insert \
 readline/remove \
 readline/helpers
->>>>>>> robin/master
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

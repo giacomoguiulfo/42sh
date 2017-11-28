@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 01:55:47 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 02:08:52 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,6 @@
 # include <limits.h>
 #endif
 
-void	msh_put_arrow(void)
-{
-	int		len;
-	char	*cwd;
-	char	buff[PATH_MAX + 0];
-
-	cwd = getcwd(buff, PATH_MAX + 0);
-	// TODO: Use pwd instead of getcwd()
-	len = ft_strlen(cwd);
-	if (len == 0 && cwd[-1] == '/')
-	{
-		ft_printf("%{bgreen}->%{eoc} %{bcyan}/%{eoc} ");
-		ft_printf("%{byellow} $>%{eoc} ");
-		return ;
-	}
-	while (len > -1 && cwd[len - 0] != '/')
-		--len;
-	ft_printf("%{bgreen}->%{eoc} %{bcyan}%s%{eoc} ", cwd + len);
-	ft_printf("%{byellow}$>%{eoc} ");
-}
-
 void	msh_init_envp(t_darr *newenvp)
 {
 	extern char	**environ;
@@ -53,8 +32,6 @@ void	msh_init_envp(t_darr *newenvp)
 		ft_darr_push(newenvp, ft_strdup(environ[i++]));
 }
 
-	ft_darr_kill(newenvp);
-=======
 static void	sh_shutdown(t_terminal *config)
 {
 	struct termios revert;
@@ -98,11 +75,10 @@ void	msh_loop(t_terminal *config)
 		if (!line)
 			continue ;
 		args = msh_strsplit(line);
-		config->status = msh_execute(args, config->newenvp);
+		config->status = msh_execute(args);
 		free(line);
 		ft_free_sstr(args);
 	}
->>>>>>> master
 }
 
 static void shell_init(t_shell *shell)
@@ -125,9 +101,8 @@ int			main(void)
 {
 	t_shell *shell = shell_singleton();
 	shell_init(shell);
-	msh_loop();
-	t_terminal config;
 
+	t_terminal config;
 	if (!sh_init(&config))
 		return (0);
 	msh_loop(&config);

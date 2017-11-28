@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/20 09:12:47 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/11/28 02:21:52 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ char		*readline(size_t prompt)
 	input_constructor(&data, &history, prompt);
 	while (data.continue_loop == true)
 	{
-		read(0, &data.char_buff, 5);
+		if (read(0, &data.char_buff, 5) == -1)
+			return (NULL);
 		get_terminal_meta(&data);
 		if (ft_isprint(data.char_buff[0]))
 			insert(&data);
 		else if (data.char_buff[0] == DELETE)
-			remove(&data);
+			remove(&data); // TODO: change name
 		else if (data.char_buff[0] == 27)
 			move_cursor(&data, &history);
 		else if (data.char_buff[0] == ENTER)
