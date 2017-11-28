@@ -20,15 +20,16 @@ static void	clear_line(t_terminal *config, t_input *data)
 	data->line_size = 0;
 }
 
-t_cmds		history_constructor(void)
+t_cmds		*history_constructor(void)
 {
-	t_cmds	history;
+	t_cmds	*history;
 
-	history.prev = NULL;
-	history.next = NULL;
-	history.end = NULL;
-	history.cmd = NULL;
-	history.current = NULL;
+	history = (t_cmds*)ft_memalloc(sizeof(t_cmds));
+	history->prev = NULL;
+	history->next = NULL;
+	history->end = NULL;
+	history->cmd = NULL;
+	history->current = NULL;
 	return (history);
 }
 
@@ -48,6 +49,7 @@ void		cleanup_history(t_cmds *head)
 			free(prev);
 		}
 	}
+	free(head);
 }
 
 void		history_dn(t_terminal *config, t_input *data, t_cmds *history)
@@ -55,7 +57,6 @@ void		history_dn(t_terminal *config, t_input *data, t_cmds *history)
 	clear_line(config, data);
 	if (!history->current || !history->current->cmd)
 	{
-		clear_line(config, data);
 		history->current = history->end;
 	}
 	else if (history->current->cmd)
@@ -84,7 +85,6 @@ void		history_up(t_terminal *config, t_input *data, t_cmds *history)
 	clear_line(config, data);
 	if (!history->current || !history->current->cmd)
 	{
-		clear_line(config, data);
 		history->current = history;
 	}
 	else if (history->current->cmd)

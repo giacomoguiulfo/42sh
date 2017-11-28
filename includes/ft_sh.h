@@ -60,9 +60,9 @@ typedef struct			s_input
 	size_t				cursor_row;
 	size_t				end_col;
 	size_t				end_row;
+	bool				continue_loop;
 
 	struct s_cmds		history;
-	struct s_terminal 	*config;
 }						t_input;
 
 typedef struct			s_terminal
@@ -76,7 +76,6 @@ typedef struct			s_terminal
 	size_t				width;
 	size_t				height;
 
-	struct s_input		data;
 	size_t				prompt_size;
 }						t_terminal;
 
@@ -93,10 +92,11 @@ int		msh_execute(char **args, t_darr *newenvp);
 
 char	*readline(t_terminal *config);
 int		raw_terminal(t_terminal *config);
+void	get_window_size(t_terminal *config);
 void	my_tputs(char *cmd);
 
 void	history_add(t_cmds *head, char *cmd);
-t_cmds	history_constructor(void);
+t_cmds	*history_constructor(void);
 void	history_up(t_terminal *config, t_input *data, t_cmds *history);
 void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
 

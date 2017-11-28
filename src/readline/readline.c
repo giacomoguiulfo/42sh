@@ -17,14 +17,18 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
-void	input_constructor(t_input *data)
+void	input_constructor(t_input *data, t_cmds *history)
 {
+
 	ft_bzero(data->char_buff, 5);
 	ft_bzero(data->line_buff, 4096);
 	data->line_size = 0;
 	data->cursor_pos = 0;
 	data->cursor_col = 0;
 	data->cursor_row = 0;
+	data->continue_loop = true;
+	if (!history)
+		history = history_constructor();
 }
 
 int		ft_intputchar(int c)
@@ -151,33 +155,6 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 }
 
-int		raw_terminal(t_terminal *config)
-{
-	struct termios change;
-
-	if ((tgetent(NULL, getenv("TERM")) < 1))
-		return (0);
-	if ((config->name == getenv("xterm-256color")) == 0)
-		ft_dprintf(2, "Opps, problem with terminal name\n");
-	tcgetattr(0, &change);
-	change.c_lflag &= ~(ICANON | ECHO);
-	change.c_cc[VMIN] = 1;
-	change.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &change);
-	get_window_size(config);
-	return (1);
-}
-
-void	default_terminal(void)
-{
-	struct termios revert;
-
-	tcgetattr(0, &revert);
-	revert.c_lflag |= (ICANON | ECHO);
-	tcsetattr(0, TCSADRAIN, &revert);
-	return ;
-}
-
 void	get_terminal_meta(t_terminal *config, t_input *data)
 {
 	get_window_size(config);
@@ -244,9 +221,9 @@ void	build_buffer(t_input *data)
 
 void	insert(t_terminal *config, t_input *data)
 {
+	clear_insert(data);
 	size_t	x;
 
-	clear_insert(data);
 	build_buffer(data);
 	msh_put_arrow();
 	ft_fputstr(data->line_buff);
@@ -265,27 +242,27 @@ void	insert(t_terminal *config, t_input *data)
 
 char	*readline(t_terminal *config)
 {
-	bool continue_loop;
+	static t_cmds	*history = NULL;
+	t_input			data;
 
-	continue_loop = true;
-	input_constructor(&config->data);
-	while (continue_loop == true)
+	input_constructor(&data, history);
+	while (data.continue_loop == true)
 	{
-		read(0, config->data.char_buff, 5);
-		get_terminal_meta(config, &config->data);
-		if (config->data.char_buff[0] == ENTER)
-			continue_loop = false;
-		else if (ft_isprint(config->data.char_buff[0]))
-			insert(config, &config->data);
-		else if (config->data.char_buff[0] == DELETE)
-			delete(&config->data);
-		else if (config->data.char_buff[0] == 27)
-			move_cursor(config, &config->data, &config->data.history);
-		ft_bzero((void*)config->data.char_buff, 5);
+		read(0, &data.char_buff, 5);
+		get_terminal_meta(config, &data);
+		if (data.char_buff[0] == ENTER)
+			data.continue_loop = false;
+		else if (ft_isprint(data.char_buff[0]))
+			insert(config, &data);
+		else if (data.char_buff[0] == DELETE)
+			delete(&data);
+		else if (data.char_buff[0] == 27)
+			move_cursor(config, &data, &data.history);
+		ft_bzero((void*)data.char_buff, 5);
 	}
-	if (!(valid_string(config->data.line_buff)))
+	if (!(valid_string(data.line_buff)))
 		return (NULL);
-	history_add(&config->data.history, config->data.line_buff);
+	history_add(&data.history, data.line_buff);
 	ft_putchar('\n');
-	return (ft_strdup(config->data.line_buff));
+	return (ft_strdup(data.line_buff));
 }
