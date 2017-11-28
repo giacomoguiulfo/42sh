@@ -44,30 +44,30 @@ static int	valid_string(char *str)
 	return (0);
 }
 
-static void	get_window_size(t_terminal *config)
+static void	get_window_size(t_input *data)
 {
-	ioctl(0, TIOCGWINSZ, &config->window_size);
-	config->width = config->window_size.ws_col;
-	config->height = config->window_size.ws_row;
+	ioctl(0, TIOCGWINSZ, &data->window_size);
+	data->width = data->window_size.ws_col;
+	data->height = data->window_size.ws_row;
 }
 
-static void	get_cursor_pos(t_terminal *config, t_input *data)
+static void	get_cursor_pos(t_input *data)
 {
-	data->cursor_row = (data->cursor_pos + config->prompt_size) / config->width;
-	data->cursor_col = (data->cursor_pos + config->prompt_size) % config->width;
-	data->end_row = (data->line_size + config->prompt_size) / config->width;
-	data->end_col = (data->line_size + config->prompt_size) % config->width;
+	data->cursor_row = (data->cursor_pos + data->prompt_size) / data->width;
+	data->cursor_col = (data->cursor_pos + data->prompt_size) % data->width;
+	data->end_row = (data->line_size + data->prompt_size) / data->width;
+	data->end_col = (data->line_size + data->prompt_size) % data->width;
 }
 
-static void	get_terminal_meta(t_terminal *config, t_input *data)
+static void	get_terminal_meta(t_input *data)
 {
-	get_window_size(config);
-	get_cursor_pos(config, data);
+	get_window_size(data);
+	get_cursor_pos(data);
 }
 
-static void	input_constructor(t_input *data, t_cmds *history)
+static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history)
 {
-
+	data->prompt_size = config->prompt_size;
 	ft_bzero(data->char_buff, 5);
 	ft_bzero(data->line_buff, 4096);
 	data->line_size = 0;
@@ -84,19 +84,19 @@ char		*readline(t_terminal *config)
 	static t_cmds	*history = NULL;
 	t_input			data;
 
-	input_constructor(&data, history);
+	input_constructor(config, &data, history);
 	while (data.continue_loop == true)
 	{
 		read(0, &data.char_buff, 5);
-		get_terminal_meta(config, &data);
+		get_terminal_meta(&data);
 		if (data.char_buff[0] == ENTER)
 			data.continue_loop = false;
 		else if (ft_isprint(data.char_buff[0]))
-			insert(config, &data);
+			insert(&data);
 		else if (data.char_buff[0] == DELETE)
 			remove(&data);
 		else if (data.char_buff[0] == 27)
-			move_cursor(config, &data, &data.history);
+			move_cursor(&data, &data.history);
 		ft_bzero((void*)data.char_buff, 5);
 	}
 	if (!(valid_string(data.line_buff)))

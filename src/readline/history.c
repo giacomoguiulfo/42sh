@@ -13,9 +13,9 @@
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 
-static void	clear_line(t_terminal *config, t_input *data)
+static void	clear_line(t_input *data)
 {
-	move_home(config, data);
+	move_home(data);
 	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
 	data->cursor_pos = 0;
 	data->line_size = 0;
@@ -53,9 +53,9 @@ void		cleanup_history(t_cmds *head)
 	free(head);
 }
 
-void		history_dn(t_terminal *config, t_input *data, t_cmds *history)
+void		history_dn(t_input *data, t_cmds *history)
 {
-	clear_line(config, data);
+	clear_line(data);
 	if (!history->current || !history->current->cmd)
 	{
 		history->current = history->end;
@@ -81,9 +81,9 @@ void		history_dn(t_terminal *config, t_input *data, t_cmds *history)
 	}
 }
 
-void		history_up(t_terminal *config, t_input *data, t_cmds *history)
+void		history_up(t_input *data, t_cmds *history)
 {
-	clear_line(config, data);
+	clear_line(data);
 	if (!history->current || !history->current->cmd)
 	{
 		history->current = history;

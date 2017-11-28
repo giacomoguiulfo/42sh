@@ -15,13 +15,13 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 
-void	move_right(t_terminal *config, t_input *data)
+void	move_right(t_input *data)
 {
-	data->cursor_pos++;
-	if (data->cursor_col + 1 == config->width)
+	if (data->cursor_col + 1 == data->width)
 		tputs(tgetstr("do", NULL), 1, ft_intputchar);
 	else
 		tputs(tgetstr("nd", NULL), 1, ft_intputchar);
+	data->cursor_pos++;
 }
 
 void	move_left(t_input *data)
@@ -30,7 +30,7 @@ void	move_left(t_input *data)
 	tputs(tgetstr("le", NULL), 1, ft_intputchar);
 }
 
-void	move_home(t_terminal *config, t_input *data)
+void	move_home(t_input *data)
 {
 	size_t row;
 	size_t col;
@@ -38,7 +38,7 @@ void	move_home(t_terminal *config, t_input *data)
 	if (data->cursor_pos == 0)
 		return ;
 	row = data->cursor_row;
-	col = config->prompt_size % config->width;
+	col = data->prompt_size % data->width;
 	while (row-- > 0)
 		tputs(tgetstr("up", NULL), 1, ft_intputchar);
 	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
@@ -60,11 +60,11 @@ void	move_end(t_input *data)
 	data->cursor_pos = data->line_size;
 }
 
-void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
+void	move_cursor(t_input *data, t_cmds *history)
 {
 	if (data->char_buff[2] == RIGHT && data->cursor_pos < data->line_size)
 	{
-		move_right(config, data);
+		move_right(data);
 	}
 	else if (data->char_buff[2] == LEFT && data->cursor_pos > 0)
 	{
@@ -72,7 +72,7 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == HOME)
 	{
-		move_home(config, data);
+		move_home(data);
 	}
 	else if (data->char_buff[2] == END)
 	{
@@ -80,10 +80,10 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == UP)
 	{
-		history_up(config, data, history);
+		history_up(data, history);
 	}
 	else if (data->char_buff[2] == DOWN)
 	{
-		history_dn(config, data, history);
+		history_dn(data, history);
 	}
 }

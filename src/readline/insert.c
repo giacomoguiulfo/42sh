@@ -32,12 +32,12 @@ static void	print_end_col_pad(size_t cursor_col)
 	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
 }
 
-static void	gather_position_data(t_terminal *config, t_input *data)
+static void	gather_position_data(t_input *data)
 {
-	data->end_col = (config->prompt_size + data->line_size) % config->width;
-	data->end_row = (config->prompt_size + data->line_size) / config->width;
-	data->cursor_row = (config->prompt_size + data->cursor_pos) / config->width;
-	data->cursor_col = (config->prompt_size + data->cursor_pos) % config->width;
+	data->end_col = (data->prompt_size + data->line_size) % data->width;
+	data->end_row = (data->prompt_size + data->line_size) / data->width;
+	data->cursor_row = (data->prompt_size + data->cursor_pos) / data->width;
+	data->cursor_col = (data->prompt_size + data->cursor_pos) % data->width;
 }
 
 static void	build_buffer(t_input *data)
@@ -50,7 +50,7 @@ static void	build_buffer(t_input *data)
 	ft_strcat(data->line_buff, buff);
 }
 
-void		insert(t_terminal *config, t_input *data)
+void		insert(t_input *data)
 {
 	clear_insert(data);
 	size_t	x;
@@ -60,7 +60,7 @@ void		insert(t_terminal *config, t_input *data)
 	ft_fputstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;
-	gather_position_data(config, data);
+	gather_position_data(data);
 	if (data->end_col == 0)
 		print_end_col_pad(data->cursor_col);
 	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_intputchar);

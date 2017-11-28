@@ -47,30 +47,33 @@ typedef struct			s_input
 	bool				continue_loop;
 	char				char_buff[CHAR_BUFF_SIZE];
 	char				line_buff[LINE_BUFF_SIZE];
-	size_t				line_size;
 	size_t				cursor_col;
 	size_t				cursor_pos;
 	size_t				cursor_row;
 	size_t				end_col;
 	size_t				end_row;
-
+	size_t				height;
+	size_t				line_size;
+	size_t				prompt_size;
+	size_t				width;
+	struct winsize		window_size;
 	struct s_cmds		history;
 }						t_input;
 
 char	*readline(t_terminal *config);
-void	insert(t_terminal *config, t_input *data);
+void	insert(t_input *data);
 void	remove(t_input *data);
 
 t_cmds	*history_constructor(void);
 void	history_add(t_cmds *head, char *cmd);
-void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
-void	history_up(t_terminal *config, t_input *data, t_cmds *history);
+void	history_dn(t_input *data, t_cmds *history);
+void	history_up(t_input *data, t_cmds *history);
 
-void	move_cursor(t_terminal *config, t_input *data, t_cmds *history);
+void	move_cursor(t_input *data, t_cmds *history);
 void	move_end(t_input *data);
-void	move_home(t_terminal *config, t_input *data);
+void	move_home(t_input *data);
 void	move_left(t_input *data);
-void	move_right(t_terminal *config, t_input *data);
+void	move_right(t_input *data);
 
 int		ft_intputchar(int c);
 

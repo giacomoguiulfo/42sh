@@ -28,13 +28,11 @@ typedef struct			s_terminal  // Added this entire struct
 	int					status;
 
 	struct termios		term;
-	struct winsize		window_size;
 	char				*name;
 	size_t				width;
 	size_t				height;
 	size_t				prompt_size;
 }						t_terminal;
-
 
 /*
 ** Main Functions
