@@ -36,6 +36,7 @@
 typedef struct			s_cmds
 {
 	bool				init;
+	bool				hit_end;
 	char				*cmd;
 	struct s_cmds		*current;
 	struct s_cmds		*end;
@@ -75,7 +76,6 @@ void	move_home(t_input *data);
 void	move_left(t_input *data);
 void	move_right(t_input *data);
 
-void	clear_line(t_input *data);
 void	gather_position_data(t_input *data);
 void	print_end_col_pad(size_t cursor_col);
 
