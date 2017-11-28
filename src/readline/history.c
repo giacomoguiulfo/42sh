@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
-#include "../../includes/ft_sh.h"
+#include "readline.h"
+#include "ft_sh.h"
 
 void	history_constructor(t_cmds *history)
 {

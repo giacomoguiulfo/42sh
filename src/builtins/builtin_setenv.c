@@ -41,7 +41,7 @@ int builtin_setenv(char **av, char **envp __attribute__((unused)))
 
 	if (!av || !av[0])
 		return (1);
-	env = &shell_singleton()->env;
+	env = &sh_singleton()->env;
 	if (!av[1])
 		ft_sstrputs(*env);
 	else // TODO: Check that is a proper assignemnt - validations

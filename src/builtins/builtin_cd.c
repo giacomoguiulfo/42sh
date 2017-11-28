@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 01:44:20 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 05:53:52 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define CD_OPT_L (1 << 0)
-#define CD_OPT_P (1 << 1)
+#define CD_OPT_L 		(1 << 0)
+#define CD_OPT_P 		(1 << 1)
 #define CD_HAS_OPT_L(x) (x & CD_OPT_L)
 #define CD_HAS_OPT_P(x) (x & CD_OPT_P)
+#define CD_ERR_0		"cd : %s: No such file or directory"
+#define CD_ERR_1		"cd : %s: Not a directory"
+#define CD_ERR_2		"cd : %s: Permission denied"
+#define CD_ERR_3		"cd : unable to proceed: %s"
 
 static t_ftopts g_cdopts[] =
 {
@@ -28,15 +32,6 @@ static t_ftopts g_cdopts[] =
 	{'P', NULL, CD_OPT_P, CD_OPT_L, NULL, 0},
 	{0, NULL, 0, 0, NULL, 0}
 };
-
-int	file_is_dir(const char *path)
-{
-	struct stat	sb;
-
-	if (stat(path, &sb))
-		return (0);
-	return (S_ISDIR(sb.st_mode));
-}
 
 static void cd_setpwd(void)
 {
@@ -53,31 +48,31 @@ static int	cd_symlink(char *operand, struct stat *sb)
 
 	linkname = ft_memalloc(sb->st_size + 1);
 	if (readlink(operand, linkname, sb->st_size + 1))
-		return (1);
+		return (SH_ERR(CD_ERR_3, operand));
 	if (chdir(linkname))
 	{
 		ft_strdel(&linkname);
-		return (1);
+		return (SH_ERR(CD_ERR_3, operand));
 	}
 	cd_setpwd();
 	ft_strdel(&linkname);
 	return (0);
 }
 
-static int	ft_cd(char *operand, int flags)
+static int	cd_routine(char *operand, int flags)
 {
 	struct stat sb;
 
 	if (access(operand, F_OK))
-		return (1);
-	if (!file_is_dir(operand))
-		return (1);
+		return (SH_ERR(CD_ERR_0, operand));
+	if (!ft_isdir(operand))
+		return (SH_ERR(CD_ERR_1, operand));
 	if (access(operand, X_OK) && lstat(operand, &sb))
-		return (1);
+		return (SH_ERR(CD_ERR_2, operand));
 	if (CD_HAS_OPT_P(flags) && S_ISLNK(sb.st_mode))
 		return (cd_symlink(operand, &sb));
 	if (chdir(operand))
-		return (1);
+		return (SH_ERR(CD_ERR_3, operand));
 	cd_setpwd();
 	return (0);
 }
@@ -87,10 +82,10 @@ static char *cd_operand(char *arg)
 	if (arg)
 	{
 		if (!ft_strcmp(arg, "-"))
-			return (ft_strdup(ft_getenv(shell_singleton()->env, "OLDPWD")));
+			return (ft_strdup(ft_getenv(sh_singleton()->env, "OLDPWD")));
 		return (ft_strdup(arg));
 	}
-	return (ft_strdup(ft_getenv(shell_singleton()->env, "HOME")));
+	return (ft_strdup(ft_getenv(sh_singleton()->env, "HOME")));
 }
 
 int builtin_cd(char **av, char **envp __attribute((unused)))
@@ -109,7 +104,7 @@ int builtin_cd(char **av, char **envp __attribute((unused)))
 		builtin_setenv((char*[]){"setenv", "OLDPWD", oldpwd, NULL}, NULL);
 		cd_setpwd();
 	}
-	else if ((ret = ft_cd(operand, data.flags)))
+	else if ((ret = cd_routine(operand, data.flags)) == 0)
 		builtin_setenv((char*[]){"setenv", "OLDPWD", oldpwd, NULL}, NULL);
 	ft_strdel(&operand);
 	ft_strdel(&oldpwd);

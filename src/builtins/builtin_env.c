@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:31:19 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/22 22:23:42 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/28 05:55:18 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int	builtin_env(void)
 {
-	ft_sstrputs(shell_singleton()->env);
+	ft_sstrputs(sh_singleton()->env);
+	// TODO: Run a program in a modified environment
 	return (0);
 }

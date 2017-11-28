@@ -6,43 +6,18 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 02:11:51 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 07:11:57 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
+#include "readline.h"
 #include <unistd.h>
 #include <term.h>
-
-int		ft_intputchar(int c)
-{
-	return (write(1, &c, 1));
-}
-
-int		ft_isblank(int c)
-{
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-int		valid_string(char *str)
-{
-	int x;
-
-	x = -1;
-	while (str[++x])
-	{
-		if (!(ft_isblank(str[x])))
-			return (1);
-	}
-	return (0);
-}
 
 void	clear_line(t_input *data)
 {
 	move_home(data);
-	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	data->cursor_pos = 0;
 	data->line_size = 0;
 }

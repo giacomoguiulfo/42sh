@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/22 19:28:33 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/28 07:10:10 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,5 @@ void	move_left(t_input *data);
 void	move_right(t_input *data);
 
 void	clear_line(t_input *data);
-int		ft_isblank(int c);
-int		ft_intputchar(int c);
-int		valid_string(char *str);
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
+#include "readline.h"
 #include <term.h>
 #include <termios.h>
 #include <sys/ioctl.h>
@@ -18,15 +18,15 @@
 void	move_right(t_input *data)
 {
 	if (data->cursor_col + 1 == data->width)
-		tputs(tgetstr("do", NULL), 1, ft_intputchar);
+		tputs(tgetstr("do", NULL), 1, ft_putchar);
 	else
-		tputs(tgetstr("nd", NULL), 1, ft_intputchar);
+		tputs(tgetstr("nd", NULL), 1, ft_putchar);
 	data->cursor_pos++;
 }
 
 void	move_left(t_input *data)
 {
-	tputs(tgetstr("le", NULL), 1, ft_intputchar);
+	tputs(tgetstr("le", NULL), 1, ft_putchar);
 	data->cursor_pos--;
 }
 
@@ -40,8 +40,8 @@ void	move_home(t_input *data)
 	row = data->cursor_row;
 	col = data->prompt_size % data->width;
 	while (row-- > 0)
-		tputs(tgetstr("up", NULL), 1, ft_intputchar);
-	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_putchar);
 	data->cursor_pos = 0;
 }
 
@@ -55,8 +55,8 @@ void	move_end(t_input *data)
 	row = data->end_row;
 	col = data->end_col;
 	while (row-- > 0)
-		tputs(tgetstr("do", NULL), 1, ft_intputchar);
-	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_intputchar);
+		tputs(tgetstr("do", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_putchar);
 	data->cursor_pos = data->line_size;
 }
 

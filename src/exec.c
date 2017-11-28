@@ -96,7 +96,7 @@ int		msh_run_builtins(char **args)
 	while (g_builtins[i].name)
 	{
 		if (ft_strcmp(g_builtins[i].name, args[0]) == 0)
-			return (g_builtins[i].f(args, shell_singleton()->env));
+			return (g_builtins[i].f(args, sh_singleton()->env));
 		i++;
 	}
 	return (-1);

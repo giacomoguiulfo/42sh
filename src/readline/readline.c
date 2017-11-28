@@ -6,12 +6,12 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 02:21:52 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 07:12:23 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
-#include "../../includes/ft_sh.h"
+#include "readline.h"
+#include "ft_sh.h"
 #include <unistd.h>
 #include <term.h>
 #include <termios.h>
@@ -74,7 +74,7 @@ char		*readline(size_t prompt)
 			data.continue_loop = false;
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
-	if (!(valid_string(data.line_buff)))
+	if (ft_stris(data.line_buff, ft_isspace))
 		return (NULL);
 	history_add(&history, data.line_buff);
 	return (ft_strdup(data.line_buff));

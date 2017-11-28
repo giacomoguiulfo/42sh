@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
-#include "../../includes/ft_sh.h"
+#include "readline.h"
+#include "ft_sh.h"
 #include <term.h>
 
 void	remove(t_input *data)
@@ -26,13 +26,13 @@ void	remove(t_input *data)
 	*tmp = '\0';
 	ft_strcpy(buff, tmp + 1);
 	ft_strcpy(data->line_buff + data->cursor_pos - 1, buff);
-	tputs(tgetstr("le", NULL), 1, ft_intputchar);
-	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
-	tputs(tgetstr("sc", NULL), 1, ft_intputchar);
-	tputs(tgetstr("im", NULL), 1, ft_intputchar);
+	tputs(tgetstr("le", NULL), 1, ft_putchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	tputs(tgetstr("sc", NULL), 1, ft_putchar);
+	tputs(tgetstr("im", NULL), 1, ft_putchar);
 	ft_putstr(buff);
-	tputs(tgetstr("ei", NULL), 1, ft_intputchar);
-	tputs(tgetstr("rc", NULL), 1, ft_intputchar);
+	tputs(tgetstr("ei", NULL), 1, ft_putchar);
+	tputs(tgetstr("rc", NULL), 1, ft_putchar);
 	data->cursor_pos--;
 	data->line_size--;
 }

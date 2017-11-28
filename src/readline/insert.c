@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/readline.h"
+#include "readline.h"
 #include <term.h>
 #include <termios.h>
 #include <sys/ioctl.h>
@@ -19,17 +19,17 @@ static void	clear_insert(t_input *data)
 {
 	size_t top;
 
-	tputs(tgetstr("cr", NULL), 1, ft_intputchar);
+	tputs(tgetstr("cr", NULL), 1, ft_putchar);
 	top = data->cursor_row;
 	while (top-- > 0)
-		tputs(tgetstr("up", NULL), 1, ft_intputchar);
-	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }
 
 static void	print_end_col_pad(size_t cursor_col)
 {
-	tputs(tgetstr("do", NULL), 1, ft_intputchar);
-	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_intputchar);
+	tputs(tgetstr("do", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_putchar);
 }
 
 static void	gather_position_data(t_input *data)
@@ -63,8 +63,8 @@ void		insert(t_input *data)
 	gather_position_data(data);
 	if (data->end_col == 0)
 		print_end_col_pad(data->cursor_col);
-	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_intputchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_putchar);
 	x = data->end_row - data->cursor_row;
 	while (x-- > 0)
-		tputs(tgetstr("up", NULL), 1, ft_intputchar);
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
 }

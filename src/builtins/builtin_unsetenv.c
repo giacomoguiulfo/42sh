@@ -19,7 +19,7 @@ int builtin_unsetenv(char **av, char **envp __attribute__((unused)))
 	int		i;
 	int		j;
 
-	env = &shell_singleton()->env;
+	env = &sh_singleton()->env;
 	i = 0;
 	while (av[i])
 	{

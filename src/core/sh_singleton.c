@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   sh_singleton.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/25 00:24:57 by giacomo           #+#    #+#             */
-/*   Updated: 2017/11/28 05:57:15 by giacomo          ###   ########.fr       */
+/*   Created: 2017/11/28 03:14:21 by giacomo           #+#    #+#             */
+/*   Updated: 2017/11/28 04:36:14 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "ft_sh.h"
+#include "libft.h"
+#include <stddef.h>
 
-int builtin_exit()
+t_shell *sh_singleton(void)
 {
-    // TODO: Clean up stuff before exiting
-    exit(EXIT_SUCCESS);
-    return (0);
+	static t_shell *shell = NULL;
+
+	if (shell == NULL)
+		shell = ft_memalloc(sizeof(t_shell));
+	return (shell);
 }

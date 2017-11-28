@@ -6,17 +6,17 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/28 02:18:18 by giacomo          ###   ########.fr        #
+#    Updated: 2017/11/28 05:59:20 by giacomo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= minishell
 
 CC			?= gcc
-CFLAGS	+= -std=c99
-CFLAGS	+= -Wall -Wextra -Werror -Wfloat-equal -Wundef
-CFLAGS	+= -Wpointer-arith -Wunreachable-code -Winit-self
-CFLAGS	+= -O3 -march=native -pipe -flto
+CFLAGS		+= -std=c99
+CFLAGS		+= -Wall -Wextra -Werror -Wfloat-equal -Wundef
+CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
+CFLAGS		+= -O3 -march=native -pipe -flto
 
 LIBS		:= -ltermcap
 
@@ -29,22 +29,24 @@ ifndef VERBOSE
 MAKEFLAGS += --no-print-directory
 endif
 
-SRC_BASE :=	\
-msh_main	\
-msh_strsplit \
-msh_exec	\
-msh_utils	\
-builtins/builtin_cd \
-builtins/builtin_echo \
-builtins/builtin_env \
-builtins/builtin_setenv \
-builtins/builtin_unsetenv \
-builtins/builtin_exit \
-readline/readline \
-readline/history \
-readline/move \
-readline/insert \
-readline/remove \
+SRC_BASE :=\
+main\
+strsplit\
+exec\
+utils\
+builtins/builtin_cd\
+builtins/builtin_echo\
+builtins/builtin_env\
+builtins/builtin_setenv\
+builtins/builtin_unsetenv\
+builtins/builtin_exit\
+core/sh_init\
+core/sh_singleton\
+readline/readline\
+readline/history\
+readline/move\
+readline/insert\
+readline/remove\
 readline/helpers
 
 INC_DIR		:= includes/
