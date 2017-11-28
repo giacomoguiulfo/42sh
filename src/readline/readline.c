@@ -72,6 +72,12 @@ void	get_cursor_pos(t_terminal *config, t_input *data)
 	data->end_col = (data->line_size + config->prompt_size) % config->width;
 }
 
+void	get_terminal_meta(t_terminal *config, t_input *data)
+{
+	get_window_size(config);
+	get_cursor_pos(config, data);
+}
+
 void	move_right(t_terminal *config, t_input *data)
 {
 	data->cursor_pos++;
@@ -117,8 +123,6 @@ void	move_end(t_input *data)
 	data->cursor_pos = data->line_size;
 }
 
-
-
 void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 {
 	if (data->char_buff[2] == RIGHT && data->cursor_pos < data->line_size)
@@ -145,12 +149,6 @@ void	move_cursor(t_terminal *config, t_input *data, t_cmds *history)
 	{
 		history_dn(config, data, history);
 	}
-}
-
-void	get_terminal_meta(t_terminal *config, t_input *data)
-{
-	get_window_size(config);
-	get_cursor_pos(config, data);
 }
 
 void	delete(t_input *data)
