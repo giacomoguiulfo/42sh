@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 05:53:52 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 09:51:35 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int builtin_cd(char **av, char **envp __attribute((unused)))
 		return (1);
 	operand = cd_operand(data.argv[0]);
 	oldpwd = getcwd(NULL, 0);
+	ret = 0;
 	if (!operand)
 	{
 		builtin_setenv((char*[]){"setenv", "OLDPWD", oldpwd, NULL}, NULL);

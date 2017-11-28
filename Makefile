@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/28 05:59:20 by giacomo          ###   ########.fr        #
+#    Updated: 2017/11/28 10:00:03 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ NAME		:= minishell
 CC			?= gcc
 CFLAGS		+= -std=c99
 CFLAGS		+= -Wall -Wextra -Werror -Wfloat-equal -Wundef
-CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
-CFLAGS		+= -O3 -march=native -pipe -flto
+# CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
+# CFLAGS		+= -O3 -march=native -pipe -flto
 
 LIBS		:= -ltermcap
 

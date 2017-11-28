@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 05:59:56 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/11/28 10:39:25 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	sh_instruction()
 
 int			main(int ac, char **av)
 {
-	g_argv = av;
+	// g_argv = av;
 	if (sh_init(ac, av))
 		return (0);
 	while (42)
