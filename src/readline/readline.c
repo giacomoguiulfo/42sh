@@ -42,8 +42,8 @@ static void	get_terminal_meta(t_input *data)
 static void	input_constructor(t_terminal *config, t_input *data, t_cmds *history)
 {
 	data->prompt_size = config->prompt_size;
-	ft_bzero(data->char_buff, 5);
-	ft_bzero(data->line_buff, 4096);
+	ft_bzero(data->char_buff, CHAR_BUFF_SIZE);
+	ft_bzero(data->line_buff, LINE_BUFF_SIZE);
 	data->line_size = 0;
 	data->cursor_pos = 0;
 	data->cursor_col = 0;
@@ -63,15 +63,15 @@ char		*readline(t_terminal *config)
 	{
 		read(0, &data.char_buff, 5);
 		get_terminal_meta(&data);
-		if (data.char_buff[0] == ENTER)
-			data.continue_loop = false;
-		else if (ft_isprint(data.char_buff[0]))
+		if (ft_isprint(data.char_buff[0]))
 			insert(&data);
 		else if (data.char_buff[0] == DELETE)
 			remove(&data);
 		else if (data.char_buff[0] == 27)
 			move_cursor(&data, &history);
-		ft_bzero((void*)data.char_buff, 5);
+		else if (data.char_buff[0] == ENTER)
+			data.continue_loop = false;
+		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
 	if (!(valid_string(data.line_buff)))
 		return (NULL);

@@ -36,7 +36,7 @@ static void	sh_shutdown(t_terminal *config)
 	return ;
 }
 
-int			sh_init(t_terminal *config)
+static int	sh_init(t_terminal *config)
 {
 	struct termios change;
 
