@@ -18,32 +18,6 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
-int			ft_intputchar(int c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int			ft_isblank(int c)
-{
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-static int	valid_string(char *str)
-{
-	int x;
-
-	x = -1;
-	while (str[++x])
-	{
-		if (!(ft_isblank(str[x])))
-			return (1);
-	}
-	return (0);
-}
-
 static void	get_window_size(t_input *data)
 {
 	ioctl(0, TIOCGWINSZ, &data->window_size);

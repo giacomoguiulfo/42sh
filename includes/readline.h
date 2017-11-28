@@ -75,6 +75,9 @@ void	move_home(t_input *data);
 void	move_left(t_input *data);
 void	move_right(t_input *data);
 
+void	clear_line(t_input *data);
+int		ft_isblank(int c);
 int		ft_intputchar(int c);
+int		valid_string(char *str);
 
 #endif

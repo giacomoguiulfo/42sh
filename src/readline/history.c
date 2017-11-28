@@ -13,14 +13,6 @@
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 
-static void	clear_line(t_input *data)
-{
-	move_home(data);
-	tputs(tgetstr("cd", NULL), 1, ft_intputchar);
-	data->cursor_pos = 0;
-	data->line_size = 0;
-}
-
 t_cmds		*history_constructor(void)
 {
 	t_cmds	*history;

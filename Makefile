@@ -43,7 +43,8 @@ readline/readline \
 readline/history \
 readline/move \
 readline/insert \
-readline/remove
+readline/remove \
+readline/helpers
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/
