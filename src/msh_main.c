@@ -77,7 +77,6 @@ int		raw_terminal(t_terminal *config)
 	change.c_cc[VMIN] = 1;
 	change.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &change);
-	get_window_size(config);
 	return (1);
 }
 

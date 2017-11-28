@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 
 static void	clear_line(t_terminal *config, t_input *data)

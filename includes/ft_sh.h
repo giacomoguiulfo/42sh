@@ -22,49 +22,6 @@
 
 # define MSH_RL_SIZ 1024
 
-# define LINE_BUFF_SIZE 4096
-# define CHAR_BUFF_SIZE 5
-
-# define ENTER 10
-# define DELETE 127
-# define UP 65
-# define DOWN 66
-# define LEFT 68
-# define RIGHT 67
-# define HOME 72
-# define END 70
-
-# define SAVEPOS "sc"
-# define MOVERIGHT "nd"
-# define MOVELEFT "le"
-# define MOVEUP "up"
-# define MOVEDN "do"
-# define LINESTART "cr"
-
-typedef struct			s_cmds
-{
-	struct s_cmds		*next;
-	struct s_cmds		*prev;
-	struct s_cmds		*end;
-	struct s_cmds		*current;
-	char				*cmd;
-}						t_cmds;
-
-typedef struct			s_input
-{
-	char				char_buff[CHAR_BUFF_SIZE];
-	char				line_buff[LINE_BUFF_SIZE];
-	size_t				line_size;
-	size_t				cursor_pos;
-	size_t				cursor_col;
-	size_t				cursor_row;
-	size_t				end_col;
-	size_t				end_row;
-	bool				continue_loop;
-
-	struct s_cmds		history;
-}						t_input;
-
 typedef struct			s_terminal
 {
 	t_darr				*newenvp;
@@ -75,7 +32,6 @@ typedef struct			s_terminal
 	char				*name;
 	size_t				width;
 	size_t				height;
-
 	size_t				prompt_size;
 }						t_terminal;
 
@@ -85,23 +41,13 @@ typedef struct			s_terminal
 */
 
 int		msh_execute(char **args, t_darr *newenvp);
+char	*readline(t_terminal *config);
 
 /*
 ** Need to be organized
 */
 
-char	*readline(t_terminal *config);
-int		raw_terminal(t_terminal *config);
-void	get_window_size(t_terminal *config);
-int		ft_intputchar(int c);
 
-void	history_add(t_cmds *head, char *cmd);
-t_cmds	*history_constructor(void);
-void	history_up(t_terminal *config, t_input *data, t_cmds *history);
-void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
-
-void	move_home(t_terminal *config, t_input *data);
-void	move_end(t_input *data);
 
 /*
 ** Builtins
