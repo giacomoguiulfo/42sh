@@ -92,4 +92,20 @@ void	move_cursor(t_input *data, t_cmds *history)
 	{
 		history_change(data, history, false);
 	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'D')
+	{
+		ft_putstr("\nPressed ctrLEF\n");
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'C')
+	{
+		ft_putstr("\nPressed ctrRI\n");
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'A')
+	{
+		ft_putstr("\nPressed ctrUP\n");
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'B')
+	{
+		ft_putstr("\nPressed ctrDN\n");
+	}
 }

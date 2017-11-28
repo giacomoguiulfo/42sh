@@ -24,6 +24,11 @@
 # define LINE_BUFF_SIZE 4096
 # define CHAR_BUFF_SIZE 5
 
+# define CTRLUP			21
+# define CTRLDN			4
+# define CTRLEF			0x445b1b1b
+# define CTRLRI			18
+
 # define DELETE			127
 # define DOWN			66
 # define END			70
