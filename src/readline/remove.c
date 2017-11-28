@@ -26,7 +26,13 @@ void	remove(t_input *data)
 	*tmp = '\0';
 	ft_strcpy(buff, tmp + 1);
 	ft_strcpy(data->line_buff + data->cursor_pos - 1, buff);
-	tputs(tgetstr("le", NULL), 1, ft_putchar);
+	if (data->cursor_col == 0)
+	{
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		tputs(tgoto(tgetstr("ch", NULL), 0, data->width), 1, ft_putchar);
+	}
+	else
+		tputs(tgetstr("le", NULL), 1, ft_putchar);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar);
 	tputs(tgetstr("im", NULL), 1, ft_putchar);
