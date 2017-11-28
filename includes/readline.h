@@ -64,8 +64,11 @@ void	history_add(t_cmds *head, char *cmd);
 void	history_dn(t_terminal *config, t_input *data, t_cmds *history);
 void	history_up(t_terminal *config, t_input *data, t_cmds *history);
 
-void	move_home(t_terminal *config, t_input *data);
+void	move_cursor(t_terminal *config, t_input *data, t_cmds *history);
 void	move_end(t_input *data);
+void	move_home(t_terminal *config, t_input *data);
+void	move_left(t_input *data);
+void	move_right(t_terminal *config, t_input *data);
 
 void	get_window_size(t_terminal *config);
 int		ft_intputchar(int c);
