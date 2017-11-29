@@ -19,8 +19,8 @@
 static int	sh_readline()
 {
 	char	*line;
+	char	*prompt;
 	char	**args;
-	size_t	prompt;
 
 	prompt = msh_put_arrow();
 	line = readline(prompt);
@@ -30,6 +30,7 @@ static int	sh_readline()
 	args = msh_strsplit(line);
 	msh_execute(args);
 	free(line);
+	free(prompt);
 	ft_free_sstr(args);
 	return (0);
 }

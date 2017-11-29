@@ -31,8 +31,8 @@ int     sh_init();
 t_shell *sh_singleton();
 void	sh_shutdown();
 int		msh_execute(char **args);
-char	*readline(size_t prompt);
-size_t	msh_put_arrow(void);
+char	*readline(char *prompt);
+char	*msh_put_arrow(void);
 char	**msh_strsplit(char *line);
 
 #endif

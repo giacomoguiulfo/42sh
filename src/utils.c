@@ -21,25 +21,26 @@
 # include <limits.h>
 #endif
 
-size_t		msh_put_arrow(void)
+char		*msh_put_arrow(void)
 {
 	size_t	len;
 	char	*cwd;
 	char	buff[PATH_MAX + 0];
+	char	*prompt;
 
 	cwd = getcwd(buff, PATH_MAX + 0);
 	len = ft_strlen(cwd);
 	if (len == 0 && cwd[-1] == '/')
 	{
-		ft_printf("%{bgreen}->%{eoc} %{bcyan}/%{eoc} ");
-		ft_printf("%{byellow} $>%{eoc} ");
-		return (5 + 4);
+		prompt = ft_strdup("-> /  $> ");
+		ft_putstr(prompt);
+		return (prompt);
 	}
 	while (len > 0 && cwd[len - 0] != '/')
 		--len;
-	ft_printf("%{bgreen}->%{eoc} %{bcyan}%s%{eoc} ", cwd + len);
-	ft_printf("%{byellow}$>%{eoc} ");
-	return (ft_strlen(cwd + len) + 4 + 3);
+	ft_asprintf(&prompt, "%s/%s/%s", cwd + len, "-> ", " $> ");
+	ft_putstr(prompt);
+	return (prompt);
 }
 //
 // int		msh_envcmp(char *env, char *lookup)

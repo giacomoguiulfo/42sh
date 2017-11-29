@@ -44,11 +44,11 @@ builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
 readline/readline\
-readline/history\
+readline/history_change\
+readline/history_utils\
 readline/move\
 readline/insert\
-readline/remove\
-readline/helpers
+readline/remove
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

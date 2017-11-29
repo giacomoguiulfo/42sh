@@ -39,9 +39,10 @@ static void	get_terminal_meta(t_input *data)
 	get_cursor_pos(data);
 }
 
-static void	input_constructor(t_input *data, t_cmds *history, size_t prompt)
+static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 {
-	data->prompt_size = prompt;
+	data->prompt = prompt;
+	data->prompt_size = ft_strlen(data->prompt);
 	ft_bzero(data->char_buff, CHAR_BUFF_SIZE);
 	ft_bzero(data->line_buff, LINE_BUFF_SIZE);
 	data->line_size = 0;
@@ -49,11 +50,12 @@ static void	input_constructor(t_input *data, t_cmds *history, size_t prompt)
 	data->cursor_col = 0;
 	data->cursor_row = 0;
 	data->continue_loop = true;
+	history->current = NULL;
 	if (history->init == false)
 		history_constructor(history);
 }
 
-char		*readline(size_t prompt)
+char		*readline(char *prompt)
 {
 	static t_cmds	history;
 	t_input			data;

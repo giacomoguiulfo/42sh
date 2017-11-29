@@ -26,13 +26,13 @@ static void	clear_insert(t_input *data)
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }
 
-static void	print_end_col_pad(size_t cursor_col)
+void	print_end_col_pad(size_t cursor_col)
 {
 	tputs(tgetstr("do", NULL), 1, ft_putchar);
 	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_putchar);
 }
 
-static void	gather_position_data(t_input *data)
+void	gather_position_data(t_input *data)
 {
 	data->end_col = (data->prompt_size + data->line_size) % data->width;
 	data->end_row = (data->prompt_size + data->line_size) / data->width;
@@ -56,7 +56,7 @@ void		insert(t_input *data)
 
 	clear_insert(data);
 	build_buffer(data);
-	msh_put_arrow();
+	ft_putstr(data->prompt);
 	ft_putstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;
