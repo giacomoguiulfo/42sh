@@ -12,6 +12,7 @@
 
 #include "readline.h"
 #include "ft_sh.h"
+#include <stdbool.h>
 
 static void	clear_line(t_input *data)
 {
@@ -36,6 +37,32 @@ static void	print(t_input *data, t_cmds *history)
 		print_end_col_pad(data->cursor_col);
 }
 
+bool		get_history(t_cmds *history, bool direction)
+{
+	if (direction == true && history->hit_end == false)
+			history->current = history;
+	else if (direction == false && history->hit_end == true)
+	{
+		history->current = history->end;
+		history->hit_end = false;
+	}
+	else
+		return (0);
+	return (1);
+}
+
+void		history_iterate(t_cmds *history, bool direction)
+{
+	if (direction == true)
+	{
+		history->current = history->current->next;
+		if (!history->current)
+			history->hit_end = true;
+	}
+	else
+		history->current = history->current->prev;
+}
+
 void		history_change(t_input *data, t_cmds *history, bool direction)
 {
 	clear_line(data);
@@ -43,26 +70,12 @@ void		history_change(t_input *data, t_cmds *history, bool direction)
 	data->cursor_pos = 0;
 	if (!history->current || !history->current->cmd)
 	{
-		if (direction == true && history->hit_end == false)
-			history->current = history;
-		else if (direction == false && history->hit_end == true)
-		{
-			history->current = history->end;
-			history->hit_end = false;
-		}
-		else
+		if (!get_history(history, direction))
 			return ;
 	}
 	else if (history->current->cmd)
 	{
-		if (direction == true)
-		{
-			history->current = history->current->next;
-			if (!history->current)
-				history->hit_end = true;
-		}
-		else
-			history->current = history->current->prev;
+		history_iterate(history, direction);		
 	}
 	if (history->current && history->current->cmd)
 		print(data, history);	

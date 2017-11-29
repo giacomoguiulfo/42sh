@@ -21,7 +21,6 @@ void	history_constructor(t_cmds *history)
 	history->end = NULL;
 	history->cmd = NULL;
 	history->hit_end = false;
-	history->current = NULL;
 }
 
 void	history_cleanup(t_cmds *head)

@@ -30,13 +30,13 @@ static int	sh_readline()
 
 	prompt = msh_put_arrow();
 	line = readline(prompt);
-	free(prompt);
 	ft_putchar('\n');
 	if (!line)
 		return (0);
 	args = msh_strsplit(line);
 	msh_execute(args);
 	free(line);
+	free(prompt);
 	ft_free_sstr(args);
 	return (0);
 }
