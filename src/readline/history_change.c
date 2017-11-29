@@ -37,7 +37,7 @@ static void	print(t_input *data, t_cmds *history)
 		print_end_col_pad(data->cursor_col);
 }
 
-bool		get_history(t_cmds *history, bool direction)
+static bool	get_history(t_cmds *history, bool direction)
 {
 	if (direction == true && history->hit_end == false)
 			history->current = history;
@@ -51,7 +51,7 @@ bool		get_history(t_cmds *history, bool direction)
 	return (1);
 }
 
-void		history_iterate(t_cmds *history, bool direction)
+static void	iterate(t_cmds *history, bool direction)
 {
 	if (direction == true)
 	{
@@ -75,7 +75,7 @@ void		history_change(t_input *data, t_cmds *history, bool direction)
 	}
 	else if (history->current->cmd)
 	{
-		history_iterate(history, direction);		
+		iterate(history, direction);		
 	}
 	if (history->current && history->current->cmd)
 		print(data, history);	
