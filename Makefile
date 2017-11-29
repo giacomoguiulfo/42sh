@@ -46,7 +46,8 @@ core/sh_singleton\
 readline/readline\
 readline/history_change\
 readline/history_utils\
-readline/move\
+readline/move_basic\
+readline/move_extended\
 readline/insert\
 readline/remove
 

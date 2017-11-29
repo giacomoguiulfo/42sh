@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move.c                                             :+:      :+:    :+:   */
+/*   move_basic.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -94,18 +94,18 @@ void	move_cursor(t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'D')
 	{
-		ft_putstr("\nPressed ctrLEF\n");
+		move_word(data, false);
 	}
 	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'C')
 	{
-		ft_putstr("\nPressed ctrRI\n");
-	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'A')
-	{
-		ft_putstr("\nPressed ctrUP\n");
+		move_word(data, true);
 	}
 	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'B')
 	{
-		ft_putstr("\nPressed ctrDN\n");
+		move_row(data, true);
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'A')
+	{
+		move_row(data, false);
 	}
 }

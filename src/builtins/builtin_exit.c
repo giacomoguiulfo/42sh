@@ -21,7 +21,7 @@ int builtin_exit()
 
 	shell = sh_singleton();
 	history_cleanup(shell->history);
-    // TODO: Clean up stuff before exiting
-    exit(EXIT_SUCCESS);
-    return (0);
+	// TODO: Clean up stuff before exiting
+	exit(EXIT_SUCCESS);
+	return (0);
 }
