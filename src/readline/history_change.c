@@ -40,7 +40,9 @@ static void	print(t_input *data, t_cmds *history)
 static bool	get_history(t_cmds *history, bool direction)
 {
 	if (direction == true && history->hit_end == false)
+	{
 			history->current = history;
+	}
 	else if (direction == false && history->hit_end == true)
 	{
 		history->current = history->end;
@@ -66,7 +68,7 @@ static void	iterate(t_cmds *history, bool direction)
 void		history_change(t_input *data, t_cmds *history, bool direction)
 {
 	clear_line(data);
-	msh_put_arrow();
+	ft_putstr(data->prompt);
 	data->cursor_pos = 0;
 	if (!history->current || !history->current->cmd)
 	{

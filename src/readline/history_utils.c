@@ -47,6 +47,7 @@ void	history_add(t_cmds *head, char *cmd)
 	if (!head->cmd)
 	{
 		head->cmd = ft_strdup(cmd);
+		head->end = head;
 		return ;
 	}
 	else if (!head->next)
