@@ -56,7 +56,7 @@ void		insert(t_input *data)
 
 	clear_insert(data);
 	build_buffer(data);
-	msh_put_arrow();
+	ft_putstr(data->prompt);
 	ft_putstr(data->line_buff);
 	data->cursor_pos++;
 	data->line_size++;

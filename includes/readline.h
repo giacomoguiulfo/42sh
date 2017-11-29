@@ -26,7 +26,7 @@
 
 # define CTRLUP			21
 # define CTRLDN			4
-# define CTRLEF			0x445b1b1b
+# define CTRLEF			"[5"
 # define CTRLRI			18
 
 # define DELETE			127
@@ -54,6 +54,7 @@ typedef struct			s_input
 	bool				continue_loop;
 	char				char_buff[CHAR_BUFF_SIZE];
 	char				line_buff[LINE_BUFF_SIZE];
+	char				*prompt;
 	size_t				cursor_col;
 	size_t				cursor_pos;
 	size_t				cursor_row;
@@ -66,7 +67,7 @@ typedef struct			s_input
 	struct winsize		window_size;
 }						t_input;
 
-char	*readline(size_t prompt);
+char	*readline(char *prompt);
 void	insert(t_input *data);
 void	remove(t_input *data);
 

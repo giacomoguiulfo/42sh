@@ -25,11 +25,12 @@
 static int	sh_readline()
 {
 	char	*line;
+	char	*prompt;
 	char	**args;
-	size_t	prompt;
 
 	prompt = msh_put_arrow();
 	line = readline(prompt);
+	free(prompt);
 	ft_putchar('\n');
 	if (!line)
 		return (0);
