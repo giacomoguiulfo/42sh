@@ -26,9 +26,27 @@ void	move_word(t_input *data, bool direction)
 
 void	move_row(t_input *data, bool direction)
 {
+	int new_row;
+
 	data->width = data->width + 1 - 1;
 	if (direction == true)
-		ft_putstr("\nmoving down\n");
+	{
+		new_row = data->cursor_pos - data->width;
+		if (new_row > -1)
+		{
+			data->cursor_pos = new_row;
+			tputs(tgetstr("up", NULL), 1, ft_putchar);
+		}
+	}
 	else
-		ft_putstr("\nmoving up\n");
+	{
+		new_row = data->cursor_pos + data->width;
+		if (new_row <= (int)data->line_size)
+		{
+			data->cursor_pos = new_row;
+			tputs(tgetstr("do", NULL), 1, ft_putchar);
+			tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col),
+				1, ft_putchar);
+		}
+	}
 }

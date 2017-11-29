@@ -102,10 +102,10 @@ void	move_cursor(t_input *data, t_cmds *history)
 	}
 	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'B')
 	{
-		move_row(data, true);
+		move_row(data, false);
 	}
 	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'A')
 	{
-		move_row(data, false);
+		move_row(data, true);
 	}
 }
