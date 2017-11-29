@@ -41,7 +41,7 @@ static bool	get_history(t_cmds *history, bool direction)
 {
 	if (direction == true && history->hit_end == false)
 	{
-			history->current = history->end;
+		history->current = history->end;
 	}
 	else if (direction == false && history->hit_end == true)
 	{
@@ -77,10 +77,10 @@ void		history_change(t_input *data, t_cmds *history, bool direction)
 	}
 	else if (history->current->cmd)
 	{
-		iterate(history, direction);		
+		iterate(history, direction);
 	}
 	if (history->current && history->current->cmd)
-		print(data, history);	
+		print(data, history);
 	else
 	{
 		ft_bzero(data->line_buff, data->line_size);

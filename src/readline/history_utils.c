@@ -15,6 +15,10 @@
 
 void	history_constructor(t_cmds *history)
 {
+	t_shell *shell;
+
+	shell = sh_singleton();
+	shell->history = history;
 	history->init = true;
 	history->prev = NULL;
 	history->next = NULL;
@@ -39,7 +43,6 @@ void	history_cleanup(t_cmds *head)
 			free(prev);
 		}
 	}
-	free(head);
 }
 
 void	history_add(t_cmds *head, char *cmd)

@@ -12,9 +12,15 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include "../../includes/readline.h"
+#include "../../includes/ft_sh.h"
 
 int builtin_exit()
 {
+	t_shell *shell;
+
+	shell = sh_singleton();
+	history_cleanup(shell->history);
     // TODO: Clean up stuff before exiting
     exit(EXIT_SUCCESS);
     return (0);

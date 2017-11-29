@@ -20,12 +20,24 @@
 # define SH_ERR(s, ...)     ft_dprintf(STDERR, SH_MSG(s, ##__VA_ARGS__))
 # define SH_ERR_R1(s, ...)  ((SH_ERR(s, ##__VA_ARGS__)) ? 1 : 1)
 
-typedef struct  s_shell
+typedef struct		s_cmds
 {
-  char          **env;
-  int           argc;
-  char          **argv;
-}               t_shell;
+	bool			init;
+	bool			hit_end;
+	char			*cmd;
+	struct s_cmds	*current;
+	struct s_cmds	*end;
+	struct s_cmds	*next;
+	struct s_cmds	*prev;
+}					t_cmds;
+
+typedef struct  	s_shell
+{
+	char			**env;
+	int           	argc;
+	char          	**argv;
+	struct s_cmds	*history;
+}					t_shell;
 
 int     sh_init();
 t_shell *sh_singleton();

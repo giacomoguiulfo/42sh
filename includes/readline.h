@@ -38,17 +38,6 @@
 # define RIGHT			67
 # define UP				65
 
-typedef struct			s_cmds
-{
-	bool				init;
-	bool				hit_end;
-	char				*cmd;
-	struct s_cmds		*current;
-	struct s_cmds		*end;
-	struct s_cmds		*next;
-	struct s_cmds		*prev;
-}						t_cmds;
-
 typedef struct			s_input
 {
 	bool				continue_loop;
@@ -71,10 +60,10 @@ char	*readline(char *prompt);
 void	insert(t_input *data);
 void	remove(t_input *data);
 
-void	history_constructor(t_cmds *history);
 void	history_add(t_cmds *head, char *cmd);
 void	history_change(t_input *data, t_cmds *history, bool direction);
-void	history_up(t_input *data, t_cmds *history);
+void	history_cleanup(t_cmds *history);
+void	history_constructor(t_cmds *history);
 
 void	move_cursor(t_input *data, t_cmds *history);
 void	move_end(t_input *data);

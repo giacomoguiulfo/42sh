@@ -70,7 +70,7 @@ char		*readline(char *prompt)
 		if (ft_isprint(data.char_buff[0]))
 			insert(&data);
 		else if (data.char_buff[0] == DELETE)
-			remove(&data); // TODO: change name
+			remove(&data);
 		else if (data.char_buff[0] == 27)
 			move_cursor(&data, &history);
 		else if (data.char_buff[0] == ENTER)
