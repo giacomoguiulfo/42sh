@@ -51,6 +51,7 @@ static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 	data->cursor_row = 0;
 	data->continue_loop = true;
 	history->current = NULL;
+	history->hit_end = false;
 	if (history->init == false)
 		history_constructor(history);
 }

@@ -41,11 +41,11 @@ static bool	get_history(t_cmds *history, bool direction)
 {
 	if (direction == true && history->hit_end == false)
 	{
-			history->current = history;
+			history->current = history->end;
 	}
 	else if (direction == false && history->hit_end == true)
 	{
-		history->current = history->end;
+		history->current = history;
 		history->hit_end = false;
 	}
 	else
@@ -57,12 +57,12 @@ static void	iterate(t_cmds *history, bool direction)
 {
 	if (direction == true)
 	{
-		history->current = history->current->next;
+		history->current = history->current->prev;
 		if (!history->current)
 			history->hit_end = true;
 	}
 	else
-		history->current = history->current->prev;
+		history->current = history->current->next;
 }
 
 void		history_change(t_input *data, t_cmds *history, bool direction)
