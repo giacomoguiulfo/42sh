@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/28 10:00:03 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/11/28 11:36:01 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME		:= minishell
 
 CC			?= gcc
 CFLAGS		+= -std=c99
-CFLAGS		+= -Wall -Wextra -Werror -Wfloat-equal -Wundef
+CFLAGS		+= -Wall -Wextra -Werror
+# CLAFGS		+=  -Wfloat-equal -Wundef
 # CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
 # CFLAGS		+= -O3 -march=native -pipe -flto
 
@@ -67,13 +68,17 @@ NB				= $(words $(SRC_BASE))
 INDEX			= 0
 
 all:
+	@$(MAKE) -C $(LIBFT_DIR)
 	@$(MAKE) -j $(NAME)
 
-$(NAME): $(LIBFT_LIB) $(OBJ_DIR) $(OBJ) Makefile
-	@$(CC) $(LDFLAGS) $(OBJ) -o $@\
+$(NAME): $(LIBFT_LIB) $(OBJ_DIR) $(OBJ)
+	@$(CC) $(OBJ) -o $@\
 			-I $(INC_DIR) \
 			-I $(LIBFT_INC) \
-			$(LIBS) $(LIBFT_LNK)
+			$(LIBS)\
+			$(LIBFT_LIB)\
+			$(CFLAGS)
+	@strip -x $@
 	@printf "\r\033[38;5;15m✓ make   $(BASENAME)\033[0m\033[K\n";
 
 $(OBJ_DIR):
@@ -91,7 +96,7 @@ $(OBJ_DIR)%.o:$(SRC_DIR)%.c Makefile | $(OBJ_DIR)
 		-I $(LIBFT_INC)
 	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
 
-clean:
+clean: cleanlib
 	@if [ -e $(OBJ_DIR) ]; \
 	then \
 		rm -rf $(OBJ_DIR); \
@@ -99,7 +104,7 @@ clean:
 		printf "\r\033[38;5;219m✗ clean  $(BASENAME)\033[0m\033[K\n"; \
 	fi;
 
-fclean: clean
+fclean: clean fcleanlib
 	@if [ -e $(NAME) ]; \
 	then \
 		rm -rf $(NAME); \
@@ -117,11 +122,10 @@ $(LIBFT_LIB):
 cleanlib:
 	@make -C $(LIBFT_DIR) clean
 
-fcleanlib:
+fcleanlib: cleanlib
 	@make -C $(LIBFT_DIR) fclean
 
-relib:
-	@make -C $(LIBFT_DIR) re
+relib: fcleanlib libft
 
 .PHONY: all clean cleanlib fclean fcleanlib re relib
 

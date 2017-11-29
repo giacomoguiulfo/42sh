@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 10:39:25 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/11/28 15:35:31 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-
-#ifdef __linux__
-# include <linux/limits.h>
-#else
-# include <limits.h>
-#endif
 
 static int	sh_readline()
 {
@@ -54,7 +48,7 @@ static int	sh_instruction()
 
 int			main(int ac, char **av)
 {
-	// g_argv = av;
+	g_argv = av;
 	if (sh_init(ac, av))
 		return (0);
 	while (42)
