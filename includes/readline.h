@@ -38,6 +38,11 @@
 # define RIGHT			67
 # define UP				65
 
+typedef struct			s_text
+{
+	bool				copy_on;	
+}						t_text;
+
 typedef struct			s_input
 {
 	bool				continue_loop;
@@ -54,6 +59,7 @@ typedef struct			s_input
 	size_t				prompt_size;
 	size_t				width;
 	struct winsize		window_size;
+	struct s_text		clipboard;
 }						t_input;
 
 char	*readline(char *prompt);
@@ -70,6 +76,8 @@ void	move_end(t_input *data);
 void	move_home(t_input *data);
 void	move_word(t_input *data, bool direction);
 void	move_row(t_input *data, bool direction);
+
+void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
 
 void	gather_position_data(t_input *data);
 void	print_end_col_pad(size_t cursor_col);

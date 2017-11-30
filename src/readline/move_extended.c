@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "readline.h"
-#include <term.h>
 #include <termios.h>
-#include <sys/ioctl.h>
 
 static void	change_pos(t_input *data, size_t new_pos)
 {

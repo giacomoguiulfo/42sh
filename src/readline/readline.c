@@ -50,6 +50,7 @@ static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 	data->cursor_col = 0;
 	data->cursor_row = 0;
 	data->continue_loop = true;
+	data->clipboard.copy_on = false;
 	history->current = NULL;
 	history->hit_end = false;
 	if (history->init == false)

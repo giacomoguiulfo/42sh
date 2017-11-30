@@ -48,6 +48,7 @@ readline/history_change\
 readline/history_utils\
 readline/move_basic\
 readline/move_extended\
+readline/copy_cut_paste\
 readline/insert\
 readline/remove
 
