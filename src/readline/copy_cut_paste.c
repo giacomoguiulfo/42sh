@@ -66,6 +66,16 @@ static void	copy(t_input *data, t_text *clipboard)
 	clipboard->copied = true;
 }
 
+static void	cut(t_input *data, t_text *clipboard)
+{
+	char	buff[LINE_BUFF_SIZE];
+
+	copy(data, clipboard);
+	ft_bzero(buff, LINE_BUFF_SIZE);
+	
+	clear_highlights(data);
+}
+
 static void paste(t_input *data, t_text *clipboard)
 {
 	char	buff[LINE_BUFF_SIZE];
@@ -88,7 +98,7 @@ void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)
 	if (mode == 0 && clipboard->copy_on == true)
 		copy(data, clipboard);
 	else if (mode == 1 && clipboard->copy_on == true)
-		ft_putstr("cut this shit, yo\n");
+		cut(data, clipboard);
 	else if (mode == 2)
 		start_stop_highlight(data, clipboard);
 	else if (mode == 3 && clipboard->copied == true)
