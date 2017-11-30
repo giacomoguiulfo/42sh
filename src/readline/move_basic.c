@@ -22,6 +22,8 @@ void	move_right(t_input *data)
 	data->cursor_pos++;
 	if (data->clipboard.copy_on == true)
 	{
+		if (data->clipboard.end < data->cursor_pos)
+			data->clipboard.end = data->cursor_pos;
 		tputs(tgetstr("sc", NULL), 1, ft_putchar);
 		tputs(tgetstr("ic", NULL), 1, ft_putchar);
 		ft_putchar(data->line_buff[data->cursor_pos]);
@@ -42,6 +44,8 @@ void	move_left(t_input *data)
 	data->cursor_pos--;
 	if (data->clipboard.copy_on == true)
 	{
+		if (data->clipboard.start > data->cursor_pos)
+			data->clipboard.start = data->cursor_pos;
 		tputs(tgetstr("sc", NULL), 1, ft_putchar);
 		tputs(tgetstr("ic", NULL), 1, ft_putchar);
 		ft_putchar(data->line_buff[data->cursor_pos]);
@@ -133,5 +137,9 @@ void	move_cursor(t_input *data, t_cmds *history)
 	else if (data->char_buff[1] == '[' && data->char_buff[2] == '3')
 	{
 		copy_cut_paste(data, &data->clipboard, 2);
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == '5')
+	{
+		copy_cut_paste(data, &data->clipboard, 3);
 	}
 }
