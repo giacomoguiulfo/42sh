@@ -102,39 +102,29 @@ t_opt_move	g_opt_move[] = {
 	{"down", 'B', false, &move_word},
 	{"up", 'A', true, &move_word},
 };
-/*
+
 typedef struct	s_move
 {
+	char		name[5];
+	char		id;
+	char		type;
+	bool		direction;
+	void		(*move)(struct s_input *);
+	void		(*history)(struct s_input *, struct s_cmds *, bool);
+}				t_move;
 
-}				t_move;*/
+t_move		g_move[] = {
+	{"right", RIGHT, 'm', true, &move_right, NULL},
+	{"left", LEFT, 'm', true, &move_left, NULL},
+	{"home", HOME, 'm', true, &move_home, NULL},
+	{"end", END, 'm', true, &move_end, NULL},
+	{"up", UP, 'h', true, NULL, &history_change},
+	{"down", DOWN, 'h', false, NULL, &history_change}
+};
 
 void	move_cursor(t_input *data, t_cmds *history)
 {
-	if (data->char_buff[2] == RIGHT)
-	{
-		move_right(data);
-	}
-	else if (data->char_buff[2] == LEFT)
-	{
-		move_left(data);
-	}
-	else if (data->char_buff[2] == HOME)
-	{
-		move_home(data);
-	}
-	else if (data->char_buff[2] == END)
-	{
-		move_end(data);
-	}
-	else if (data->char_buff[2] == UP)
-	{
-		history_change(data, history, true);
-	}
-	else if (data->char_buff[2] == DOWN)
-	{
-		history_change(data, history, false);
-	}
-	else if (data->char_buff[2] == '[')
+	if (data->char_buff[2] == '[')
 	{
 		t_opt_move *check;
 		int i = -1;
@@ -163,5 +153,21 @@ void	move_cursor(t_input *data, t_cmds *history)
 	else if (data->char_buff[0] == -30 && data->char_buff[2] == -102)
 	{
 		copy_cut_paste(data, &data->clipboard, 3);
+	}
+	else
+	{
+		t_move *check_m;
+		int x = -1;
+		while (x < 6)
+		{
+			check_m = &g_move[++x];
+			if (data->char_buff[2] == check_m->id)
+			{
+				if (check_m->type == 'h')
+					check_m->history(data, history, check_m->direction);
+				else
+					check_m->move(data);
+			}
+		}
 	}
 }
