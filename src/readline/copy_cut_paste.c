@@ -15,13 +15,16 @@
 
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)
 {
-	if (mode == 0)
-		ft_putstr("\nPressed pg up: copy\n");
-	else if (mode == 1)
-		ft_putstr("\nPressed pg dn: cut\n");
-	else if (mode == 2)
-		ft_putstr("\nPressed del: start copy\n");
 	data->width = data->width + 1 - 1;
-	clipboard->copy_on = true;
-	clipboard->copy_on = false;
+	if (clipboard->copy_on == false && (mode == 0 || mode == 1 || mode == 2))
+	{
+		clipboard->copy_on = true;
+		tputs(tgoto(tgetstr("so", NULL), 0, data->width - 1), 1, ft_putchar);
+	}
+	else if (clipboard->copy_on == true)
+	{
+		clipboard->copy_on = false;
+		tputs(tgoto(tgetstr("se", NULL), 0, data->width - 1), 1, ft_putchar);
+	}
+
 }
