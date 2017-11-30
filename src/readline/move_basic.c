@@ -108,4 +108,6 @@ void	move_cursor(t_input *data, t_cmds *history)
 	{
 		move_row(data, true);
 	}
+	else if (data->char_buff[2] == '[')
+		ft_putstr(data->char_buff + 2);
 }

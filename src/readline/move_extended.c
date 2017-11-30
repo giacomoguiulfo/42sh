@@ -58,6 +58,8 @@ static void	find_next_word_left(t_input *data)
 			break ;
 		next--;
 	}
+	if (ft_isalnum(data->line_buff[next]))
+		found_char = true;
 	if (found_space == true && found_char == true && data->line_buff[next] == ' ')
 		change_pos(data, ++next);
 	else if (found_space == true && found_char == true)
