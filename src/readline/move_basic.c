@@ -93,7 +93,7 @@ typedef struct	s_opt_move
 	char	name[5];
 	char	id;
 	bool	direction;
-	void	(*handle)(struct s_input *, bool);
+	void	(*opt_move)(struct s_input *, bool);
 }				t_opt_move;
 
 t_opt_move	g_opt_move[] = {
@@ -122,23 +122,56 @@ t_move		g_move[] = {
 	{"down", DOWN, 'h', false, NULL, &history_change}
 };
 
+typedef	struct	s_edit
+{
+	char		name[5];
+	char		id;
+	char		id2;
+	int			opt;
+	void		(*edit)(t_input *data, t_text *clipboard, int opt);	
+}				t_edit;
+
+t_edit		g_edit[] = {
+	{"copy", -61, -89, 0, &copy_cut_paste},
+	{"copy", -30, -119, 1, &copy_cut_paste},
+	{"copy", -30, -85, 2, &copy_cut_paste},
+	{"copy", -30, -102, 3, &copy_cut_paste},
+};
+
 void	move_cursor(t_input *data, t_cmds *history)
 {
+	int x;
+
 	if (data->char_buff[2] == '[')
 	{
 		t_opt_move *check;
-		int i = -1;
-		while (++i < 4)
+		x = -1;
+		while (++x < 4)
 		{
-			check = &g_opt_move[i];
+			check = &g_opt_move[x];
 			if (data->char_buff[3] == check->id)
 			{
-				check->handle(data, check->direction);
+				check->opt_move(data, check->direction);
 				break ;
 			}
 		}
 	}
-	else if (data->char_buff[0] == -61 && data->char_buff[1] == -89)
+	else if (data->char_buff[0] < 0)
+	{
+		t_edit *check_edit;
+
+		x = -1;
+		while (x < 4)
+		{
+			check_edit = &g_edit[++x];
+			if (data->char_buff[1] == check_edit->id2 || data->char_buff[2] == check_edit->id2)
+			{
+				check_edit->edit(data, &data->clipboard, check_edit->opt);
+				break ;
+			}
+		}
+	}
+	/*else if (data->char_buff[0] == -61 && data->char_buff[1] == -89)
 	{
 		copy_cut_paste(data, &data->clipboard, 0);
 	}
@@ -153,11 +186,11 @@ void	move_cursor(t_input *data, t_cmds *history)
 	else if (data->char_buff[0] == -30 && data->char_buff[2] == -102)
 	{
 		copy_cut_paste(data, &data->clipboard, 3);
-	}
+	}*/
 	else
 	{
 		t_move *check_m;
-		int x = -1;
+		x = -1;
 		while (x < 6)
 		{
 			check_m = &g_move[++x];
@@ -167,6 +200,7 @@ void	move_cursor(t_input *data, t_cmds *history)
 					check_m->history(data, history, check_m->direction);
 				else
 					check_m->move(data);
+				break ;
 			}
 		}
 	}
