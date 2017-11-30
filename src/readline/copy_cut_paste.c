@@ -19,7 +19,7 @@
 // page_dn     = cut
 // delete      = start highlight
 
-static void	clear_highlights(t_input *data)
+static void	clear_highlights(t_input *data, bool opt)
 {
 	size_t row;
 	size_t col;
@@ -32,7 +32,8 @@ static void	clear_highlights(t_input *data)
 	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_putchar);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	ft_putstr(data->line_buff);
-	tputs(tgetstr("rc", NULL), 1, ft_putchar);
+	if (opt == true)
+		tputs(tgetstr("rc", NULL), 1, ft_putchar);
 }
 
 static void start_stop_highlight(t_input *data, t_text *clipboard)
@@ -53,7 +54,7 @@ static void start_stop_highlight(t_input *data, t_text *clipboard)
 	{
 		clipboard->copy_on = false;
 		tputs(tgetstr("se", NULL), 1, ft_putchar);
-		clear_highlights(data);
+		clear_highlights(data, true);
 	}
 }
 
@@ -72,8 +73,12 @@ static void	cut(t_input *data, t_text *clipboard)
 
 	copy(data, clipboard);
 	ft_bzero(buff, LINE_BUFF_SIZE);
-	
-	clear_highlights(data);
+	ft_strncpy(buff, data->line_buff, clipboard->start);
+	ft_strcpy(buff + clipboard->start, data->line_buff + clipboard->end + 1);
+	ft_strcpy(data->line_buff, buff);
+	clear_highlights(data, false);
+	data->line_size = ft_strlen(data->line_buff);
+	data->cursor_pos = data->line_size;
 }
 
 static void paste(t_input *data, t_text *clipboard)
@@ -81,16 +86,13 @@ static void paste(t_input *data, t_text *clipboard)
 	char	buff[LINE_BUFF_SIZE];
 
 	ft_bzero(buff, LINE_BUFF_SIZE);
-	ft_printf("\nstart: %zu, end: %zu\n", clipboard->start, clipboard->end);
-	ft_printf("clipboard: %s\n", clipboard->temp_buff);
 	ft_strncpy(buff, data->line_buff, data->cursor_pos);
 	ft_strcpy(buff + data->cursor_pos, clipboard->temp_buff);
 	ft_strcpy(buff + data->cursor_pos + ft_strlen(clipboard->temp_buff), data->line_buff + data->cursor_pos);
-	data->line_size = ft_strlen(buff);
 	ft_strcpy(data->line_buff, buff);
+	clear_highlights(data, false);
+	data->line_size = ft_strlen(data->line_buff);
 	data->cursor_pos = data->line_size;
-	ft_printf("buff: %s\n", buff);
-	ft_printf("line: %s\n", data->line_buff);
 }
 
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)
