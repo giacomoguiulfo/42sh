@@ -126,19 +126,19 @@ void	move_cursor(t_input *data, t_cmds *history)
 	{
 		move_row(data, true);
 	}
-	else if (data->char_buff[1] == '[' && data->char_buff[2] == '5')
+	else if (data->char_buff[0] == -61 && data->char_buff[1] == -89)
 	{
 		copy_cut_paste(data, &data->clipboard, 0);
 	}
-	else if (data->char_buff[1] == '[' && data->char_buff[2] == '6')
+	else if (data->char_buff[0] == -30 && data->char_buff[1] == -119)
 	{
 		copy_cut_paste(data, &data->clipboard, 1);
 	}
-	else if (data->char_buff[1] == '[' && data->char_buff[2] == '3')
+	else if (data->char_buff[0] == -30 && data->char_buff[2] == -85)
 	{
 		copy_cut_paste(data, &data->clipboard, 2);
 	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == '5')
+	else if (data->char_buff[0] == -30 && data->char_buff[2] == -102)
 	{
 		copy_cut_paste(data, &data->clipboard, 3);
 	}
