@@ -15,6 +15,8 @@
 
 void	move_right(t_input *data)
 {
+	if (data->cursor_pos == data->line_size)
+		return ;
 	if (data->cursor_col + 1 == data->width)
 		tputs(tgetstr("do", NULL), 1, ft_putchar);
 	else
@@ -34,6 +36,8 @@ void	move_right(t_input *data)
 
 void	move_left(t_input *data)
 {
+	if (data->cursor_pos == 0)
+		return ;
 	if (data->cursor_col == 0)
 	{
 		tputs(tgetstr("up", NULL), 1, ft_putchar);
@@ -84,13 +88,33 @@ void	move_end(t_input *data)
 	data->cursor_pos = data->line_size;
 }
 
+typedef struct	s_opt_move
+{
+	char	name[5];
+	char	id;
+	bool	direction;
+	void	(*handle)(struct s_input *, bool);
+}				t_opt_move;
+
+t_opt_move	g_opt_move[] = {
+	{"left", 'D', false, &move_word},
+	{"right", 'C', true, &move_word},
+	{"down", 'B', false, &move_word},
+	{"up", 'A', true, &move_word},
+};
+/*
+typedef struct	s_move
+{
+
+}				t_move;*/
+
 void	move_cursor(t_input *data, t_cmds *history)
 {
-	if (data->char_buff[2] == RIGHT && data->cursor_pos < data->line_size)
+	if (data->char_buff[2] == RIGHT)
 	{
 		move_right(data);
 	}
-	else if (data->char_buff[2] == LEFT && data->cursor_pos > 0)
+	else if (data->char_buff[2] == LEFT)
 	{
 		move_left(data);
 	}
@@ -110,21 +134,19 @@ void	move_cursor(t_input *data, t_cmds *history)
 	{
 		history_change(data, history, false);
 	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'D')
+	else if (data->char_buff[2] == '[')
 	{
-		move_word(data, false);
-	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'C')
-	{
-		move_word(data, true);
-	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'B')
-	{
-		move_row(data, false);
-	}
-	else if (data->char_buff[2] == '[' && data->char_buff[3] == 'A')
-	{
-		move_row(data, true);
+		t_opt_move *check;
+		int i = -1;
+		while (++i < 4)
+		{
+			check = &g_opt_move[i];
+			if (data->char_buff[3] == check->id)
+			{
+				check->handle(data, check->direction);
+				break ;
+			}
+		}
 	}
 	else if (data->char_buff[0] == -61 && data->char_buff[1] == -89)
 	{

@@ -13,18 +13,6 @@
 #include "readline.h"
 #include <termios.h>
 
-// KEYS:
-// opt-page_up = paste
-// page_up     = copy
-// page_dn     = cut
-// delete      = start highlight
-
-// int values
-// opt-x       = -30, -119, -120
-// opt-c       = -61, -89, 0
-// opt-v       = -30, -120, -102
-// opt-b       = -30, -120, -85
-
 static void	clear_highlights(t_input *data, bool opt)
 {
 	size_t row;
@@ -77,8 +65,8 @@ static void	cut(t_input *data, t_text *clipboard)
 {
 	char	buff[LINE_BUFF_SIZE];
 
-	copy(data, clipboard);
 	ft_bzero(buff, LINE_BUFF_SIZE);
+	copy(data, clipboard);
 	ft_strncpy(buff, data->line_buff, clipboard->start);
 	ft_strcpy(buff + clipboard->start, data->line_buff + clipboard->end + 1);
 	ft_strcpy(data->line_buff, buff);
