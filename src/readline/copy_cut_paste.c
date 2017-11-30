@@ -64,8 +64,8 @@ static void	copy(t_input *data, t_text *clipboard)
 	ft_bzero(clipboard->temp_buff, LINE_BUFF_SIZE);
 	ft_strncpy(clipboard->temp_buff, data->line_buff + clipboard->start, clipboard->end - clipboard->start);
 	start_stop_highlight(data, clipboard);
+	clipboard->copy_on = false;
 	clipboard->copied = true;
-	ft_putstr(clipboard->temp_buff);
 }
 
 static void paste(t_input *data, t_text *clipboard)
