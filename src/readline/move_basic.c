@@ -20,6 +20,14 @@ void	move_right(t_input *data)
 	else
 		tputs(tgetstr("nd", NULL), 1, ft_putchar);
 	data->cursor_pos++;
+	if (data->clipboard.copy_on == true)
+	{
+		tputs(tgetstr("sc", NULL), 1, ft_putchar);
+		tputs(tgetstr("ic", NULL), 1, ft_putchar);
+		ft_putchar(data->line_buff[data->cursor_pos]);
+		tputs(tgetstr("ei", NULL), 1, ft_putchar);
+		tputs(tgetstr("rc", NULL), 1, ft_putchar);
+	}
 }
 
 void	move_left(t_input *data)
@@ -32,6 +40,14 @@ void	move_left(t_input *data)
 	else
 		tputs(tgetstr("le", NULL), 1, ft_putchar);
 	data->cursor_pos--;
+	if (data->clipboard.copy_on == true)
+	{
+		tputs(tgetstr("sc", NULL), 1, ft_putchar);
+		tputs(tgetstr("ic", NULL), 1, ft_putchar);
+		ft_putchar(data->line_buff[data->cursor_pos]);
+		tputs(tgetstr("ei", NULL), 1, ft_putchar);
+		tputs(tgetstr("rc", NULL), 1, ft_putchar);
+	}
 }
 
 void	move_home(t_input *data)

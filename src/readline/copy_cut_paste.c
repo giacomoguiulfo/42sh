@@ -19,12 +19,16 @@ void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)
 	if (clipboard->copy_on == false && (mode == 0 || mode == 1 || mode == 2))
 	{
 		clipboard->copy_on = true;
-		tputs(tgoto(tgetstr("so", NULL), 0, data->width - 1), 1, ft_putchar);
+		tputs(tgetstr("so", NULL), 1, ft_putchar);
+		tputs(tgetstr("sc", NULL), 1, ft_putchar);
+		tputs(tgetstr("ic", NULL), 1, ft_putchar);
+		ft_putchar(data->line_buff[data->cursor_pos]);
+		tputs(tgetstr("ei", NULL), 1, ft_putchar);
+		tputs(tgetstr("rc", NULL), 1, ft_putchar);
 	}
 	else if (clipboard->copy_on == true)
 	{
 		clipboard->copy_on = false;
-		tputs(tgoto(tgetstr("se", NULL), 0, data->width - 1), 1, ft_putchar);
+		tputs(tgetstr("se", NULL), 1, ft_putchar);
 	}
-
 }

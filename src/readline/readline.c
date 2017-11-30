@@ -78,6 +78,7 @@ char		*readline(char *prompt)
 			data.continue_loop = false;
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
+	tputs(tgoto(tgetstr("se", NULL), 0, data.width - 1), 1, ft_putchar);
 	if (ft_stris(data.line_buff, ft_isspace))
 		return (NULL);
 	history_add(&history, data.line_buff);
