@@ -17,6 +17,7 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static void	get_window_size(t_input *data)
 {
@@ -67,12 +68,19 @@ char		*readline(char *prompt)
 	{
 		if (read(0, &data.char_buff, 5) == -1)
 			return (NULL);
+		ft_printf("\n1buff: %s\n", data.char_buff);
+		ft_printf("\n2buff: %s\n", data.char_buff + 1);
+		printf("\nchar 0: %u\n", data.char_buff[0]);
+		printf("\nchar 1: %u\n", data.char_buff[1]);
+		printf("\nchar 2: %u\n", data.char_buff[2]);
+		printf("\nchar 3: %u\n", data.char_buff[3]);
+		printf("\nchar 4: %u\n", data.char_buff[4]);
 		get_terminal_meta(&data);
 		if (ft_isprint(data.char_buff[0]))
 			insert(&data);
 		else if (data.char_buff[0] == DELETE)
-			remove(&data);
-		else if (data.char_buff[0] == 27)
+			trim(&data);
+		else if (data.char_buff[0] == 27 || data.char_buff < 0)
 			move_cursor(&data, &history);
 		else if (data.char_buff[0] == ENTER)
 			data.continue_loop = false;

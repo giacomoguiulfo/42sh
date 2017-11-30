@@ -19,6 +19,12 @@
 // page_dn     = cut
 // delete      = start highlight
 
+// int values
+// opt-x       = -30, -119, -120
+// opt-c       = -61, -89, 0
+// opt-v       = -30, -120, -102
+// opt-b       = -30, -120, -85
+
 static void	clear_highlights(t_input *data, bool opt)
 {
 	size_t row;

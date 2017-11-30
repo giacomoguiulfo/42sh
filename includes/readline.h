@@ -63,7 +63,7 @@ typedef struct			s_input
 
 char	*readline(char *prompt);
 void	insert(t_input *data);
-void	remove(t_input *data);
+void	trim(t_input *data);
 
 void	history_add(t_cmds *head, char *cmd);
 void	history_change(t_input *data, t_cmds *history, bool direction);

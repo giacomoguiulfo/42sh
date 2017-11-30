@@ -14,7 +14,7 @@
 #include "ft_sh.h"
 #include <term.h>
 
-void	remove(t_input *data)
+void	trim(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
 	char	*tmp;
