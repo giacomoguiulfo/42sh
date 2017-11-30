@@ -108,6 +108,12 @@ void	move_cursor(t_input *data, t_cmds *history)
 	{
 		move_row(data, true);
 	}
-	else if (data->char_buff[2] == '[')
-		ft_putstr(data->char_buff + 2);
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == '5')
+	{
+		ft_putstr("Pressed opt-Page Up Key\n");
+	}
+	else if (data->char_buff[2] == '[' && data->char_buff[3] == '6')
+	{
+		ft_putstr("Pressed opt-Page Dn Key\n");
+	}
 }
