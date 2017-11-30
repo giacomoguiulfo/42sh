@@ -73,8 +73,13 @@ static void paste(t_input *data, t_text *clipboard)
 	ft_bzero(buff, LINE_BUFF_SIZE);
 	ft_printf("\nstart: %zu, end: %zu\n", clipboard->start, clipboard->end);
 	ft_printf("clipboard: %s\n", clipboard->temp_buff);
-	ft_strncpy(buff, data->line_buff, data->cursor_po)
-	ft_strncpy(buff + data->cursor_pos, clipboard->temp_buff);
+	ft_strncpy(buff, data->line_buff, data->cursor_pos);
+	ft_strcpy(buff + data->cursor_pos, clipboard->temp_buff);
+	ft_strcpy(buff + data->cursor_pos + ft_strlen(clipboard->temp_buff), data->line_buff + data->cursor_pos);
+	data->line_size = ft_strlen(buff);
+	ft_strcpy(data->line_buff, buff);
+	data->cursor_pos = data->line_size;
+	ft_printf("buff: %s\n", buff);
 	ft_printf("line: %s\n", data->line_buff);
 }
 
