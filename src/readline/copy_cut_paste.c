@@ -54,15 +54,13 @@ static void start_stop_highlight(t_input *data, t_text *clipboard)
 		clipboard->copy_on = false;
 		tputs(tgetstr("se", NULL), 1, ft_putchar);
 		clear_highlights(data);
-		data->clipboard.start = 0;
-		data->clipboard.end = 0;
 	}
 }
 
 static void	copy(t_input *data, t_text *clipboard)
 {
 	ft_bzero(clipboard->temp_buff, LINE_BUFF_SIZE);
-	ft_strncpy(clipboard->temp_buff, data->line_buff + clipboard->start, clipboard->end - clipboard->start);
+	ft_strncpy(clipboard->temp_buff, data->line_buff + clipboard->start, clipboard->end - clipboard->start + 1);
 	start_stop_highlight(data, clipboard);
 	clipboard->copy_on = false;
 	clipboard->copied = true;
@@ -70,8 +68,14 @@ static void	copy(t_input *data, t_text *clipboard)
 
 static void paste(t_input *data, t_text *clipboard)
 {
-	data->width = data->width - 1 + 1;
-	ft_putstr(clipboard->temp_buff);
+	char	buff[LINE_BUFF_SIZE];
+
+	ft_bzero(buff, LINE_BUFF_SIZE);
+	ft_printf("\nstart: %zu, end: %zu\n", clipboard->start, clipboard->end);
+	ft_printf("clipboard: %s\n", clipboard->temp_buff);
+	ft_strncpy(buff, data->line_buff, data->cursor_po)
+	ft_strncpy(buff + data->cursor_pos, clipboard->temp_buff);
+	ft_printf("line: %s\n", data->line_buff);
 }
 
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)
