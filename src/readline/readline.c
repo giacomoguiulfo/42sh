@@ -69,9 +69,9 @@ char		*readline(char *prompt)
 		if (read(0, &data.char_buff, 5) == -1)
 			return (NULL);
 		get_terminal_meta(&data);
-		if (ft_isprint(data.char_buff[0]) && data.clipboard.copy_on == false)
+		if (ft_isprint(data.char_buff[0]))
 			insert(&data);
-		else if (data.char_buff[0] == DELETE && data.clipboard.copy_on == false)
+		else if (data.char_buff[0] == DELETE)
 			trim(&data);
 		else if (data.char_buff[0] == 27 || data.char_buff[0] < 0)
 			move_cursor(&data, &history);

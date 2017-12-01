@@ -14,12 +14,24 @@
 #include "ft_sh.h"
 #include <term.h>
 
+static void	output(char *buff)
+{
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	tputs(tgetstr("sc", NULL), 1, ft_putchar);
+	tputs(tgetstr("im", NULL), 1, ft_putchar);
+	ft_putstr(buff);
+	tputs(tgetstr("ei", NULL), 1, ft_putchar);
+	tputs(tgetstr("rc", NULL), 1, ft_putchar);
+}
+
 void	trim(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
 	char	*tmp;
 
 	if (data->cursor_pos == 0)
+		return ;
+	else if (data->clipboard.copy_on == true)
 		return ;
 	ft_bzero((void*)buff, ft_strlen(data->line_buff + 1));
 	tmp = &data->line_buff[data->cursor_pos - 1];
@@ -33,12 +45,7 @@ void	trim(t_input *data)
 	}
 	else
 		tputs(tgetstr("le", NULL), 1, ft_putchar);
-	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	tputs(tgetstr("sc", NULL), 1, ft_putchar);
-	tputs(tgetstr("im", NULL), 1, ft_putchar);
-	ft_putstr(buff);
-	tputs(tgetstr("ei", NULL), 1, ft_putchar);
-	tputs(tgetstr("rc", NULL), 1, ft_putchar);
+	output(buff);
 	data->cursor_pos--;
 	data->line_size--;
 }

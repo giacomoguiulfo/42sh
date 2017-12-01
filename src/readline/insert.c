@@ -56,6 +56,8 @@ void		insert(t_input *data)
 
 	if (!str_protection(data->line_size, data->line_size + 1))
 		return ;
+	else if (data->clipboard.copy_on == true)
+		return ;
 	clear_insert(data);
 	build_buffer(data);
 	ft_putstr(data->prompt);
