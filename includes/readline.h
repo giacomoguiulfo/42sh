@@ -104,5 +104,7 @@ void	print_end_col_pad(size_t cursor_col);
 
 void	enter_key(struct s_klist *master);
 void	print_key(struct s_klist *master);
+void	opt_move_key(struct s_klist *master);
+void	move_key(struct s_klist *master);
 
 #endif
