@@ -26,20 +26,6 @@ static void	clear_insert(t_input *data)
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }
 
-void	print_end_col_pad(size_t cursor_col)
-{
-	tputs(tgetstr("do", NULL), 1, ft_putchar);
-	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_putchar);
-}
-
-void	gather_position_data(t_input *data)
-{
-	data->end_col = (data->prompt_size + data->line_size) % data->width;
-	data->end_row = (data->prompt_size + data->line_size) / data->width;
-	data->cursor_row = (data->prompt_size + data->cursor_pos) / data->width;
-	data->cursor_col = (data->prompt_size + data->cursor_pos) % data->width;
-}
-
 static void	build_buffer(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
@@ -48,6 +34,24 @@ static void	build_buffer(t_input *data)
 	ft_strcat(buff, data->line_buff + data->cursor_pos);
 	data->line_buff[data->cursor_pos] = '\0';
 	ft_strcat(data->line_buff, buff);
+	ft_putstr(data->prompt);
+	ft_putstr(data->line_buff);
+	data->cursor_pos++;
+	data->line_size++;
+}
+
+void		gather_position_data(t_input *data)
+{
+	data->end_col = (data->prompt_size + data->line_size) % data->width;
+	data->end_row = (data->prompt_size + data->line_size) / data->width;
+	data->cursor_row = (data->prompt_size + data->cursor_pos) / data->width;
+	data->cursor_col = (data->prompt_size + data->cursor_pos) % data->width;
+}
+
+void		print_end_col_pad(size_t cursor_col)
+{
+	tputs(tgetstr("do", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, cursor_col), 1, ft_putchar);
 }
 
 void		insert(t_input *data)
@@ -60,10 +64,6 @@ void		insert(t_input *data)
 		return ;
 	clear_insert(data);
 	build_buffer(data);
-	ft_putstr(data->prompt);
-	ft_putstr(data->line_buff);
-	data->cursor_pos++;
-	data->line_size++;
 	gather_position_data(data);
 	if (data->end_col == 0)
 		print_end_col_pad(data->cursor_col);
