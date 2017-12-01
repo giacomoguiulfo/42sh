@@ -54,6 +54,8 @@ void		insert(t_input *data)
 {
 	size_t	x;
 
+	if (!str_protection(data->line_size, data->line_size + 1))
+		return ;
 	clear_insert(data);
 	build_buffer(data);
 	ft_putstr(data->prompt);

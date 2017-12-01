@@ -71,6 +71,8 @@ void	history_cleanup(t_cmds *history);
 void	history_constructor(t_cmds *history);
 
 void	move_cursor(t_input *data, t_cmds *history);
+void	move_left(t_input *data);
+void	move_right(t_input *data);
 void	move_end(t_input *data);
 void	move_home(t_input *data);
 void	move_word(t_input *data, bool direction);
@@ -78,6 +80,7 @@ void	move_row(t_input *data, bool direction);
 
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
 
+bool	str_protection(size_t first, size_t second);
 void	gather_position_data(t_input *data);
 void	print_end_col_pad(size_t cursor_col);
 

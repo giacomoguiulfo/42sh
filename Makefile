@@ -47,10 +47,12 @@ readline/readline\
 readline/history_change\
 readline/history_utils\
 readline/move_basic\
+readline/move_cursor\
 readline/move_extended\
 readline/copy_cut_paste\
 readline/insert\
-readline/trim
+readline/trim\
+readline/utils
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/
