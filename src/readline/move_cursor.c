@@ -108,7 +108,7 @@ void	move(t_input *data, t_cmds *history)
 		check_m = &g_move[x];
 		if (data->char_buff[2] == check_m->id)
 		{
-			if (check_m->type == 'h')
+			if (check_m->type == 'h' && data->clipboard.copy_on == false)
 				check_m->history(data, history, check_m->direction);
 			else
 				check_m->move(data);
@@ -119,10 +119,12 @@ void	move(t_input *data, t_cmds *history)
 
 void	move_cursor(t_input *data, t_cmds *history)
 {
-	if (data->char_buff[2] == '[' && data->clipboard.copy_on == false)
+	if (data->char_buff[2] == LEFT || data->char_buff[2] == RIGHT)
+		move(data, history);
+	else if (data->clipboard.copy_on == false)
+		move(data, history);
+	else if (data->char_buff[2] == '[' && data->clipboard.copy_on == false)
 		opt_move(data);
 	else if (data->char_buff[0] < 0)
 		edit_text(data, &data->clipboard);
-	else
-		move(data, history);
 }
