@@ -21,6 +21,7 @@ t_strfmap	g_builtins[] =
 	{"echo", &builtin_echo},
 	{"cd", &builtin_cd},
 	{"env", &builtin_env},
+	{"history", &builtin_history},
 	{"setenv", &builtin_setenv},
 	{"unsetenv", &builtin_unsetenv},
 	{"exit", &builtin_exit},

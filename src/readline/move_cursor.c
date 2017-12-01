@@ -88,7 +88,8 @@ void	edit_text(t_input *data, t_text *clipboard)
 	while (++x < 4)
 	{
 		check_edit = &g_edit[x];
-		if (data->char_buff[1] == check_edit->id2 || data->char_buff[2] == check_edit->id2)
+		if (data->char_buff[1] == check_edit->id2 ||
+			data->char_buff[2] == check_edit->id2)
 		{
 			check_edit->edit(data, clipboard, check_edit->opt);
 			break ;
@@ -118,7 +119,7 @@ void	move(t_input *data, t_cmds *history)
 
 void	move_cursor(t_input *data, t_cmds *history)
 {
-	if (data->char_buff[2] == '[')
+	if (data->char_buff[2] == '[' && data->clipboard.copy_on == false)
 		opt_move(data);
 	else if (data->char_buff[0] < 0)
 		edit_text(data, &data->clipboard);

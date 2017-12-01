@@ -38,6 +38,7 @@ utils\
 builtins/builtin_cd\
 builtins/builtin_echo\
 builtins/builtin_env\
+builtins/builtin_history\
 builtins/builtin_setenv\
 builtins/builtin_unsetenv\
 builtins/builtin_exit\

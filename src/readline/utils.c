@@ -15,7 +15,14 @@
 
 bool	str_protection(size_t first, size_t second)
 {
-	if (first + second > LINE_BUFF_SIZE - 1)
+	size_t overflow;
+
+	overflow = first + second;
+	if (overflow > LINE_BUFF_SIZE - 1)
+	{
+		ft_printf("Error: buffer length %zu exceeded", LINE_BUFF_SIZE);
+		ft_printf(" by %zu characters\n", overflow - LINE_BUFF_SIZE);
 		return (false);
+	}
 	return (true);
 }

@@ -45,11 +45,12 @@ void	history_cleanup(t_cmds *head)
 	}
 }
 
-void	history_add(t_cmds *head, char *cmd)
+void	history_add(t_input *data, t_cmds *head)
 {
+	tputs(tgoto(tgetstr("se", NULL), 0, data->width - 1), 1, ft_putchar);
 	if (!head->cmd)
 	{
-		head->cmd = ft_strdup(cmd);
+		head->cmd = ft_strdup(data->line_buff);
 		head->end = head;
 		return ;
 	}
@@ -59,12 +60,12 @@ void	history_add(t_cmds *head, char *cmd)
 		head->next->next = NULL;
 		head->next->prev = head;
 		head->end = head->next;
-		head->next->cmd = ft_strdup(cmd);
+		head->next->cmd = ft_strdup(data->line_buff);
 		return ;
 	}
 	head->end->next = (t_cmds*)ft_memalloc(sizeof(t_cmds));
 	head->end->next->next = NULL;
 	head->end->next->prev = head->end;
-	head->end->next->cmd = ft_strdup(cmd);
+	head->end->next->cmd = ft_strdup(data->line_buff);
 	head->end = head->end->next;
 }
