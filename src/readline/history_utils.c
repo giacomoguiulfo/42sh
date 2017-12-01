@@ -47,7 +47,7 @@ void	history_cleanup(t_cmds *head)
 
 void	history_add(t_input *data, t_cmds *head)
 {
-	tputs(tgoto(tgetstr("se", NULL), 0, data->width - 1), 1, ft_putchar);
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 	if (!head->cmd)
 	{
 		head->cmd = ft_strdup(data->line_buff);

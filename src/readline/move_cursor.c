@@ -121,7 +121,7 @@ void	move_cursor(t_input *data, t_cmds *history)
 {
 	if (data->char_buff[2] == LEFT || data->char_buff[2] == RIGHT)
 		move(data, history);
-	else if (data->clipboard.copy_on == false)
+	else if (data->char_buff[2] > 0 && data->clipboard.copy_on == false)
 		move(data, history);
 	else if (data->char_buff[2] == '[' && data->clipboard.copy_on == false)
 		opt_move(data);
