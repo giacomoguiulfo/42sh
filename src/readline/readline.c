@@ -19,27 +19,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	get_window_size(t_input *data)
-{
-	ioctl(0, TIOCGWINSZ, &data->window_size);
-	data->width = data->window_size.ws_col;
-	data->height = data->window_size.ws_row;
-}
-
-static void	get_cursor_pos(t_input *data)
-{
-	data->cursor_row = (data->cursor_pos + data->prompt_size) / data->width;
-	data->cursor_col = (data->cursor_pos + data->prompt_size) % data->width;
-	data->end_row = (data->line_size + data->prompt_size) / data->width;
-	data->end_col = (data->line_size + data->prompt_size) % data->width;
-}
-
-static void	get_terminal_meta(t_input *data)
-{
-	get_window_size(data);
-	get_cursor_pos(data);
-}
-
 static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 {
 	data->prompt = prompt;
@@ -62,6 +41,7 @@ char		*readline(char *prompt)
 {
 	static t_cmds	history;
 	t_input			data;
+	t_klist			key;
 
 	input_constructor(&data, &history, prompt);
 	while (data.continue_loop == true)
@@ -69,14 +49,8 @@ char		*readline(char *prompt)
 		if (read(0, &data.char_buff, 5) == -1)
 			return (NULL);
 		get_terminal_meta(&data);
-		if (ft_isprint(data.char_buff[0]))
-			insert(&data);
-		else if (data.char_buff[0] == DELETE)
-			trim(&data);
-		else if (data.char_buff[0] == 27 || data.char_buff[0] < 0)
-			move_cursor(&data, &history);
-		else if (data.char_buff[0] == ENTER)
-			data.continue_loop = false;
+		get_key(&data, &history, &key);
+		key.this->handle(&key);
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
 	if (ft_stris(data.line_buff, ft_isspace))

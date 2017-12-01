@@ -53,7 +53,8 @@ readline/move_extended\
 readline/copy_cut_paste\
 readline/insert\
 readline/trim\
-readline/utils
+readline/utils\
+readline/get_key
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/

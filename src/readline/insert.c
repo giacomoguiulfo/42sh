@@ -58,7 +58,7 @@ void		insert(t_input *data)
 {
 	size_t	x;
 
-	if (!str_protection(data->line_size, data->line_size + 1))
+	if (!str_protection(data, data->line_size, data->line_size + 1))
 		return ;
 	else if (data->clipboard.copy_on == true)
 		return ;

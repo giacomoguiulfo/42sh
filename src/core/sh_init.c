@@ -30,7 +30,7 @@ void	sh_init_termios(void)
 	struct termios term;
 
 	tcgetattr(STDIN, &term);
-	term.c_lflag &= ~(ICANON | ECHO /*| ISIG*/);
+	term.c_lflag &= ~(ICANON | ECHO /*|ISIG*/ );
     //term.c_oflag &= ~(OPOST);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;

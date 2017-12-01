@@ -54,7 +54,7 @@ static void start_stop_highlight(t_input *data, t_text *clipboard)
 
 static void	copy(t_input *data, t_text *clipboard)
 {
-	if (!str_protection(data->line_size, clipboard->end - clipboard->start))
+	if (!str_protection(data, data->line_size, clipboard->end - clipboard->start))
 		return ;
 	ft_bzero(clipboard->temp_buff, LINE_BUFF_SIZE);
 	ft_strncpy(clipboard->temp_buff, data->line_buff + clipboard->start, clipboard->end - clipboard->start + 1);
@@ -67,7 +67,7 @@ static void	cut(t_input *data, t_text *clipboard)
 {
 	char	buff[LINE_BUFF_SIZE];
 
-	if (!str_protection(data->line_size, clipboard->end - clipboard->start))
+	if (!str_protection(data, data->line_size, clipboard->end - clipboard->start))
 		return ;
 	ft_bzero(buff, LINE_BUFF_SIZE);
 	copy(data, clipboard);
@@ -83,7 +83,7 @@ static void paste(t_input *data, t_text *clipboard)
 {
 	char	buff[LINE_BUFF_SIZE];
 
-	if (!str_protection(data->line_size, clipboard->end - clipboard->start))
+	if (!str_protection(data, data->line_size, clipboard->end - clipboard->start))
 		return ;
 	ft_bzero(buff, LINE_BUFF_SIZE);
 	ft_strncpy(buff, data->line_buff, data->cursor_pos);

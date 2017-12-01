@@ -61,8 +61,26 @@ typedef struct			s_input
 	struct s_text		clipboard;
 }						t_input;
 
+struct t_key;
+
+typedef struct		s_klist
+{
+	struct s_key	**list;
+	t_input			*data;
+	t_cmds			*history;
+	struct s_key	*this;
+}					t_klist;
+
+typedef struct	s_key
+{
+	char		name[10];
+	char		id;
+	void		(*handle)(t_klist *);
+}				t_key;
+
 char	*readline(char *prompt);
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
+void	get_key(t_input *data, t_cmds *history, t_klist *find);
 void	insert(t_input *data);
 void	trim(t_input *data);
 
@@ -79,8 +97,12 @@ void	move_right(t_input *data);
 void	move_row(t_input *data, bool direction);
 void	move_word(t_input *data, bool direction);
 
-bool	str_protection(size_t first, size_t second);
+bool	str_protection(t_input *data, size_t first, size_t second);
 void	gather_position_data(t_input *data);
+void	get_terminal_meta(t_input *data);
 void	print_end_col_pad(size_t cursor_col);
+
+void	enter_key(struct s_klist *master);
+void	print_key(struct s_klist *master);
 
 #endif
