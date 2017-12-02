@@ -34,32 +34,30 @@ typedef struct			s_redir_in
 	int					input_fd_count;
 }						t_redir_in;
 
-typedef struct			s_cmds
+typedef struct			s_command
 {
 	struct s_redir_in	*in;
 	struct s_redir_out	*out;
 	struct s_heredoc	*here;
 	char				*args;
-}						t_cmds;
+}						t_command;
 
-typedef	struct			s_instructions
+typedef	struct			s_instruction
 {
-	struct s_cmds		*instructions;
-}						t_instructions;
+	struct s_command	**commands;
+}						t_instruction;
+
+bool	validate(char *instruction)
+{
+	if (!instruction)
+		return (false);
+	return (true);
+}
 
 bool	lexer(char *instruction)
 {
-	char	**split;
-	int		index;
-
-	index = -1;
-	split = ft_strsplit(instruction, ' ');
-	if (!validation(split))
+	if (!validate(instruction))
 		return (false);
 	//tokenization
-	ft_sstrputs(split);
-	while (split[++index])
-		ft_sstrdel(split, index);
-	free(split);
 	return (true);
 }

@@ -61,21 +61,21 @@ typedef struct			s_input
 	struct s_text		clipboard;
 }						t_input;
 
-typedef struct		s_keychain
+typedef struct			s_keychain
 {
-	struct s_key	**list;
-	struct s_key	*this;
-	t_input			*data;
-	t_cmds			*history;
-	bool			found_key;
-}					t_keychain;
+	struct s_key		**list;
+	struct s_key		*this;
+	t_input				*data;
+	t_cmds				*history;
+	bool				found_key;
+}						t_keychain;
 
-typedef struct	s_key
+typedef struct			s_key
 {
-	char		name[10];
-	char		id;
-	void		(*action)(t_keychain *);
-}				t_key;
+	char				name[10];
+	char				id;
+	void				(*action)(t_keychain *);
+}						t_key;
 
 char	*readline(char *prompt);
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
