@@ -98,7 +98,7 @@ bool	get_close_chain(char *inst, int *index)
 			return (true);
 		}
 	}
-	ft_printf("Lexer: no alpha numeric found for pipe\n");
+	ft_printf("Lexer: no alpha numeric character found for chain\n");
 	return (false);
 }
 
