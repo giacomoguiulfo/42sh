@@ -50,6 +50,37 @@ void	print_key(struct s_klist *master)
 	return ;
 }
 
+void	home_key(struct s_klist *master)
+{
+	if (master->data->clipboard.copy_on == true)
+		return ;
+	move_home(master->data);
+}
+
+void	end_key(struct s_klist *master)
+{
+	if (master->data->clipboard.copy_on == true)
+		return ;
+	move_end(master->data);
+}
+
+void	delete_key(struct s_klist *master)
+{
+	trim(master->data);
+}
+
+void	edit_key(struct s_klist *master)
+{
+	if (master->data->char_buff[0] == -30 && master->data->char_buff[1] == -119) //x
+		copy_cut_paste(master->data, &master->data->clipboard, 1);
+	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -102) //v
+		copy_cut_paste(master->data, &master->data->clipboard, 3);
+	else if (master->data->char_buff[0] == -61 && master->data->char_buff[1] == -89) //c
+		copy_cut_paste(master->data, &master->data->clipboard, 0);
+	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -85) //b
+		copy_cut_paste(master->data, &master->data->clipboard, 2);
+}
+
 t_key		g_key[] = {
 	{"print", 0, &print_key},
 	{"enter", ENTER, &enter_key},
@@ -57,26 +88,21 @@ t_key		g_key[] = {
 	{"move left", LEFT, &move_key},
 	{"move right", RIGHT, &move_key},
 	{"move up", UP, &move_key},
-	{"move down", DOWN, &move_key}
-	//{"edit text", 0, &edit_text},
+	{"move down", DOWN, &move_key},
+	{"move home", HOME, &home_key},
+	{"move end", END, &end_key},
+	{"delete", DELETE, &delete_key},
+	{"edit text", 0, &edit_key},
 };
-/*
-t_move		g_move[] = {
-	{"right", RIGHT, 'm', true, &move_cursors, NULL},
-	{"left", LEFT, 'm', true, &move_cursors, NULL},
-	{"home", HOME, 'm', true, &move_home, NULL},
-	{"end", END, 'm', true, &move_end, NULL},
-	{"up", UP, 'h', true, NULL, &move_cursors},
-	{"down", DOWN, 'h', false, NULL, &move_cursors}
-};*/
 
 void	get_key(t_input *data, t_cmds *history, t_klist *find)
 {
 	find->data = data;
 	find->history = history;
-	//ft_printf("%s\n", data->char_buff + 2);
 	if (ft_isprint(data->char_buff[0])) // regular chars
 		find->this = &g_key[0];
+	else if (data->char_buff[0] == DELETE)
+		find->this = &g_key[9];
 	else if (data->char_buff[2] == g_key[3].id) //move left
 		find->this = &g_key[3];
 	else if (data->char_buff[2] == g_key[4].id) //move right
@@ -89,6 +115,10 @@ void	get_key(t_input *data, t_cmds *history, t_klist *find)
 		find->this = &g_key[6];
 	else if (data->char_buff[0] == g_key[1].id) //enter key
 		find->this = &g_key[1];
-	//else if (data->char_buff[2] > 0)
-	//	find->this = &g_key[4];
+	else if (data->char_buff[2] == g_key[7].id)
+		find->this = &g_key[7];
+	else if (data->char_buff[2] == g_key[8].id)
+		find->this = &g_key[8];
+	else if (data->char_buff[0] < 0)
+		find->this = &g_key[10];
 }
