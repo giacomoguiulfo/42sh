@@ -28,13 +28,13 @@ void	opt_move_key(struct s_klist *master)
 
 void	move_key(struct s_klist *master)
 {
-	if (master->data->char_buff[2] == LEFT)
+	if (master->data->char_buff[2] == KEY_LEFT)
 		move_left(master->data);
-	else if (master->data->char_buff[2] == RIGHT)
+	else if (master->data->char_buff[2] == KEY_RIGHT)
 		move_right(master->data);
-	else if (master->data->char_buff[2] == UP)
+	else if (master->data->char_buff[2] == KEY_UP)
 		history_change(master->data, master->history, true);
-	else if (master->data->char_buff[2] == DOWN)
+	else if (master->data->char_buff[2] == KEY_DOWN)
 		history_change(master->data, master->history, false);
 }
 
@@ -83,15 +83,15 @@ void	edit_key(struct s_klist *master)
 
 t_key		g_key[] = {
 	{"print", 0, &print_key},
-	{"enter", ENTER, &enter_key},
+	{"enter", KEY_ENTER, &enter_key},
 	{"opt-move", '[', &opt_move_key},
-	{"move left", LEFT, &move_key},
-	{"move right", RIGHT, &move_key},
-	{"move up", UP, &move_key},
-	{"move down", DOWN, &move_key},
-	{"move home", HOME, &home_key},
-	{"move end", END, &end_key},
-	{"delete", DELETE, &delete_key},
+	{"move left", KEY_LEFT, &move_key},
+	{"move right", KEY_RIGHT, &move_key},
+	{"move up", KEY_UP, &move_key},
+	{"move down", KEY_DOWN, &move_key},
+	{"move home", KEY_HOME, &home_key},
+	{"move end", KEY_END, &end_key},
+	{"delete", KEY_DELETE, &delete_key},
 	{"edit text", 0, &edit_key},
 };
 
@@ -101,7 +101,7 @@ void	get_key(t_input *data, t_cmds *history, t_klist *find)
 	find->history = history;
 	if (ft_isprint(data->char_buff[0])) // regular chars
 		find->this = &g_key[0];
-	else if (data->char_buff[0] == DELETE) // delete
+	else if (data->char_buff[0] == KEY_DELETE) // delete
 		find->this = &g_key[9];
 	else if (data->char_buff[2] == g_key[3].id) //move left
 		find->this = &g_key[3];

@@ -24,14 +24,14 @@
 # define LINE_BUFF_SIZE 4096
 # define CHAR_BUFF_SIZE 5
 
-# define DELETE			127
-# define DOWN			66
-# define END			70
-# define ENTER			10
-# define HOME			72
-# define LEFT			68
-# define RIGHT			67
-# define UP				65
+# define KEY_DELETE		127
+# define KEY_DOWN		66
+# define KEY_END		70
+# define KEY_ENTER		10
+# define KEY_HOME		72
+# define KEY_LEFT		68
+# define KEY_RIGHT		67
+# define KEY_UP			65
 
 typedef struct			s_text
 {
@@ -61,14 +61,12 @@ typedef struct			s_input
 	struct s_text		clipboard;
 }						t_input;
 
-struct t_key;
-
 typedef struct		s_klist
 {
 	struct s_key	**list;
+	struct s_key	*this;
 	t_input			*data;
 	t_cmds			*history;
-	struct s_key	*this;
 }					t_klist;
 
 typedef struct	s_key
