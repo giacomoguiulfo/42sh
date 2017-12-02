@@ -44,6 +44,7 @@ t_shell *sh_singleton();
 void	sh_shutdown();
 int		msh_execute(char **args);
 char	*readline(char *prompt);
+void	lexer(char *cmds);
 char	*msh_put_arrow(void);
 char	**msh_strsplit(char *line);
 

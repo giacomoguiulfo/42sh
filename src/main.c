@@ -16,32 +16,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static int	sh_readline()
-{
-	char	*line;
-	char	*prompt;
-	char	**args;
-
-	prompt = msh_put_arrow();
-	line = readline(prompt);
-	ft_putchar('\n');
-	if (!line)
-		return (0);
-	args = msh_strsplit(line);
-	msh_execute(args);
-	free(line);
-	free(prompt);
-	ft_free_sstr(args);
-	return (0);
-}
-
 static int	sh_instruction()
 {
+	char	*cmds;
+	char	*prompt;
+
 	while (42)
 	{
-		sh_readline();
-		// lexer
+		prompt = msh_put_arrow();
+		cmds = readline(prompt);
+		free(prompt);
+		if (!cmds)
+			continue ;
+		lexer(cmds);
 		// parser
+		// msh_execute(cmds);
+		free(cmds);
+		//ft_free_sstr(cmds);
 	}
 	// execute instruction
 	return (0);

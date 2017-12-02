@@ -1,38 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/28 17:03:54 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 17:06:22 by gguiulfo         ###   ########.fr       */
+/*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
+/*   Updated: 2017/11/20 09:12:47 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "lexer.h"
+#include "ft_sh.h"
 
-enum e_lexstate
+void	lexer(char *instruction)
 {
-	DEFAULT,
-	PARENTHESIS,
-	HEREDOC,
-	NEWLINE,
-	DELIM,
-	SEPARATOR,
-	WORD,
-	NUMBER,
-	LESS,
-	GREATER,
-	QUOTE,
-	DQUOTE,
-	BQUOTE,
-	BACKSLASH,
-	CURLY_BRACKETS,
-	EOF
-};
-
-void	lexer(char *cmds);
-
-#endif
+	ft_printf("%s\n", instruction);
+}

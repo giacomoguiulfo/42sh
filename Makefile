@@ -44,6 +44,7 @@ builtins/builtin_unsetenv\
 builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
+lexer/lexer\
 readline/readline\
 readline/history_change\
 readline/history_utils\
@@ -53,7 +54,7 @@ readline/copy_cut_paste\
 readline/insert\
 readline/trim\
 readline/utils\
-readline/get_key
+readline/get_key\
 
 INC_DIR		:= includes/
 OBJ_DIR		:= obj/
