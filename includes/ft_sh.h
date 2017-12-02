@@ -33,6 +33,7 @@ typedef struct		s_cmds
 
 typedef struct  	s_shell
 {
+	bool			quit;
 	char			**env;
 	int           	argc;
 	char          	**argv;

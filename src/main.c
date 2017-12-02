@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static int	sh_instruction()
+static int	sh_instruction(t_shell *shell)
 {
 	char	*cmds;
 	char	*prompt;
@@ -33,6 +33,8 @@ static int	sh_instruction()
 		// parser
 		// msh_execute(cmds);
 		free(cmds);
+		if (shell->quit == true)
+			break ;
 		//ft_free_sstr(cmds);
 	}
 	// execute instruction
@@ -41,12 +43,14 @@ static int	sh_instruction()
 
 int			main(int ac, char **av)
 {
+	t_shell *shell;
 	g_argv = av;
 	if (sh_init(ac, av))
 		return (0);
+	shell = sh_singleton();
 	while (42)
 	{
-		sh_instruction();
+		sh_instruction(shell);
 	// 	sh_reset();
 	}
 	builtin_exit();

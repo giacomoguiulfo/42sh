@@ -67,6 +67,7 @@ typedef struct		s_keychain
 	struct s_key	*this;
 	t_input			*data;
 	t_cmds			*history;
+	bool			found_key;
 }					t_keychain;
 
 typedef struct	s_key

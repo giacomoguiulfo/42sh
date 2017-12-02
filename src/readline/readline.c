@@ -37,20 +37,44 @@ static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 		history_constructor(history);
 }
 
+bool		exit_status(t_input *data, int ret)
+{
+	bool	quit;
+	t_shell *shell;
+
+	quit = false;
+	if (data->char_buff[0] == 4)
+	{
+		quit = true;
+		shell = sh_singleton();
+		shell->quit = true;
+		ft_putstr("Found EOF call\n");
+	}
+	else if (ret < 0)
+	{
+		quit = true;
+		ft_putstr("Read error\n");
+	}
+	return (quit);
+}
+
 char		*readline(char *prompt)
 {
 	static t_cmds	history;
 	t_input			data;
 	t_keychain		key;
+	int				ret;
 
 	input_constructor(&data, &history, prompt);
 	while (data.continue_loop == true)
 	{
-		if (read(0, &data.char_buff, 5) == -1)
-			return (NULL);
+		ret = read(0, &data.char_buff, 5);
+		if (exit_status(&data, ret))
+			exit(0);
 		get_terminal_meta(&data);
 		get_key(&data, &history, &key);
-		key.this->action(&key);
+		if (key.found_key == true)
+			key.this->action(&key);
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
 	if (ft_stris(data.line_buff, ft_isspace))

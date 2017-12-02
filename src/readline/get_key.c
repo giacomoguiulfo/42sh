@@ -99,6 +99,7 @@ void	get_key(t_input *data, t_cmds *history, t_keychain *find)
 {
 	find->data = data;
 	find->history = history;
+	find->found_key = true;
 	if (ft_isprint(data->char_buff[0])) // regular chars
 		find->this = &g_key[0];
 	else if (data->char_buff[0] == KEY_DELETE) // delete
@@ -121,4 +122,9 @@ void	get_key(t_input *data, t_cmds *history, t_keychain *find)
 		find->this = &g_key[8];
 	else if (data->char_buff[0] < 0) //edit keys
 		find->this = &g_key[10];
+	else
+	{
+		find->found_key = false;
+		ft_putstr("\nUnknown key\n");
+	}
 }
