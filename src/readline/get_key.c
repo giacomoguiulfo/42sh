@@ -12,7 +12,7 @@
 
 #include "readline.h"
 
-void	opt_move_key(struct s_klist *master)
+void	opt_move_key(struct s_keychain *master)
 {
 	if (master->data->clipboard.copy_on == true)
 		return ;
@@ -26,7 +26,7 @@ void	opt_move_key(struct s_klist *master)
 		move_row(master->data, true);
 }
 
-void	move_key(struct s_klist *master)
+void	move_key(struct s_keychain *master)
 {
 	if (master->data->char_buff[2] == KEY_LEFT)
 		move_left(master->data);
@@ -38,38 +38,38 @@ void	move_key(struct s_klist *master)
 		history_change(master->data, master->history, false);
 }
 
-void	enter_key(struct s_klist *master)
+void	enter_key(struct s_keychain *master)
 {
 	master->data->continue_loop = false;
 	return ;
 }
 
-void	print_key(struct s_klist *master)
+void	print_key(struct s_keychain *master)
 {
 	insert(master->data);
 	return ;
 }
 
-void	home_key(struct s_klist *master)
+void	home_key(struct s_keychain *master)
 {
 	if (master->data->clipboard.copy_on == true)
 		return ;
 	move_home(master->data);
 }
 
-void	end_key(struct s_klist *master)
+void	end_key(struct s_keychain *master)
 {
 	if (master->data->clipboard.copy_on == true)
 		return ;
 	move_end(master->data);
 }
 
-void	delete_key(struct s_klist *master)
+void	delete_key(struct s_keychain *master)
 {
 	trim(master->data);
 }
 
-void	edit_key(struct s_klist *master)
+void	edit_key(struct s_keychain *master)
 {
 	if (master->data->char_buff[0] == -30 && master->data->char_buff[1] == -119) //x
 		copy_cut_paste(master->data, &master->data->clipboard, 1);
@@ -95,7 +95,7 @@ t_key		g_key[] = {
 	{"edit text", 0, &edit_key},
 };
 
-void	get_key(t_input *data, t_cmds *history, t_klist *find)
+void	get_key(t_input *data, t_cmds *history, t_keychain *find)
 {
 	find->data = data;
 	find->history = history;

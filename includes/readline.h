@@ -61,24 +61,24 @@ typedef struct			s_input
 	struct s_text		clipboard;
 }						t_input;
 
-typedef struct		s_klist
+typedef struct		s_keychain
 {
 	struct s_key	**list;
 	struct s_key	*this;
 	t_input			*data;
 	t_cmds			*history;
-}					t_klist;
+}					t_keychain;
 
 typedef struct	s_key
 {
 	char		name[10];
 	char		id;
-	void		(*handle)(t_klist *);
+	void		(*action)(t_keychain *);
 }				t_key;
 
 char	*readline(char *prompt);
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
-void	get_key(t_input *data, t_cmds *history, t_klist *find);
+void	get_key(t_input *data, t_cmds *history, t_keychain *find);
 void	insert(t_input *data);
 void	trim(t_input *data);
 
@@ -99,9 +99,9 @@ void	gather_position_data(t_input *data);
 void	get_terminal_meta(t_input *data);
 void	print_end_col_pad(size_t cursor_col);
 
-void	enter_key(struct s_klist *master);
-void	print_key(struct s_klist *master);
-void	opt_move_key(struct s_klist *master);
-void	move_key(struct s_klist *master);
+void	enter_key(struct s_keychain *master);
+void	print_key(struct s_keychain *master);
+void	opt_move_key(struct s_keychain *master);
+void	move_key(struct s_keychain *master);
 
 #endif

@@ -41,7 +41,7 @@ char		*readline(char *prompt)
 {
 	static t_cmds	history;
 	t_input			data;
-	t_klist			key;
+	t_keychain		key;
 
 	input_constructor(&data, &history, prompt);
 	while (data.continue_loop == true)
@@ -50,7 +50,7 @@ char		*readline(char *prompt)
 			return (NULL);
 		get_terminal_meta(&data);
 		get_key(&data, &history, &key);
-		key.this->handle(&key);
+		key.this->action(&key);
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
 	if (ft_stris(data.line_buff, ft_isspace))
