@@ -13,7 +13,15 @@
 #include "lexer.h"
 #include "ft_sh.h"
 
-void	lexer(char *instruction)
+bool	lexer(char *instruction)
 {
-	ft_printf("%s\n", instruction);
+	char	**split;
+	int		index;
+
+	index = -1;
+	split = ft_strsplit(instruction, ' ');
+	ft_sstrputs(split);
+	while (split[++index])
+		ft_sstrdel(split, index);
+	return (true);
 }

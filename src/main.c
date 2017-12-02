@@ -28,7 +28,8 @@ static int	sh_instruction()
 		free(prompt);
 		if (!cmds)
 			continue ;
-		lexer(cmds);
+		if (lexer(cmds))
+			ft_printf("Valid commands: %s\n", cmds);
 		// parser
 		// msh_execute(cmds);
 		free(cmds);

@@ -13,6 +13,8 @@
 #ifndef LEXER_H
 # define LEXER_H
 
+# include "ft_sh.h"
+
 enum e_lexstate
 {
 	DEFAULT,
@@ -33,6 +35,6 @@ enum e_lexstate
 	EOF
 };
 
-void	lexer(char *cmds);
+bool	lexer(char *cmds);
 
 #endif
