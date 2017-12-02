@@ -12,6 +12,7 @@
 
 #include "lexer.h"
 #include "ft_sh.h"
+#include <stdlib.h>
 
 bool	lexer(char *instruction)
 {
@@ -23,5 +24,6 @@ bool	lexer(char *instruction)
 	ft_sstrputs(split);
 	while (split[++index])
 		ft_sstrdel(split, index);
+	free(split);
 	return (true);
 }
