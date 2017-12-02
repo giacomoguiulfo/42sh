@@ -25,11 +25,12 @@ static int	sh_instruction(t_shell *shell)
 	{
 		prompt = msh_put_arrow();
 		cmds = readline(prompt);
+		ft_putchar('\n');
 		free(prompt);
 		if (!cmds)
 			continue ;
 		if (lexer(cmds))
-			ft_printf("Valid commands: %s\n", cmds);
+			ft_printf("\nValid commands: %s\n", cmds);
 		// parser
 		// msh_execute(cmds);
 		free(cmds);

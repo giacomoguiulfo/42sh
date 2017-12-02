@@ -48,12 +48,12 @@ bool		exit_status(t_input *data, int ret)
 		quit = true;
 		shell = sh_singleton();
 		shell->quit = true;
-		ft_putstr("Found EOF call\n");
+		ft_putstr("\nFound EOF call\n");
 	}
 	else if (ret < 0)
 	{
 		quit = true;
-		ft_putstr("Read error\n");
+		ft_putstr("\nRead error\n");
 	}
 	return (quit);
 }
