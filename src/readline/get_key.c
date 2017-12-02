@@ -101,7 +101,7 @@ void	get_key(t_input *data, t_cmds *history, t_klist *find)
 	find->history = history;
 	if (ft_isprint(data->char_buff[0])) // regular chars
 		find->this = &g_key[0];
-	else if (data->char_buff[0] == DELETE)
+	else if (data->char_buff[0] == DELETE) // delete
 		find->this = &g_key[9];
 	else if (data->char_buff[2] == g_key[3].id) //move left
 		find->this = &g_key[3];
@@ -115,10 +115,10 @@ void	get_key(t_input *data, t_cmds *history, t_klist *find)
 		find->this = &g_key[6];
 	else if (data->char_buff[0] == g_key[1].id) //enter key
 		find->this = &g_key[1];
-	else if (data->char_buff[2] == g_key[7].id)
+	else if (data->char_buff[2] == g_key[7].id) //home key
 		find->this = &g_key[7];
-	else if (data->char_buff[2] == g_key[8].id)
+	else if (data->char_buff[2] == g_key[8].id) //end key
 		find->this = &g_key[8];
-	else if (data->char_buff[0] < 0)
+	else if (data->char_buff[0] < 0) //edit keys
 		find->this = &g_key[10];
 }

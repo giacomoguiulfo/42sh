@@ -89,7 +89,6 @@ void	history_change(t_input *data, t_cmds *history, bool direction);
 void	history_cleanup(t_cmds *history);
 void	history_constructor(t_cmds *history);
 
-void	move_cursor(t_input *data, t_cmds *history);
 void	move_end(t_input *data);
 void	move_home(t_input *data);
 void	move_left(t_input *data);
