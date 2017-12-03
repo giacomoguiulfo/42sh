@@ -15,12 +15,12 @@
 #include "libft.h"
 #include <stdlib.h>
 
-void	quote_prompt(char **instr)
+void	quote_prompt(char **instr, char *prompt)
 {
 	char	*new_instr;
 	char	*tmp;
 
-	new_instr = readline("quotes> ");
+	new_instr = readline(prompt);
 	if (!new_instr)
 		return ;
 	ft_asprintf(&tmp, "%s%s", *instr, new_instr);
@@ -41,7 +41,7 @@ bool	validate(char **instr)
 	{
 		if (!validate_quotes(*instr))
 		{
-			quote_prompt(instr);
+			quote_prompt(instr, "quotes> ");
 			continue ;
 		}
 		else if (!validate_chains(*instr))
