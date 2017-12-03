@@ -18,42 +18,46 @@ bool	get_close_chain(char *inst, int *index)
 {
 	while (inst[++*index])
 	{
-		if (ft_isalnum(inst[*index]))
+		if (ft_isquote(inst[*index]))
+			return (true);
+		else if (ft_isalnum(inst[*index]))
 			return (true);
 	}
 	return (false);
 }
 
+bool	manage_chain(char *inst, int *x)
+{
+	bool chain_on;
+
+	chain_on = true;
+	if (inst[*x] == '|' && inst[*x + 1] == '|')
+	{
+		*x = *x + 1;
+		chain_on = get_close_chain(inst, x);
+	}
+	else if (inst[*x] == '&' && inst[*x + 1] == '&')
+	{
+		*x = *x + 1;
+		chain_on = get_close_chain(inst, x);
+	}
+	else if (inst[*x] == '|')
+		chain_on = get_close_chain(inst, x);
+	return (chain_on);
+}
+
 bool	validate_chains(char *inst)
 {
-	bool	chain_on;
 	int		x;
 
 	x = -1;
-	chain_on = false;
 	while (inst[++x])
 	{
+		if (ft_isquote(inst[x]))
+			skip_quote(inst, &x, inst[x]);
 		if (inst[x] == '|' || inst[x] == '&')
 		{
-			chain_on = true;
-			if (inst[x] == '|' && inst[x + 1] == '|')
-			{
-				x++;
-				//ft_printf("Lexer: Found OR\n");
-				chain_on = get_close_chain(inst, &x);
-			}
-			else if (inst[x] == '&' && inst[x + 1] == '&')
-			{
-				x++;
-				//ft_printf("Lexer: Found AND\n");
-				chain_on = get_close_chain(inst, &x);
-			}
-			else if (inst[x] == '|')
-			{
-				//ft_printf("Lexer: Found PIPE\n");
-				chain_on = get_close_chain(inst, &x);
-			}
-			if (!chain_on)
+			if (!manage_chain(inst, &x))
 				return (false);
 		}
 	}

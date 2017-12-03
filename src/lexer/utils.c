@@ -30,3 +30,12 @@ int	ft_ischain(char c)
 		return (1);
 	return (0);
 }
+
+void	skip_quote(char *inst, int *x, char quote_type)
+{
+	while (inst[++*x])
+	{
+		if (inst[*x] == quote_type)
+			break ;
+	}
+}

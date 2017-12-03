@@ -62,5 +62,6 @@ bool	try_pwd(char *binary);
 char	*get_path(void);
 int		ft_ischain(char c);
 int		ft_isquote(char c);
+void	skip_quote(char *inst, int *x, char quote_type);
 
 #endif
