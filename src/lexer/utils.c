@@ -13,6 +13,7 @@
 #include "lexer.h"
 #include "ft_sh.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 char	*get_path(void)
 {
@@ -43,18 +44,45 @@ int		get_binary_size(char *bin)
 	return (x);
 }
 
+bool	try_paths(char *binary, char *path, char *try_this_path)
+{
+	char	*start;
+	char	*end;
+
+	start = path;
+	while ((end = ft_strchr(start, ':')) != NULL)
+	{
+		ft_bzero((void*)try_this_path, 4096);
+		ft_strncpy(try_this_path, start, end - start);
+		ft_strcat(try_this_path, "/");
+		ft_strcat(try_this_path, binary);
+		if ((access(try_this_path, X_OK)) == 0)
+		{
+			ft_printf("Lexer: access found for path %s\n", try_this_path);
+			return (true);
+		}
+		start = end + 1;
+	}
+	return (false);
+}
+
 bool	check_binary(char *binary, char *path, int *x)
 {
 	char	bin_name[4096];
+	char	valid_path[4096];
+	char	*ptr;
 	int		end;
 
 	end = get_binary_size(binary);
 	*x = *x + end;
+	ptr = valid_path;
 	ft_bzero(bin_name, 4096);
 	ft_strncpy(bin_name, binary, end);
-	ft_printf("full binary: %s\n", binary);
-	ft_printf("binary name: %s\n", bin_name);
-	ft_printf("binary size: %d\n", end);
-	ft_printf("path: %s\n", path);
-	return (true);
+	if (try_paths(bin_name, path, ptr))
+	{
+		ft_printf("Lexer: bin %s has valid path %s\n", binary, valid_path);
+		return (true);
+	}
+	ft_printf("Lexer: No valid path found, que triste :[\n");
+	return (false);
 }
