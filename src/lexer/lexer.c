@@ -94,11 +94,10 @@ bool	get_close_chain(char *inst, int *index)
 	{
 		if (ft_isalnum(inst[*index]))
 		{
-			ft_printf("Lexer: found alpha numeric char %c for chain at index %d\n", inst[*index], *index);
+			//ft_printf("Lexer: found alpha numeric char %c for chain at index %d\n", inst[*index], *index);
 			return (true);
 		}
 	}
-	ft_printf("Lexer: no alpha numeric character found for chain\n");
 	return (false);
 }
 
@@ -117,18 +116,18 @@ bool	validate_chains(char *inst)
 			if (inst[x] == '|' && inst[x + 1] == '|')
 			{
 				x++;
-				ft_printf("Lexer: Found OR\n");
+				//ft_printf("Lexer: Found OR\n");
 				chain_on = get_close_chain(inst, &x);
 			}
 			else if (inst[x] == '&' && inst[x + 1] == '&')
 			{
 				x++;
-				ft_printf("Lexer: Found AND\n");
+				//ft_printf("Lexer: Found AND\n");
 				chain_on = get_close_chain(inst, &x);
 			}
 			else if (inst[x] == '|')
 			{
-				ft_printf("Lexer: Found PIPE\n");
+				//ft_printf("Lexer: Found PIPE\n");
 				chain_on = get_close_chain(inst, &x);
 			}
 			if (!chain_on)
@@ -142,19 +141,41 @@ bool	validate_chain_cmd_exist(char *instr)
 {
 	char	*path;
 	int		x;
+	int		state;
 
 	x = -1;
+	state = 0;
 	path = get_path();
-	ft_printf("Lexer: instruction: %s, path: %s\n", instr, path);
+	//ft_printf("Lexer: instruction: %s, path: %s\n", instr, path);
 	while (instr[++x])
 	{
-		if (ft_isalnum(instr[x]))
+		if (ft_isalnum(instr[x]) && state == 0)
 		{
 			if (!check_binary(instr + x, path, &x))
 				ft_printf("Lexer: not a valid binary %s\n", instr + x);
+			else
+				state++;
+		}
+		if (instr[x] == '|' && instr[x + 1] == '|' && (x = x + 1))
+		{
+			if (state == 0)
+				return (false);
+			state = 0;
+		}
+		else if (instr[x] == '|')
+		{
+			if (state == 0)
+				return (false);
+			state = 0;
+		}
+		else if (instr[x] == '&' && instr[x + 1] == '&' && (x = x + 1))
+		{
+			if (state == 0)
+				return (false);
+			state = 0;
 		}
 	}
-	return (false);
+	return (true);
 }
 
 bool	validate(char *instruction)
@@ -168,7 +189,7 @@ bool	validate(char *instruction)
 	}
 	else if (!validate_chains(instruction))
 	{
-		ft_printf("Lexer: Missing chain\n");
+		ft_printf("Lexer: Missing completed chain\n");
 		return (false);
 	}
 	else if (!validate_chain_cmd_exist(instruction))

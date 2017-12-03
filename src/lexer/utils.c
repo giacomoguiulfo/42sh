@@ -58,7 +58,7 @@ bool	try_paths(char *binary, char *path, char *try_this_path)
 		ft_strcat(try_this_path, binary);
 		if ((access(try_this_path, X_OK)) == 0)
 		{
-			ft_printf("Lexer: access found for path %s\n", try_this_path);
+			//ft_printf("Lexer: access found for path %s\n", try_this_path);
 			return (true);
 		}
 		start = end + 1;
@@ -80,9 +80,9 @@ bool	check_binary(char *binary, char *path, int *x)
 	ft_strncpy(bin_name, binary, end);
 	if (try_paths(bin_name, path, ptr))
 	{
-		ft_printf("Lexer: bin %s has valid path %s\n", binary, valid_path);
+		//ft_printf("Lexer: bin %s has valid path %s\n", binary, valid_path);
 		return (true);
 	}
-	ft_printf("Lexer: No valid path found, que triste :[\n");
+	//ft_printf("Lexer: No valid path found, que triste :[\n");
 	return (false);
 }
