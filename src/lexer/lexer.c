@@ -32,11 +32,9 @@ void	quote_prompt(char **instr, char *prompt)
 
 bool	validate(char **instr)
 {
-	bool valid;
-	char *new_instr;
+	int		valid;
 
-	valid = false;
-	new_instr = NULL;
+	valid = 0;
 	while (!valid)
 	{
 		if (!validate_quotes(*instr))
@@ -44,13 +42,15 @@ bool	validate(char **instr)
 			quote_prompt(instr, "quotes> ");
 			continue ;
 		}
-		else if (!validate_chains(*instr))
+		else if ((valid = validate_chains(*instr)) == 0)
 		{
 			quote_prompt(instr, "chain> ");
 			continue ;
 		}
+		else if (valid == -1)
+			return (false);
 		else
-			valid = true;
+			valid = 1;
 	}
 	if (!validate_chain_bins(*instr))
 		return (false);

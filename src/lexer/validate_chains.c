@@ -46,20 +46,50 @@ bool	manage_chain(char *inst, int *x)
 	return (chain_on);
 }
 
+void	check_quotes(char *inst, int *x, int *state)
+{
+		*state = 1;
+		skip_quote(inst, x, inst[*x]);
+}
+
+void	check_chain(char *inst, int *x, int *state)
+{
+	if (*state == 0)
+	{
+		*state = -1;
+		return ;
+	}
+	else if (*state > 0)
+	{
+		if (!manage_chain(inst, x))
+			*state = 0;
+	}
+}
+
 bool	validate_chains(char *inst)
 {
+	int		state;
 	int		x;
 
 	x = -1;
+	state = 0;
 	while (inst[++x])
 	{
-		if (ft_isquote(inst[x]))
-			skip_quote(inst, &x, inst[x]);
-		if (inst[x] == '|' || inst[x] == '&')
+		if (ft_isalnum(inst[x]))
+			state = 1;
+		else if (ft_isquote(inst[x]))
+			check_quotes(inst, &x, &state);
+		else if (ft_ischain(inst[x]))
 		{
-			if (!manage_chain(inst, &x))
-				return (false);
+			check_chain(inst, &x, &state);
+			if (state < 1)
+				break ;
 		}
 	}
-	return (true);
+	if (state == -1)
+	{
+		ft_printf("Lexer: parse error near %c\n", inst[x]);
+		return (state);
+	}
+	return (state);
 }

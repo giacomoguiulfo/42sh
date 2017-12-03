@@ -75,17 +75,17 @@ bool	check_binary(char *binary, char *path, int *x)
 
 int		change_state(char *instr, int *x, int state)
 {
-	if (instr[*x] == '|' && instr[*x + 1] == '|' && (*x = *x + 1))
+	if ((instr[*x] == '|' && instr[*x + 1] == '|') || 
+		(instr[*x] == '&' && instr[*x + 1] == '&'))
 	{
+		*x = *x + 1;
 		if (state == 0)
+		{
+			ft_printf("Lexer: parse error near %c\n", instr[*x - 1]);
 			return (false);
+		}
 	}
 	else if (instr[*x] == '|')
-	{
-		if (state == 0)
-			return (false);
-	}
-	else if (instr[*x] == '&' && instr[*x + 1] == '&' && (*x = *x + 1))
 	{
 		if (state == 0)
 			return (false);
@@ -111,8 +111,9 @@ bool	validate_chain_bins(char *instr)
 			else
 				state++;
 		}
-		else if (instr[x] == '|' || instr[x] == '&')
+		else if (ft_ischain(instr[x]))
 		{
+			ft_printf("Lexer: inside change state\n");
 			if (!change_state(instr + x, &x, state))
 				return (false);
 			state = 0;
