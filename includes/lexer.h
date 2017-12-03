@@ -37,4 +37,7 @@ enum e_lexstate
 
 bool	lexer(char *cmds);
 
+char	*get_path(void);
+bool	check_binary(char *binary, char *path, int *x);
+
 #endif

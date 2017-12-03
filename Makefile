@@ -45,6 +45,7 @@ builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
 lexer/lexer\
+lexer/utils\
 readline/readline\
 readline/history_change\
 readline/history_utils\

@@ -138,6 +138,25 @@ bool	validate_chains(char *inst)
 	return (true);
 }
 
+bool	validate_chain_cmd_exist(char *instr)
+{
+	char	*path;
+	int		x;
+
+	x = -1;
+	path = get_path();
+	ft_printf("Lexer: instruction: %s, path: %s\n", instr, path);
+	while (instr[++x])
+	{
+		if (ft_isalnum(instr[x]))
+		{
+			if (!check_binary(instr + x, path, &x))
+				ft_printf("Lexer: not a valid binary %s\n", instr + x);
+		}
+	}
+	return (false);
+}
+
 bool	validate(char *instruction)
 {
 	if (!instruction)
@@ -152,11 +171,19 @@ bool	validate(char *instruction)
 		ft_printf("Lexer: Missing chain\n");
 		return (false);
 	}
+	else if (!validate_chain_cmd_exist(instruction))
+	{
+		ft_printf("Lexer: Chain missing valid binary\n");
+		return (false);
+	}
 	return (true);
 }
 
 bool	lexer(char *instruction)
 {
+	char	*ptr;
+
+	ptr = get_path();
 	if (!validate(instruction))
 		return (false);
 	//tokenization
