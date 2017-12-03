@@ -58,6 +58,7 @@ bool	check_access(char *binary, char *path);
 bool	check_binary(char *binary, char *path, int *x);
 bool	check_reg_file(mode_t st_mode, char *binary);
 
+bool	try_pwd(char *binary);
 char	*get_path(void);
 
 #endif

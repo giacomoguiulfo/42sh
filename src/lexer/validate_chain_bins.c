@@ -67,6 +67,9 @@ bool	check_binary(char *binary, char *path, int *x)
 	ft_strncpy(bin_name, binary, end);
 	if (try_paths(bin_name, path, ptr))
 		return (true);
+	else if (try_pwd(binary))
+		return (true);
+	ft_printf("Lexer: command not found: %s\n", binary);
 	return (false);
 }
 

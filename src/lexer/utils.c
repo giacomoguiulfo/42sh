@@ -17,6 +17,25 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+bool	try_pwd(char *binary)
+{
+	char		cwd_path[4096];
+	char		*ptr;
+	struct stat sb;
+
+	ptr = cwd_path;
+	getcwd(ptr, 4096);
+	ft_strcat(cwd_path, "/");
+	ft_strcat(cwd_path, binary);
+	if ((lstat(cwd_path, &sb)) == -1)
+		return (false);
+	else if (!check_access(binary, cwd_path))
+		return (false);
+	else if (!check_reg_file(sb.st_mode, binary))
+		return (false);
+	return (true);
+}
+
 char	*get_path(void)
 {
 	t_shell	*shell;
@@ -50,7 +69,7 @@ bool	check_reg_file(mode_t st_mode, char *binary)
 {
 	if (!S_ISREG(st_mode))
 	{
-		ft_printf("Lexer: %s is not a regular file\n", binary);
+		ft_printf("Lexer: command not found: %s\n", binary);
 		return (false);
 	}
 	return (true);
