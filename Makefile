@@ -49,6 +49,7 @@ lexer/validate_chains\
 lexer/validate_chain_bins\
 lexer/validate_chain_bins_utils\
 lexer/validate_quotes\
+lexer/utils\
 readline/readline\
 readline/history_change\
 readline/history_utils\

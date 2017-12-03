@@ -60,5 +60,7 @@ bool	check_reg_file(mode_t st_mode);
 
 bool	try_pwd(char *binary);
 char	*get_path(void);
+int		ft_ischain(char c);
+int		ft_isquote(char c);
 
 #endif

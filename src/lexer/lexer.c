@@ -45,12 +45,16 @@ bool	validate(char **instr)
 			continue ;
 		}
 		else if (!validate_chains(*instr))
-			return (false);
+		{
+			quote_prompt(instr, "chain> ");
+			continue ;
+		}
 		else
 			valid = true;
 	}
 	if (!validate_chain_bins(*instr))
 		return (false);
+	//validate redirection syntax next!!
 	return (true);
 }
 			
