@@ -15,29 +15,49 @@
 
 # include "ft_sh.h"
 
-enum e_lexstate
+typedef	struct			s_heredoc
 {
-	DEFAULT,
-	PARENTHESIS,
-	HEREDOC,
-	NEWLINE,
-	DELIM,
-	SEPARATOR,
-	WORD,
-	NUMBER,
-	LESS,
-	GREATER,
-	QUOTE,
-	DQUOTE,
-	BQUOTE,
-	BACKSLASH,
-	CURLY_BRACKETS,
-	EOF
-};
+	char				*delim;
+	char				*content;
+}						t_heredoc;
+
+typedef struct			s_redir_out
+{
+	char				**output_files;
+	int					*output_fds;
+	int					*output_fd_count;	
+}						t_redir_out;
+
+typedef struct			s_redir_in
+{
+	char				**input_files;
+	int					*input_fds;
+	int					input_fd_count;
+}						t_redir_in;
+
+typedef struct			s_command
+{
+	struct s_redir_in	*in;
+	struct s_redir_out	*out;
+	struct s_heredoc	*here;
+	char				*args;
+}						t_command;
+
+typedef	struct			s_instruction
+{
+	struct s_command	**commands;
+}						t_instruction;
 
 bool	lexer(char *cmds);
 
-char	*get_path(void);
+bool	validate_chains(char *inst);
+bool	validate_quotes(char *inst);
+bool	validate_chain_bins(char *instr);
+
+bool	check_access(char *binary, char *path);
 bool	check_binary(char *binary, char *path, int *x);
+bool	check_reg_file(mode_t st_mode, char *binary);
+
+char	*get_path(void);
 
 #endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   validate_quotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,45 +13,44 @@
 #include "lexer.h"
 #include "ft_sh.h"
 #include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
-char	*get_path(void)
+bool	get_close_quote(char *inst, int *index, char quote)
 {
-	t_shell	*shell;
-	char	*path;
-	int		x;
+	bool	found_delim;
 
-	shell = sh_singleton();
-	x = -1;
-	while (shell->env[++x])
+	found_delim = false;
+	while (inst[++*index])
 	{
-		if ((ft_strncmp(shell->env[x], "PATH=", 5)) == 0)
+		if (inst[*index] == quote)
 		{
-			path = shell->env[x] + 5;
-			return (path);
+			found_delim = true;
+			break ;
 		}
 	}
-	return (NULL);
+	return (found_delim);
 }
 
-bool	check_access(char *binary, char *path)
+bool	validate_quotes(char *inst)
 {
-	if (!((access(path, X_OK)) == 0))
-	{
-		ft_printf("Lexer: permission denied: %s\n", binary);
-		return (false);
-	}
-	return (true);
-}
+	bool	quote_on;
+	int		x;
 
-bool	check_reg_file(mode_t st_mode, char *binary)
-{
-	if (!S_ISREG(st_mode))
+	x = -1;
+	quote_on = false;
+	while (inst[++x])
 	{
-		ft_printf("Lexer: %s is not a regular file\n", binary);
-		return (false);
+		if (inst[x] == 39 || inst[x] == '"' || inst[x] == '`')
+		{
+			quote_on = true;
+			ft_printf("~~Found quote %c at index value: %d\n", inst[x], x);
+			quote_on = get_close_quote(inst, &x, inst[x]);
+			if (!quote_on)
+			{
+				ft_printf("**Close quote not found\n");
+				return (false);
+			}
+			ft_printf("~~Found close quote %c at index value: %d\n", inst[x], x);
+		}
 	}
 	return (true);
 }
