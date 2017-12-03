@@ -48,7 +48,7 @@ typedef	struct			s_instruction
 	struct s_command	**commands;
 }						t_instruction;
 
-bool	lexer(char *cmds);
+bool	lexer(char **cmds);
 
 bool	validate_chains(char *inst);
 bool	validate_quotes(char *inst);

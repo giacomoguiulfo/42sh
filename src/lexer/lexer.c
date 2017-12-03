@@ -12,37 +12,56 @@
 
 #include "lexer.h"
 #include "ft_sh.h"
+#include "libft.h"
 #include <stdlib.h>
 
-bool	validate(char *instruction)
+void	quote_prompt(char **instr)
 {
-	if (!instruction)
-		return (false);
-	else if (!validate_quotes(instruction))
-	{
-		ft_printf("Lexer: error - validate quotes\n");
-		return (false);
-	}
-	else if (!validate_chains(instruction))
-	{
-		ft_printf("Lexer: error - validate chains\n");
-		return (false);
-	}
-	else if (!validate_chain_bins(instruction))
-	{
-		ft_printf("Lexer: error - validate chain bins\n");
-		return (false);
-	}
-	return (true);
+	char	*new_instr;
+	char	*tmp;
+
+	new_instr = readline("quotes> ");
+	if (!new_instr)
+		return ;
+	ft_asprintf(&tmp, "%s%s", *instr, new_instr);
+	free((*instr));
+	free(new_instr);
+	*instr = ft_strdup(tmp);
+	free(tmp);
 }
 
-bool	lexer(char *instruction)
+bool	validate(char **instr)
 {
-	char	*ptr;
+	bool valid;
+	char *new_instr;
 
-	ptr = get_path();
-	if (!validate(instruction))
+	valid = false;
+	new_instr = NULL;
+	while (!valid)
+	{
+		if (!validate_quotes(*instr))
+		{
+			quote_prompt(instr);
+			continue ;
+		}
+		else if (!validate_chains(*instr))
+			return (false);
+		else
+			valid = true;
+	}
+	if (!validate_chain_bins(*instr))
 		return (false);
+	return (true);
+}
+			
+bool	lexer(char **instr)
+{
+	if (!validate(instr))
+	{
+		ft_printf("Not a valid command: %s\n", *instr);
+		return (false);
+	}
+	ft_printf("\nValid commands: %s\n", *instr);
 	//tokenization
 	return (true);
 }

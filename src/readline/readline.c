@@ -66,6 +66,7 @@ char		*readline(char *prompt)
 	int				ret;
 
 	input_constructor(&data, &history, prompt);
+	ft_putstr(prompt);
 	while (data.continue_loop == true)
 	{
 		ret = read(0, &data.char_buff, 5);
@@ -77,6 +78,7 @@ char		*readline(char *prompt)
 			key.this->action(&key);
 		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
 	}
+	ft_putchar('\n');
 	if (ft_stris(data.line_buff, ft_isspace))
 		return (NULL);
 	history_add(&data, &history);

@@ -42,14 +42,9 @@ bool	validate_quotes(char *inst)
 		if (inst[x] == 39 || inst[x] == '"' || inst[x] == '`')
 		{
 			quote_on = true;
-			ft_printf("~~Found quote %c at index value: %d\n", inst[x], x);
 			quote_on = get_close_quote(inst, &x, inst[x]);
 			if (!quote_on)
-			{
-				ft_printf("**Close quote not found\n");
 				return (false);
-			}
-			ft_printf("~~Found close quote %c at index value: %d\n", inst[x], x);
 		}
 	}
 	return (true);
