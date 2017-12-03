@@ -31,7 +31,7 @@ bool	try_pwd(char *binary)
 		return (false);
 	else if (!check_access(binary, cwd_path))
 		return (false);
-	else if (!check_reg_file(sb.st_mode, binary))
+	else if (!check_reg_file(sb.st_mode))
 		return (false);
 	return (true);
 }
@@ -65,12 +65,9 @@ bool	check_access(char *binary, char *path)
 	return (true);
 }
 
-bool	check_reg_file(mode_t st_mode, char *binary)
+bool	check_reg_file(mode_t st_mode)
 {
 	if (!S_ISREG(st_mode))
-	{
-		ft_printf("Lexer: command not found: %s\n", binary);
 		return (false);
-	}
 	return (true);
 }

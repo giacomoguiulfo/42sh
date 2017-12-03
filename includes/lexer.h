@@ -56,7 +56,7 @@ bool	validate_chain_bins(char *instr);
 
 bool	check_access(char *binary, char *path);
 bool	check_binary(char *binary, char *path, int *x);
-bool	check_reg_file(mode_t st_mode, char *binary);
+bool	check_reg_file(mode_t st_mode);
 
 bool	try_pwd(char *binary);
 char	*get_path(void);

@@ -44,7 +44,7 @@ bool	try_paths(char *binary, char *path, char *try_this_path)
 		{
 			if (!check_access(binary, try_this_path))
 				return (false);
-			else if (!check_reg_file(sb.st_mode, binary))
+			else if (!check_reg_file(sb.st_mode))
 				return (false);
 			return (true);
 		}
