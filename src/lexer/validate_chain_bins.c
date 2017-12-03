@@ -108,7 +108,7 @@ bool	validate_chain_bins(char *instr)
 			else
 				state++;
 		}
-		if (instr[x] == '|' || instr[x] == '&')
+		else if (instr[x] == '|' || instr[x] == '&')
 		{
 			if (!change_state(instr + x, &x, state))
 				return (false);
