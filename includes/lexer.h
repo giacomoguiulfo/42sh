@@ -14,6 +14,7 @@
 # define LEXER_H
 
 # include "ft_sh.h"
+# define MAX_PATH_BIN_SIZE 8192
 
 typedef	struct			s_heredoc
 {

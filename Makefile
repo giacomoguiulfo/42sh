@@ -14,7 +14,7 @@ NAME		:= kash
 
 CC			?= gcc
 CFLAGS		+= -std=c99
-CFLAGS		+= -Wall -Wextra -Werror
+CFLAGS		+= -Wall -Wextra -Werror -g
 # CLAFGS		+=  -Wfloat-equal -Wundef
 # CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
 # CFLAGS		+= -O3 -march=native -pipe -flto

@@ -36,7 +36,7 @@ bool	try_paths(char *binary, char *path, char *try_this_path)
 	start = path;
 	while ((end = ft_strchr(start, ':')) != NULL)
 	{
-		ft_bzero((void*)try_this_path, 4096);
+		ft_bzero((void*)try_this_path, MAX_PATH_BIN_SIZE);
 		ft_strncpy(try_this_path, start, end - start);
 		ft_strcat(try_this_path, "/");
 		ft_strcat(try_this_path, binary);
@@ -55,15 +55,15 @@ bool	try_paths(char *binary, char *path, char *try_this_path)
 
 bool	check_binary(char *binary, char *path, int *x)
 {
-	char	bin_name[4096];
-	char	valid_path[4096];
+	char	bin_name[MAX_PATH_BIN_SIZE];
+	char	valid_path[MAX_PATH_BIN_SIZE];
 	char	*ptr;
 	int		end;
 
 	end = get_binary_size(binary);
 	*x = *x + end;
 	ptr = valid_path;
-	ft_bzero(bin_name, 4096);
+	ft_bzero(bin_name, MAX_PATH_BIN_SIZE);
 	ft_strncpy(bin_name, binary, end);
 	if (try_paths(bin_name, path, ptr))
 		return (true);

@@ -25,6 +25,8 @@ static int	sh_instruction(t_shell *shell)
 	{
 		prompt = msh_put_arrow();
 		cmds = readline(prompt);
+		ft_putstr("hi\n");
+		ft_printf("cmd size: %zu\n", ft_strlen(cmds));
 		free(prompt);
 		if (!cmds)
 			continue ;
