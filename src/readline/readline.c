@@ -39,23 +39,21 @@ static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 
 bool		exit_status(t_input *data, int ret)
 {
-	bool	quit;
 	t_shell *shell;
 
-	quit = false;
+	shell = NULL;
 	if (data->char_buff[0] == 4)
 	{
-		quit = true;
 		shell = sh_singleton();
-		shell->quit = true;
-		ft_putstr("\nFound EOF call\n");
+		ft_putstr("\nReadline: Found EOF call\n");
+		return ((shell->quit = true));
 	}
 	else if (ret < 0)
 	{
-		quit = true;
-		ft_putstr("\nRead error\n");
+		ft_putstr("\nReadline: Read error\n");
+		return ((shell->quit = true));
 	}
-	return (quit);
+	return (false);
 }
 
 char		*readline(char *prompt)
@@ -71,7 +69,7 @@ char		*readline(char *prompt)
 	{
 		ret = read(0, &data.char_buff, 5);
 		if (exit_status(&data, ret))
-			exit(0);
+			return (NULL);
 		get_terminal_meta(&data);
 		get_key(&data, &history, &key);
 		if (key.found_key == true)

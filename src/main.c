@@ -25,10 +25,10 @@ static int	sh_instruction(t_shell *shell)
 	{
 		prompt = msh_put_arrow();
 		cmds = readline(prompt);
-		ft_putstr("hi\n");
-		ft_printf("cmd size: %zu\n", ft_strlen(cmds));
 		free(prompt);
-		if (!cmds)
+		if (shell->quit == true)
+			break ;
+		else if (!cmds)
 			continue ;
 		lexer(&cmds);
 		free(cmds);
@@ -49,6 +49,8 @@ int			main(int ac, char **av)
 	while (42)
 	{
 		sh_instruction(shell);
+		if (shell->quit == true)
+			break ;
 	// 	sh_reset();
 	}
 	builtin_exit();
