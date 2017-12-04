@@ -51,8 +51,9 @@ typedef	struct			s_instruction
 
 bool	lexer(char **cmds);
 
-bool	validate_quotes(char *inst);
 bool	validate_chain_bins(char *instr);
+bool	validate_quotes(char *inst);
+bool	validate_redirections(char *instr);
 int		validate_chains(char *inst);
 int		validate_quotes_chains(char **instr);
 

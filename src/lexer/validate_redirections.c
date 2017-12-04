@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   validate_redirections.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,36 @@
 
 #include "lexer.h"
 #include "ft_sh.h"
-#include "libft.h"
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-bool	validate(char **instr)
+int		ft_isredir(char *str)
 {
-	int		valid;
-
-	valid = 0;
-	while (!valid)
-	{
-		valid = validate_quotes_chains(instr);
-		if (valid == -1)
-			return (false);
-	}
-	if (!validate_chain_bins(*instr))
-		return (false);
-	if (!validate_redirections(*instr))
-		return (false);
-	return (true);
+	if (str[0] == '>' && str[1] == '>')
+		return (4);
+	else if (str[0] == '<' && str[1] == '<')
+		return (3);
+	else if (str[0] == '>')
+		return (2);
+	else if (str[0] == '<')
+		return (1);
+	return (0);
 }
-			
-bool	lexer(char **instr)
+
+bool	validate_redirections(char *instr)
 {
-	if (!validate(instr))
+	int x = -1;
+	int redir;
+	while (instr[++x])
 	{
-		ft_printf("Lexer: Not a valid command: %s\n", *instr);
-		return (false);
+		if (ft_isquote(instr[x]))
+			skip_quote(instr, &x, instr[x]);
+		else if ((redir = ft_isredir(instr + x)))
+		{
+			ft_printf("Lexer: found redirection %c at %s\n", instr[x], instr + x);
+		}
 	}
-	ft_printf("Valid commands: %s\n", *instr);
-	//tokenization
 	return (true);
 }
