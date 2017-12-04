@@ -45,6 +45,7 @@ builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
 lexer/lexer\
+lexer/validate_quotes_chains\
 lexer/validate_chains\
 lexer/validate_chain_bins\
 lexer/validate_chain_bins_utils\

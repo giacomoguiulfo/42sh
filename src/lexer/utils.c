@@ -51,3 +51,18 @@ bool	get_close_chain(char *inst, int index)
 	}
 	return (false);
 }
+
+void	quote_prompt(char **instr, char *prompt)
+{
+	char	*new_instr;
+	char	*tmp;
+
+	new_instr = readline(prompt);
+	if (!new_instr)
+		return ;
+	ft_asprintf(&tmp, "%s%s", *instr, new_instr);
+	free((*instr));
+	free(new_instr);
+	*instr = ft_strdup(tmp);
+	free(tmp);
+}

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   validate_quotes_chains.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,34 +12,21 @@
 
 #include "lexer.h"
 #include "ft_sh.h"
-#include "libft.h"
-#include <stdlib.h>
 
-bool	validate(char **instr)
+int		validate_quotes_chains(char **instr)
 {
-	int		valid;
+	int valid;
 
 	valid = 0;
-	while (!valid)
+	if (!validate_quotes(*instr))
 	{
-		valid = validate_quotes_chains(instr);
-		if (valid == -1)
-			return (false);
+		quote_prompt(instr, "quotes> ");
+		return (valid);
 	}
-	if (!validate_chain_bins(*instr))
-		return (false);
-	//validate redirection syntax next!!
-	return (true);
-}
-			
-bool	lexer(char **instr)
-{
-	if (!validate(instr))
+	else if ((valid = validate_chains(*instr)) == 0)
 	{
-		ft_printf("Lexer: Not a valid command: %s\n", *instr);
-		return (false);
+		quote_prompt(instr, "chain> ");
+		return (valid);
 	}
-	ft_printf("Valid commands: %s\n", *instr);
-	//tokenization
-	return (true);
+	return (valid);
 }

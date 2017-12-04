@@ -53,6 +53,7 @@ bool	lexer(char **cmds);
 bool	validate_quotes(char *inst);
 bool	validate_chain_bins(char *instr);
 int		validate_chains(char *inst);
+int		validate_quotes_chains(char **instr);
 
 bool	check_access(char *binary, char *path);
 bool	check_binary(char *binary, char *path, int *x);
@@ -64,5 +65,6 @@ char	*get_path(void);
 int		ft_ischain(char c);
 int		ft_isquote(char c);
 void	skip_quote(char *inst, int *x, char quote_type);
+void	quote_prompt(char **instr, char *prompt);
 
 #endif
