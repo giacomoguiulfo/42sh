@@ -73,7 +73,7 @@ char		*readline(char *prompt)
 		get_key(&data, &history, &key);
 		if (key.found_key == true)
 			key.this->action(&key);
-		ft_bzero((void*)data.char_buff, CHAR_BUFF_SIZE);
+		ft_bzero((void*)data.char_buff, data.ret);
 	}
 	ft_putchar('\n');
 	if (ft_stris(data.line_buff, ft_isspace))
