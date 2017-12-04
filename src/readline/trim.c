@@ -31,8 +31,6 @@ void	trim(t_input *data)
 
 	if (data->cursor_pos == 0)
 		return ;
-	else if (data->clipboard.copy_on == true)
-		return ;
 	ft_bzero((void*)buff, ft_strlen(data->line_buff + 1));
 	tmp = &data->line_buff[data->cursor_pos - 1];
 	*tmp = '\0';

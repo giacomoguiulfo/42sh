@@ -60,8 +60,6 @@ void		insert(t_input *data)
 
 	if (!str_protection(data, data->line_size, data->line_size + 1))
 		return ;
-	else if (data->clipboard.copy_on == true)
-		return ;
 	clear_insert(data);
 	build_buffer(data);
 	gather_position_data(data);

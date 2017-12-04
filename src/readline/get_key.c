@@ -49,6 +49,8 @@ void	enter_key(struct s_keychain *master)
 
 void	print_key(struct s_keychain *master)
 {
+	if (master->data->clipboard.copy_on == true)
+		return ;
 	insert(master->data);
 	return ;
 }
@@ -69,6 +71,8 @@ void	end_key(struct s_keychain *master)
 
 void	delete_key(struct s_keychain *master)
 {
+	if (master->data->clipboard.copy_on == true)
+		return ;
 	trim(master->data);
 }
 
