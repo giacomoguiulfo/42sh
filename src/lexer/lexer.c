@@ -15,6 +15,37 @@
 #include "libft.h"
 #include <stdlib.h>
 
+int		ft_isredir(char *str)
+{
+	if (str[0] == '>' && str[1] == '>')
+		return (4);
+	else if (str[0] == '<' && str[1] == '<')
+		return (3);
+	else if (str[0] == '>')
+		return (2);
+	else if (str[0] == '<')
+		return (1);
+	return (0);
+}
+
+
+
+bool	validate_redirections(char *instr)
+{
+	int x = -1;
+	int redir;
+	while (instr[++x])
+	{
+		if (ft_isquote(instr[x]))
+			skip_quote(instr, &x, instr[x]);
+		else if ((redir = ft_isredir(instr + x)))
+		{
+			ft_printf("Lexer: found redirection %c at %s\n", instr[x], instr + x);
+		}
+	}
+	return (true);
+}
+
 bool	validate(char **instr)
 {
 	int		valid;
@@ -28,7 +59,8 @@ bool	validate(char **instr)
 	}
 	if (!validate_chain_bins(*instr))
 		return (false);
-	//validate redirection syntax next!!
+	if (!validate_redirections(*instr))
+		return (false);
 	return (true);
 }
 			
