@@ -56,6 +56,7 @@ typedef struct			s_input
 	size_t				height;
 	size_t				line_size;
 	size_t				prompt_size;
+	size_t				ret;
 	size_t				width;
 	struct winsize		window_size;
 	struct s_text		clipboard;

@@ -61,14 +61,13 @@ char		*readline(char *prompt)
 	static t_cmds	history;
 	t_input			data;
 	t_keychain		key;
-	int				ret;
 
 	input_constructor(&data, &history, prompt);
 	ft_putstr(prompt);
 	while (data.continue_loop == true)
 	{
-		ret = read(0, &data.char_buff, 5);
-		if (exit_status(&data, ret))
+		data.ret = read(0, &data.char_buff, 5);
+		if (exit_status(&data, data.ret))
 			return (NULL);
 		get_terminal_meta(&data);
 		get_key(&data, &history, &key);
