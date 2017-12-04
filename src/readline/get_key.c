@@ -73,6 +73,8 @@ void	delete_key(struct s_keychain *master)
 {
 	if (master->data->clipboard.copy_on == true)
 		return ;
+	else if (master->data->cursor_pos == 0)
+		return ;
 	trim(master->data);
 }
 

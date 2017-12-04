@@ -29,8 +29,6 @@ void	trim(t_input *data)
 	char	buff[LINE_BUFF_SIZE];
 	char	*tmp;
 
-	if (data->cursor_pos == 0)
-		return ;
 	ft_bzero((void*)buff, ft_strlen(data->line_buff + 1));
 	tmp = &data->line_buff[data->cursor_pos - 1];
 	*tmp = '\0';
