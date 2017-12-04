@@ -14,18 +14,6 @@
 #include "ft_sh.h"
 #include <stdlib.h>
 
-bool	get_close_chain(char *inst, int *index)
-{
-	while (inst[++*index])
-	{
-		if (ft_isquote(inst[*index]))
-			return (true);
-		else if (ft_isalnum(inst[*index]))
-			return (true);
-	}
-	return (false);
-}
-
 bool	manage_chain(char *inst, int *x)
 {
 	bool chain_on;
@@ -34,15 +22,15 @@ bool	manage_chain(char *inst, int *x)
 	if (inst[*x] == '|' && inst[*x + 1] == '|')
 	{
 		*x = *x + 1;
-		chain_on = get_close_chain(inst, x);
+		chain_on = get_close_chain(inst, *x);
 	}
 	else if (inst[*x] == '&' && inst[*x + 1] == '&')
 	{
 		*x = *x + 1;
-		chain_on = get_close_chain(inst, x);
+		chain_on = get_close_chain(inst, *x);
 	}
 	else if (inst[*x] == '|')
-		chain_on = get_close_chain(inst, x);
+		chain_on = get_close_chain(inst, *x);
 	return (chain_on);
 }
 
@@ -66,7 +54,7 @@ void	check_chain(char *inst, int *x, int *state)
 	}
 }
 
-bool	validate_chains(char *inst)
+int		validate_chains(char *inst)
 {
 	int		state;
 	int		x;
@@ -84,12 +72,10 @@ bool	validate_chains(char *inst)
 			check_chain(inst, &x, &state);
 			if (state < 1)
 				break ;
+			state = 0;
 		}
 	}
 	if (state == -1)
-	{
 		ft_printf("Lexer: parse error near %c\n", inst[x]);
-		return (state);
-	}
 	return (state);
 }

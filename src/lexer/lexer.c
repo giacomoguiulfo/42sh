@@ -30,6 +30,24 @@ void	quote_prompt(char **instr, char *prompt)
 	free(tmp);
 }
 
+int		validate_quotes_chains(char **instr)
+{
+	int valid;
+
+	valid = 0;
+	if (!validate_quotes(*instr))
+	{
+		quote_prompt(instr, "quotes> ");
+		return (valid);
+	}
+	else if ((valid = validate_chains(*instr)) == 0)
+	{
+		quote_prompt(instr, "chain> ");
+		return (valid);
+	}
+	return (valid);
+}
+
 bool	validate(char **instr)
 {
 	int		valid;
@@ -37,20 +55,9 @@ bool	validate(char **instr)
 	valid = 0;
 	while (!valid)
 	{
-		if (!validate_quotes(*instr))
-		{
-			quote_prompt(instr, "quotes> ");
-			continue ;
-		}
-		else if ((valid = validate_chains(*instr)) == 0)
-		{
-			quote_prompt(instr, "chain> ");
-			continue ;
-		}
-		else if (valid == -1)
+		valid = validate_quotes_chains(instr);
+		if (valid == -1)
 			return (false);
-		else
-			valid = 1;
 	}
 	if (!validate_chain_bins(*instr))
 		return (false);
@@ -62,10 +69,10 @@ bool	lexer(char **instr)
 {
 	if (!validate(instr))
 	{
-		ft_printf("Not a valid command: %s\n", *instr);
+		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (false);
 	}
-	ft_printf("\nValid commands: %s\n", *instr);
+	ft_printf("Valid commands: %s\n", *instr);
 	//tokenization
 	return (true);
 }

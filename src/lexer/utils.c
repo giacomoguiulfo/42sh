@@ -39,3 +39,15 @@ void	skip_quote(char *inst, int *x, char quote_type)
 			break ;
 	}
 }
+
+bool	get_close_chain(char *inst, int index)
+{
+	while (inst[++index])
+	{
+		if (ft_isquote(inst[index]))
+			return (true);
+		else if (ft_isalnum(inst[index]))
+			return (true);
+	}
+	return (false);
+}

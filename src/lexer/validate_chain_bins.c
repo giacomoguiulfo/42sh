@@ -113,7 +113,6 @@ bool	validate_chain_bins(char *instr)
 		}
 		else if (ft_ischain(instr[x]))
 		{
-			ft_printf("Lexer: inside change state\n");
 			if (!change_state(instr + x, &x, state))
 				return (false);
 			state = 0;
