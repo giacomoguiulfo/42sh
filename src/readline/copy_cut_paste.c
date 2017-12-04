@@ -82,6 +82,7 @@ static void	cut(t_input *data, t_text *clipboard)
 static void paste(t_input *data, t_text *clipboard)
 {
 	char	buff[LINE_BUFF_SIZE];
+	int		x;
 
 	if (!str_protection(data, data->line_size, clipboard->end - clipboard->start))
 		return ;
@@ -93,6 +94,13 @@ static void paste(t_input *data, t_text *clipboard)
 	clear_highlights(data, false);
 	data->line_size = ft_strlen(data->line_buff);
 	data->cursor_pos = data->line_size;
+	gather_position_data(data);
+	if (data->end_col == 0)
+		print_end_col_pad(data->cursor_col);
+	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_putchar);
+	x = data->end_row - data->cursor_row;
+	while (x-- > 0)
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
 }
 
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode)

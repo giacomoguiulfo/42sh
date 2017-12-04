@@ -32,10 +32,13 @@ void	move_key(struct s_keychain *master)
 		move_left(master->data);
 	else if (master->data->char_buff[2] == KEY_RIGHT)
 		move_right(master->data);
-	else if (master->data->char_buff[2] == KEY_UP)
-		history_change(master->data, master->history, true);
-	else if (master->data->char_buff[2] == KEY_DOWN)
-		history_change(master->data, master->history, false);
+	if (master->data->clipboard.copy_on == false)
+	{
+		if (master->data->char_buff[2] == KEY_UP)
+			history_change(master->data, master->history, true);
+		else if (master->data->char_buff[2] == KEY_DOWN)
+			history_change(master->data, master->history, false);
+	}
 }
 
 void	enter_key(struct s_keychain *master)
