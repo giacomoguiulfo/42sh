@@ -32,8 +32,6 @@ static int	sh_instruction(t_shell *shell)
 			continue ;
 		lexer(&cmds);
 		free(cmds);
-		if (shell->quit == true)
-			break ;
 	}
 	// execute instruction
 	return (0);
