@@ -34,8 +34,9 @@ int		ft_isredir(char *str)
 bool	check_output_redir(char *instr, int *x)
 {
 	ft_printf("Lexer: output redir found at %d, %s\n", *x, instr);
-	if (check_output_from(instr, *x))
+	if (!check_output_from(instr, *x))
 		return (false);
+	else if (!check_output_to(instr, &))
 	return (true);
 }
 
@@ -62,11 +63,11 @@ bool	validate_redirections(char *instr)
 				if (!check_output_redir(instr, &x))
 					return (false);
 			}
-			else
+			/*else
 			{
 				if (!check_input_redir(instr, &x))
 					return (false);
-			}
+			}*/
 		}
 	}
 	ft_printf("Lexer: redirections look solid\n");
