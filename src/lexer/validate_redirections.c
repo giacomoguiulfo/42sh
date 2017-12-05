@@ -30,13 +30,49 @@ int		ft_isredir(char *str)
 	return (0);
 }
 
+bool	check_output_from(char *instr, int x)
+{
+	if (instr[x - 1])
+	{
+		if (instr[x - 1] == '&' || instr[x - 1] == ' ')
+			return (true);
+		else if (ft_isdigit(instr[x - 1]))
+		{
+			while (x > -1 && ft_isdigit(instr[--x]))
+			{
+				if (ft_isalpha(instr[x]))
+					return (false);
+				else if (instr[x] == ' ')
+					return (true);
+			}
+		}
+	}
+	return (false);
+}
+
+bool	check_output_to(char *instr, int *x)
+{
+	int c;
+
+	c = *x;
+	while (instr[++*x])
+	{
+		if (ft_isquote(instr[*x]))
+			return (true);
+		else if (ft_isalnum(instr[*x]))
+			return (true);
+	}
+	ft_printf("Lexer: parse error near '%c'\n", instr[c]);
+	return (false);
+}
 
 bool	check_output_redir(char *instr, int *x)
 {
 	ft_printf("Lexer: output redir found at %d, %s\n", *x, instr);
 	if (!check_output_from(instr, *x))
 		return (false);
-	else if (!check_output_to(instr, &))
+	else if (!check_output_to(instr, x))
+		return (false);
 	return (true);
 }
 
