@@ -21,27 +21,52 @@ int		ft_isredir(char *str)
 {
 	if (str[0] == '>' && str[1] == '>')
 		return (4);
-	else if (str[0] == '<' && str[1] == '<')
-		return (3);
 	else if (str[0] == '>')
+		return (3);
+	else if (str[0] == '<' && str[1] == '<')
 		return (2);
 	else if (str[0] == '<')
 		return (1);
 	return (0);
 }
 
+
+bool	check_output_redir(char *instr, int *x)
+{
+	ft_printf("Lexer: output redir found at %d, %s\n", *x, instr);
+	return (true);
+}
+
+bool	check_input_redir(char * instr, int *x)
+{
+	ft_printf("Lexer: input redir found at %d, %s\n", *x, instr);
+	return (true);
+}
+
 bool	validate_redirections(char *instr)
 {
 	int x = -1;
 	int redir;
+
+	ft_printf("Inside redirections\n");
 	while (instr[++x])
 	{
 		if (ft_isquote(instr[x]))
 			skip_quote(instr, &x, instr[x]);
 		else if ((redir = ft_isredir(instr + x)))
 		{
-			ft_printf("Lexer: found redirection %c at %s\n", instr[x], instr + x);
+			if (redir > 2)
+			{
+				if (!check_output_redir(instr, &x))
+					return (false);
+			}
+			else
+			{
+				if (!check_input_redir(instr, &x))
+					return (false);
+			}
 		}
 	}
+	ft_printf("Lexer: redirections look solid\n");
 	return (true);
 }
