@@ -32,6 +32,9 @@ int		ft_isredir(char *str)
 
 bool	check_output_from(char *instr, int x)
 {
+	int c;
+
+	c = x;
 	if (instr[x - 1])
 	{
 		if (instr[x - 1] == '&' || instr[x - 1] == ' ')
@@ -47,6 +50,7 @@ bool	check_output_from(char *instr, int x)
 			}
 		}
 	}
+	ft_printf("Lexer: parse error near '%c'\n", instr[c]);
 	return (false);
 }
 
@@ -115,13 +119,12 @@ bool	validate_redirections(char *instr)
 				if (!check_output_redir(instr, &x))
 					return (false);
 			}
-			else
+			else if (redir > 0)
 			{
 				if (!check_input_redir(instr, &x))
 					return (false);
 			}
 		}
 	}
-	ft_printf("Lexer: redirections look solid\n");
 	return (true);
 }
