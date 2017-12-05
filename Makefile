@@ -33,7 +33,6 @@ endif
 SRC_BASE :=\
 main\
 strsplit\
-exec\
 utils\
 builtins/builtin_cd\
 builtins/builtin_echo\
@@ -45,6 +44,7 @@ builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
 lexer/lexer\
+lexer/tokenize\
 lexer/validate_quotes_chains\
 lexer/validate_chains\
 lexer/validate_chain_bins\

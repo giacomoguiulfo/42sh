@@ -43,7 +43,7 @@ typedef struct  		s_shell
 int     sh_init();
 t_shell *sh_singleton();
 void	sh_shutdown();
-int		msh_execute(char **args);
+//int		msh_execute(char **args);
 char	*readline(char *prompt);
 bool	lexer(char **cmds);
 char	*msh_put_arrow(void);

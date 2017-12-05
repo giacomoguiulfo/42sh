@@ -51,6 +51,7 @@ typedef	struct			s_instruction
 }						t_instruction;
 
 bool	lexer(char **cmds);
+void	tokenize(char	*instructions);
 
 bool	validate_chain_bins(char *instr);
 bool	validate_quotes(char *inst);

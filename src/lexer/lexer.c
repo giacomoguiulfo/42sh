@@ -40,7 +40,6 @@ bool	lexer(char **instr)
 		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (false);
 	}
-	ft_printf("Valid commands: %s\n", *instr);
-	//tokenization
+	tokenize(*instr);
 	return (true);
 }
