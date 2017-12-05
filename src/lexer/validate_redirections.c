@@ -68,18 +68,35 @@ bool	check_output_to(char *instr, int *x)
 
 bool	check_output_redir(char *instr, int *x)
 {
+	int c;
+
+	c = *x;
 	ft_printf("Lexer: output redir found at %d, %s\n", *x, instr);
-	if (!check_output_from(instr, *x))
-		return (false);
-	else if (!check_output_to(instr, x))
-		return (false);
-	return (true);
+	if (check_output_from(instr, *x))
+		return (true);
+	else if (check_output_to(instr, x))
+		return (true);
+	ft_printf("Lexer: parse error near '%c'\n", instr[c]);
+	return (false);
 }
 
-bool	check_input_redir(char * instr, int *x)
+bool	check_input_redir(char *instr, int *x)
 {
-	ft_printf("Lexer: input redir found at %d, %s\n", *x, instr);
-	return (true);
+	int c;
+
+	c = *x;
+	while (instr[++*x])
+	{
+		if (ft_isalnum(instr[*x]))
+			return (true);
+		else if (ft_isquote(instr[*x]))
+		{
+			skip_quote(instr, x, instr[*x]);
+			return (true);
+		}
+	}
+	ft_printf("Lexer: parse error near '%c'\n", instr[c]);
+	return (false);
 }
 
 bool	validate_redirections(char *instr)
@@ -87,7 +104,6 @@ bool	validate_redirections(char *instr)
 	int x = -1;
 	int redir;
 
-	ft_printf("Inside redirections\n");
 	while (instr[++x])
 	{
 		if (ft_isquote(instr[x]))
@@ -99,11 +115,11 @@ bool	validate_redirections(char *instr)
 				if (!check_output_redir(instr, &x))
 					return (false);
 			}
-			/*else
+			else
 			{
 				if (!check_input_redir(instr, &x))
 					return (false);
-			}*/
+			}
 		}
 	}
 	ft_printf("Lexer: redirections look solid\n");
