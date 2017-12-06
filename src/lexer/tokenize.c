@@ -33,11 +33,11 @@ typedef struct	s_cmd_extractor
 void	tokenize_constructor(t_cmd_extractor *help, char *instr)
 {
 	help->found_bin = false;
-	help->start = instructions;
+	help->start = instr;
 	help->end = NULL;
 	help->bin_start = NULL;
-	help->bin->end = NULL;
-	ft_bzero((void*)buff, MAX_PATH_BIN_SIZE);
+	help->bin_end = NULL;
+	ft_bzero((void*)help->buff, MAX_PATH_BIN_SIZE);
 	help->x = -1;
 }
 
@@ -47,4 +47,9 @@ void	tokenize(char *instructions)
 
 	help.start = instructions;
 	tokenize_constructor(&help, instructions);
+	while (instructions[++help.x])
+	{
+		ft_putchar(instructions[help.x]);
+	}
+	ft_putchar('\n');
 }
