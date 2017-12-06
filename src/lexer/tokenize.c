@@ -39,7 +39,7 @@ typedef struct	s_cmd_extractor
 	char		*end;
 	char		*bin_start;
 	char		*bin_end;
-	char		buff[8192];
+	char		buff[MAX_PATH_BIN_SIZE];
 	int			x;
 }				t_cmd_extractor;
 
@@ -51,7 +51,7 @@ t_instruction	*tokenize_constructor(t_cmd_extractor *help, char *inst)
 	help->x = -1;
 	help->end = NULL;
 	help->start = inst;
-	ft_bzero((void*)help->buff, 8192);
+	ft_bzero((void*)help->buff, MAX_PATH_BIN_SIZE);
 	return (tmp);
 }
 
