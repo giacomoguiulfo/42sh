@@ -62,12 +62,22 @@ bool	get_bin(t_cmd_extractor *help)
 	return (false);
 }
 
+t_command *tokenize_command(t_cmd_extractor *help)
+{
+	t_command *tmp;
+
+	tmp = (t_command*)ft_memalloc(sizeof(t_command));
+	tmp->binary = help->bin_start;
+	return (tmp);
+}
+
 void	command_extractor(t_instruction *cmds, t_cmd_extractor help)
 {
+	t_command *command;
+
 	if (!get_bin(&help))
 		return ;
-	cmds = add_command(cmds, NULL);
-	ft_printf("command count: %zu\n", cmds->count);
-	cmds->commands[0]->binary = help.bin_start;
-	ft_printf("Found your binary: %s\n", help.bin_start);
+	command = tokenize_command(&help);
+	ft_printf("Your command is %s\n", command->binary);
+	add_command(cmds, command);
 }
