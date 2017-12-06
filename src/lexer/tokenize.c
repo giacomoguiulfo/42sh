@@ -25,6 +25,8 @@ t_instruction	*tokenize_constructor(t_cmd_extractor *help, char *instr)
 	help->end = NULL;
 	help->bin_start = NULL;
 	help->bin_end = NULL;
+	help->arg_start = NULL;
+	help->arg_end = NULL;
 	ft_bzero((void*)help->buff, MAX_PATH_BIN_SIZE);
 	help->x = -1;
 	return (NULL);

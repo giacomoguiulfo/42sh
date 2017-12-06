@@ -71,6 +71,72 @@ t_command *tokenize_command(t_cmd_extractor *help)
 	return (tmp);
 }
 
+bool	ft_isarg(char c)
+{
+	if (ft_isalnum(c))
+		return (true);
+	else if (ft_isquote(c))
+		return (true);
+	else if (c == '-')
+		return (true);
+	return (false);
+}
+
+int		get_arg_size(char *str, char quote)
+{
+	int x;
+
+	x = -1;
+	while (str[++x])
+	{
+		if (quote != 0)
+		{
+			if (str[x] == quote)
+				return (x);
+		}
+		else
+		{
+			if (str[x] == ' ')
+				return (x);
+			else if (str[x] == '<' || str[x] == '>')
+				return (x);
+		}
+	}
+	return (x);
+}
+
+void	get_args(t_command *this, t_cmd_extractor *help)
+{
+	char	*arg_ptr;
+	char	quote;
+	int		x;
+	int		count;
+	int		size;
+	
+	(void)this;
+	x = -1;
+	count = -1;
+	if (!help->bin_end)
+		return ;
+	arg_ptr = help->bin_end + 1;
+	ft_putstr("Args:\n");
+	quote = 0;
+	while (arg_ptr[++x])
+	{
+		if (ft_isarg(arg_ptr[x]))
+		{
+			if (ft_isquote(arg_ptr[x]))
+				quote = arg_ptr[x];
+			count++;
+			size = get_arg_size(arg_ptr + x, quote);
+			this->args = add_string(this->args, ft_strndup(arg_ptr + x, size));
+			x += size;
+			ft_printf("Your arg is: %s\n", this->args[count]);
+		}
+	}
+	ft_putchar('\n');
+}
+
 void	command_extractor(t_instruction *cmds, t_cmd_extractor help)
 {
 	t_command *command;
@@ -78,6 +144,7 @@ void	command_extractor(t_instruction *cmds, t_cmd_extractor help)
 	if (!get_bin(&help))
 		return ;
 	command = tokenize_command(&help);
+	get_args(command, &help);
 	ft_printf("Your command is %s\n", command->binary);
 	add_command(cmds, command);
 }

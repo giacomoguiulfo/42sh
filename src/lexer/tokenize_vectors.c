@@ -13,7 +13,7 @@
 #include "lexer.h"
 #include <stdlib.h>
 
-char			**add_binary(char **vector, char *bin)
+char			**add_string(char **vector, char *bin)
 {
 	char	**tmp;
 	int		x;

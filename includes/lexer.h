@@ -59,6 +59,8 @@ typedef struct	s_cmd_extractor
 	char		*end;
 	char		*bin_start;
 	char		*bin_end;
+	char		*arg_start;
+	char		*arg_end;
 	char		buff[MAX_PATH_BIN_SIZE];
 	int			x;
 }				t_cmd_extractor;
@@ -69,7 +71,6 @@ void			command_extractor(t_instruction *cmds, t_cmd_extractor help);
 
 t_instruction	*add_command(t_instruction *vector, t_command *cmd);
 char			**add_string(char **string, char *add);
-char			**add_binary(char **vector, char *bin);
 
 bool			validate_chain_bins(char *instr);
 bool			validate_quotes(char *inst);
