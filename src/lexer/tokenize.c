@@ -15,7 +15,63 @@
 #include "libft.h"
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
+/*
+typedef	struct			s_instruction
+{
+	struct s_command	**commands;
+}						t_instruction;
+*/
+
+t_instruction	*add_command(t_instruction *vector)
+{
+	t_instruction	*tmp;
+	t_command		**cmds;
+	int				x;
+	int				y;
+
+	if (!vector)
+	{
+		x = 1;
+		tmp = (t_instruction*)ft_memalloc(sizeof(t_instruction));
+		tmp->count = 1;
+		tmp->commands = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1));
+		tmp->commands[0] = (t_command*)ft_memalloc(sizeof(t_command));
+		tmp->commands[x] = 0;
+		return (tmp);
+	}
+	x = -1;
+	while (vector->commands && vector->commands[++x])
+		;
+	cmds = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1 + 1));
+	cmds[x + 1] = 0;
+	y = -1;
+	while (++y < x)
+		cmds[y] = vector->commands[y];
+	cmds[x] = (t_command*)ft_memalloc(sizeof(t_command));
+	free(vector->commands);
+	vector->commands = cmds;
+	vector->count++;
+	return (vector);
+}
+
+void	tokenize(char *instructions)
+{
+	t_instruction	*tmp;
+	int				x;
+
+	x = -1;
+	ft_printf("Inside tokenize\n");
+	tmp = add_command(NULL);
+	tmp = add_command(tmp);
+	tmp = add_command(tmp);
+	tmp = add_command(tmp);
+	ft_printf("You have created a total of %d commands\n", tmp->count);
+	ft_printf("%s\n", instructions);
+}
+
+/*
 char	*find_path(char *binary, char *path)
 {
 	struct stat sb;
@@ -41,8 +97,9 @@ char	*find_path(char *binary, char *path)
 		start = end + 1;
 	}
 	return (NULL);
-}
+}*/
 
+/*
 void	tokenize(char	*instructions)
 {
 	char	**split;
@@ -63,27 +120,4 @@ void	tokenize(char	*instructions)
 	if (pid == 0)
 		execve(valid, split, sh_singleton()->env);
 	wait(&status);
-}
-
-/*
-void	msh_run_prog(char *executable, char **args, char **newenvp)
-{
- 	pid_t	pid;
- 	int		status;
-
- 	pid = fork();
- 	if (pid == 0)
-	{
-		if (execve(executable, args, newenvp) == -1)
- 		{
-			ft_dprintf(2, "msh: permission denied: %s\n", executable);
-		}
-		exit(EXIT_FAILURE);
- 	}
- 	else if (pid < 0)
- 	{
-		ft_dprintf(2, "msh: unable to fork process: %d\n", pid);
-		exit(EXIT_FAILURE);
- 	}
- 	wait(&status);
 }*/

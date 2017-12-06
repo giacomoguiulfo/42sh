@@ -47,6 +47,7 @@ typedef struct			s_command
 
 typedef	struct			s_instruction
 {
+	size_t				count;
 	struct s_command	**commands;
 }						t_instruction;
 
