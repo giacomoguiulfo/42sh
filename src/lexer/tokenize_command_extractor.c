@@ -86,7 +86,7 @@ int		get_arg_size(char *str, char quote)
 {
 	int x;
 
-	x = -1;
+	x = 0;
 	while (str[++x])
 	{
 		if (quote != 0)
@@ -129,8 +129,10 @@ void	get_args(t_command *this, t_cmd_extractor *help)
 				quote = arg_ptr[x];
 			count++;
 			size = get_arg_size(arg_ptr + x, quote);
-			this->args = add_string(this->args, ft_strndup(arg_ptr + x, size));
+			this->args = add_string(this->args, ft_strndup(arg_ptr + x, size + 1));
 			x += size;
+			quote = 0;
+			ft_printf("arg size: %d\n", size);
 			ft_printf("Your arg is: %s\n", this->args[count]);
 		}
 	}
