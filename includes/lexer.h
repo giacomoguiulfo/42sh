@@ -52,8 +52,20 @@ typedef	struct			s_instruction
 	struct s_command	**commands;
 }						t_instruction;
 
+typedef struct	s_cmd_extractor
+{
+	bool		found_bin;
+	char		*start;
+	char		*end;
+	char		*bin_start;
+	char		*bin_end;
+	char		buff[MAX_PATH_BIN_SIZE];
+	int			x;
+}				t_cmd_extractor;
+
 bool			lexer(char **cmds);
 void			tokenize(char	*instructions);
+void			command_extractor(t_instruction *cmds, t_cmd_extractor help);
 
 t_instruction	*add_command(t_instruction *vector, t_command *cmd);
 char			**add_string(char **string, char *add);

@@ -18,19 +18,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-typedef struct	s_cmd_extractor
-{
-	bool		found_bin;
-	char		*start;
-	char		*end;
-	char		*bin_start;
-	char		*bin_end;
-	char		buff[MAX_PATH_BIN_SIZE];
-	int			x;
-}				t_cmd_extractor;
-
-
-void	tokenize_constructor(t_cmd_extractor *help, char *instr)
+t_instruction	*tokenize_constructor(t_cmd_extractor *help, char *instr)
 {
 	help->found_bin = false;
 	help->start = instr;
@@ -39,17 +27,49 @@ void	tokenize_constructor(t_cmd_extractor *help, char *instr)
 	help->bin_end = NULL;
 	ft_bzero((void*)help->buff, MAX_PATH_BIN_SIZE);
 	help->x = -1;
+	return (NULL);
+}
+
+int		is_redir_check(char *str, int index)
+{
+	while (ft_isdigit(str[++index]))
+		;
+	if (str[index] == '<' || str[index] == '>')
+		return (0);
+	return (1);
+}
+
+int		ft_isbin(char c, char *str, int index)
+{
+	if ((c == '"' || c == 39) || (ft_isalpha(c)))
+		return (1);
+	else if (ft_isdigit(c))
+	{
+		if (is_redir_check(str, index))
+			return (1);
+		else
+			return (0);
+	}
+	return (0);
 }
 
 void	tokenize(char *instructions)
 {
 	t_cmd_extractor help;
+	t_instruction	*commands;
 
-	help.start = instructions;
-	tokenize_constructor(&help, instructions);
+	ft_putstr("Inside tokenize\n");
+	commands = tokenize_constructor(&help, instructions);
 	while (instructions[++help.x])
 	{
-		ft_putchar(instructions[help.x]);
+		if (ft_ischain(instructions[help.x]))
+		{
+			help.end = instructions + help.x;
+			command_extractor(commands, help);
+			help.start = help.end + 1;
+		}
 	}
-	ft_putchar('\n');
+	help.end = instructions + help.x;
+	command_extractor(commands, help);
+	ft_putstr("Finished tokenize\n");
 }
