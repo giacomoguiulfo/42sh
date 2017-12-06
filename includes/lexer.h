@@ -42,7 +42,7 @@ typedef struct			s_command
 	struct s_redir_in	*in;
 	struct s_redir_out	*out;
 	struct s_heredoc	*here;
-	char				*args;
+	char				**args;
 	char				*binary;
 }						t_command;
 

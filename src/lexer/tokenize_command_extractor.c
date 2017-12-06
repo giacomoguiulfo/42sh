@@ -17,10 +17,57 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <limits.h>
+/*
+typedef struct	s_cmd_extractor
+{
+	bool		found_bin;
+	char		*start;
+	char		*end;
+	char		*bin_start;
+	char		*bin_end;
+	char		buff[MAX_PATH_BIN_SIZE];
+	int			x;
+}				t_cmd_extractor;
+
+typedef struct			s_command
+{
+	struct s_redir_in	*in;
+	struct s_redir_out	*out;
+	struct s_heredoc	*here;
+	char				**args;
+	char				*binary;
+}						t_command;
+
+// Get bin
+// get arguments
+// get chain status (if any)*/
+
+bool	get_bin(t_cmd_extractor *help)
+{
+	int x;
+
+	x = -1;
+	while (help->start[++x])
+	{
+		if (ft_isalpha(help->start[x]))
+		{
+			help->bin_start = help->start + x;
+			while (ft_isalpha(help->start[++x]))
+				;
+			help->start[x] = '\0';
+			help->bin_end = help->start + x;
+			return (true);
+		}
+	}
+	return (false);
+}
 
 void	command_extractor(t_instruction *cmds, t_cmd_extractor help)
 {
-	(void)cmds;
-	ft_printf("Found a command chain %c\n", *help.end);
-	ft_printf("Command is %s\n", ft_strndup(help.start, help.end - help.start));
+	if (!get_bin(&help))
+		return ;
+	cmds = add_command(cmds, NULL);
+	ft_printf("command count: %zu\n", cmds->count);
+	cmds->commands[0]->binary = help.bin_start;
+	ft_printf("Found your binary: %s\n", help.bin_start);
 }

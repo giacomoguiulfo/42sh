@@ -49,17 +49,18 @@ t_instruction	*add_command(t_instruction *vector, t_command *cmd)
 	if (!vector)
 	{
 		x = 1;
-		tmp = (t_instruction*)ft_hmalloc(sizeof(t_instruction));
+		ft_putstr("Inside here\n");
+		tmp = (t_instruction*)ft_memalloc(sizeof(t_instruction));
 		tmp->count = 1;
-		tmp->commands = (t_command**)ft_hmalloc(sizeof(t_command*) * (x + 1));
-		tmp->commands[0] = cmd;
+		tmp->commands = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1));
+		tmp->commands[0] = (t_command*)ft_memalloc(sizeof(t_command));
 		tmp->commands[x] = 0;
 		return (tmp);
 	}
 	x = -1;
 	while (vector->commands && vector->commands[++x])
 		;
-	cmds = (t_command**)ft_hmalloc(sizeof(t_command*) * (x + 1 + 1));
+	cmds = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1 + 1));
 	cmds[x + 1] = 0;
 	y = -1;
 	while (++y < x)
