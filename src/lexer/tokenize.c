@@ -17,58 +17,126 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-/*
-typedef	struct			s_instruction
+int		ft_iscmd_delim(char *c)
 {
-	struct s_command	**commands;
-}						t_instruction;
-*/
+	if (c[0] == '|' && c[1] == '|')
+		return (1);
+	else if (c[0] == '&' && c[1] == '&')
+		return (2);
+	else if (c[0] == '|')
+		return (3);
+	else if (c[0] == '&')
+		return (4);
+	else if (c[0] == ';')
+		return (5);
+	return (0);
+}
 
-t_instruction	*add_command(t_instruction *vector)
+typedef struct	s_cmd_extractor
 {
-	t_instruction	*tmp;
-	t_command		**cmds;
-	int				x;
-	int				y;
+	bool		found_bin;
+	char		*start;
+	char		*end;
+	char		*bin_start;
+	char		*bin_end;
+	char		buff[8192];
+	int			x;
+}				t_cmd_extractor;
 
-	if (!vector)
+t_instruction	*tokenize_constructor(t_cmd_extractor *help, char *inst)
+{
+	t_instruction *tmp;
+
+	tmp = NULL;
+	help->x = -1;
+	help->end = NULL;
+	help->start = inst;
+	ft_bzero((void*)help->buff, 8192);
+	return (tmp);
+}
+
+bool	ft_ismetachar(char c)
+{
+	if (c == ';' || c == '|' || c == '&' || c == '"' ||
+		c == '`' || c == '>' || c == '<' || c == ' ' ||
+		c == 39)
+		return (true);
+	return (false);
+}
+
+bool	fast_forward(t_cmd_extractor *help, char *str, int x, int opt)
+{
+	char c;
+
+	if (opt == 0)
 	{
-		x = 1;
-		tmp = (t_instruction*)ft_memalloc(sizeof(t_instruction));
-		tmp->count = 1;
-		tmp->commands = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1));
-		tmp->commands[0] = (t_command*)ft_memalloc(sizeof(t_command));
-		tmp->commands[x] = 0;
-		return (tmp);
+		c = str[x];
+		help->bin_start = str + x;
+		while (str[++x] != c)
+			;
+		help->bin_end = str + x;
 	}
+	else
+	{
+		help->bin_start = str + x;
+		while (!ft_ismetachar(str[++x]))
+			;
+		help->bin_end = str + x;
+	}
+	return (true);
+}
+
+bool	find_binary(t_cmd_extractor *help, char *str)
+{
+	int		x;
+
 	x = -1;
-	while (vector->commands && vector->commands[++x])
-		;
-	cmds = (t_command**)ft_memalloc(sizeof(t_command*) * (x + 1 + 1));
-	cmds[x + 1] = 0;
-	y = -1;
-	while (++y < x)
-		cmds[y] = vector->commands[y];
-	cmds[x] = (t_command*)ft_memalloc(sizeof(t_command));
-	free(vector->commands);
-	vector->commands = cmds;
-	vector->count++;
-	return (vector);
+	ft_putstr("Inside find binary\n");
+	while (str[++x])
+	{
+		if (ft_isquote(str[x]))
+			return (fast_forward(help, str, x, 0));
+		else if (ft_isalnum(str[x]))
+			return (fast_forward(help, str, x, 1));
+	}
+	return (false);
+}
+
+void	extract_cmd(t_cmd_extractor help, t_instruction *tmp)
+{
+	t_command *this;
+
+	if (!find_binary(&help, help.buff))
+		return ;
+	this = (t_command*)ft_memalloc(sizeof(t_command));
+	this->binary = ft_strndup(help.bin_start, help.bin_end - help.bin_start);
+	ft_printf("binary: %s\n", this->binary);
+	free(this->binary);
+	tmp = NULL;
 }
 
 void	tokenize(char *instructions)
 {
 	t_instruction	*tmp;
-	int				x;
+	t_cmd_extractor help;
 
-	x = -1;
-	ft_printf("Inside tokenize\n");
-	tmp = add_command(NULL);
-	tmp = add_command(tmp);
-	tmp = add_command(tmp);
-	tmp = add_command(tmp);
-	ft_printf("You have created a total of %d commands\n", tmp->count);
-	ft_printf("%s\n", instructions);
+	tmp = tokenize_constructor(&help, instructions);
+	while (instructions[++help.x])
+	{
+		if (ft_iscmd_delim(instructions + help.x))
+		{
+			help.end = instructions + help.x;
+			ft_strncpy(help.buff, help.start, help.end - help.start);
+			extract_cmd(help, tmp);
+			help.start = instructions + help.x + 1;
+			help.end = NULL;
+		}
+	}
+	help.end = instructions + help.x;
+	ft_strncpy(help.buff, help.start, help.end - help.start);
+	extract_cmd(help, tmp);
+	if (tmp)
+		ft_printf("token count is: %zu\n", tmp->count);
 }
 
 /*

@@ -43,6 +43,7 @@ typedef struct			s_command
 	struct s_redir_out	*out;
 	struct s_heredoc	*here;
 	char				*args;
+	char				*binary;
 }						t_command;
 
 typedef	struct			s_instruction
@@ -51,25 +52,28 @@ typedef	struct			s_instruction
 	struct s_command	**commands;
 }						t_instruction;
 
-bool	lexer(char **cmds);
-void	tokenize(char	*instructions);
+bool			lexer(char **cmds);
+void			tokenize(char	*instructions);
 
-bool	validate_chain_bins(char *instr);
-bool	validate_quotes(char *inst);
-bool	validate_redirections(char *instr);
-int		validate_chains(char *inst);
-int		validate_quotes_chains(char **instr);
+t_instruction	*add_command(t_instruction *vector, t_command *cmd);
+char			**add_string(char **string, char *add);
 
-bool	check_access(char *binary, char *path);
-bool	check_binary(char *binary, char *path, int *x);
-bool	check_reg_file(mode_t st_mode);
+bool			validate_chain_bins(char *instr);
+bool			validate_quotes(char *inst);
+bool			validate_redirections(char *instr);
+int				validate_chains(char *inst);
+int				validate_quotes_chains(char **instr);
 
-bool	get_close_chain(char *inst, int index);
-bool	try_pwd(char *binary);
-char	*get_path(void);
-int		ft_ischain(char c);
-int		ft_isquote(char c);
-void	skip_quote(char *inst, int *x, char quote_type);
-void	quote_prompt(char **instr, char *prompt);
+bool			check_access(char *binary, char *path);
+bool			check_binary(char *binary, char *path, int *x);
+bool			check_reg_file(mode_t st_mode);
+
+bool			get_close_chain(char *inst, int index);
+bool			try_pwd(char *binary);
+char			*get_path(void);
+int				ft_ischain(char c);
+int				ft_isquote(char c);
+void			skip_quote(char *inst, int *x, char quote_type);
+void			quote_prompt(char **instr, char *prompt);
 
 #endif
