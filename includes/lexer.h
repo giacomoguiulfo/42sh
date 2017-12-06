@@ -57,6 +57,7 @@ void			tokenize(char	*instructions);
 
 t_instruction	*add_command(t_instruction *vector, t_command *cmd);
 char			**add_string(char **string, char *add);
+char			**add_binary(char **vector, char *bin);
 
 bool			validate_chain_bins(char *instr);
 bool			validate_quotes(char *inst);
