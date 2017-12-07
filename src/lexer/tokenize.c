@@ -60,11 +60,13 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 		tmp = head;
 	else
 	{
+		ft_printf("Inside else statement: %s\n", instr + help->x);
 		tmp = head;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
 		tmp = tmp->next;
+		ft_printf("Finished else statement\n");
 	}
 	help->start = instr + help->x;
 	while (instr[++help->x] && instr[help->x] != help->quote_type)
@@ -72,6 +74,7 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	help->end = instr + help->x;
 	tmp->len = (help->end - 1) - (help->start);
 	tmp->content = help->start + 1;
+	ft_printf("Finished extracting more quotes\n");
 }
 
 
@@ -91,18 +94,22 @@ void	tokenize(char *instructions)
 {
 	t_toke 		help;
 	t_tokelist	*head;
+	t_tokelist	*tmp;
 
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
+	tmp = head;
 	ft_printf("Instructions are: %s\n", instructions);
 	while (instructions[++help.x])
 	{
 		if (ft_isquote(instructions[help.x]))
 		{
-			ft_printf("Inside ft_isquote\n");
+			ft_printf("Inside ft_isquote: %s\n", instructions + help.x);
 			extract_quotes(instructions, &help, head);
-			ft_putnstr(head->content, head->len);
-			ft_printf("finished quotes\n");
+			if (tmp->next)
+				tmp = tmp->next;
+			ft_putnstr(tmp->content, tmp->len);
+			ft_printf("\nfinished quotes\n");
 		}
 
 	}
