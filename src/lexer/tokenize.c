@@ -280,6 +280,18 @@ void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
 	ft_printf("Chain type is %s\n", tmp->type);
 }
 
+void	tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
+{
+	if (ft_isquote(instructions[help->x]))
+		extract_quotes(instructions, help, head);
+	else if (ft_isfilename(instructions[help->x]))
+		extract_words(instructions, help, head);
+	else if (instructions[help->x] == '>' || instructions[help->x] == '<')
+		extract_redirections(instructions, help, head);
+	else if (ft_iscompletechain(instructions + help->x))
+		extract_chain(instructions, help, head);
+}
+
 void	tokenize(char *instructions)
 {
 	t_toke 		help;
@@ -289,44 +301,17 @@ void	tokenize(char *instructions)
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
 	tmp = head;
-	if (!head)
-		ft_printf("Problem initializing head\n");
-	ft_printf("Instructions are: %s\n", instructions);
 	while (instructions[++help.x])
 	{
-		if (ft_isquote(instructions[help.x]))
+		if (ft_isquote(instructions[help.x]) ||
+			ft_isfilename(instructions[help.x]) ||
+			(instructions[help.x] == '>' || instructions[help.x] == '<') ||
+			ft_iscompletechain(instructions + help.x))
 		{
-			extract_quotes(instructions, &help, head);
-			if (tmp->next)
-				tmp = tmp->next;
-			ft_printf("Quote type is %c\n", tmp->type[0]);
-			ft_printf("Quote text is: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
-		}
-		else if (ft_isfilename(instructions[help.x]))
-		{
-			extract_words(instructions, &help, head);
-			if (tmp->next)
-				tmp = tmp->next;
-			ft_printf("Word is: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
-		}
-		else if (instructions[help.x] == '>' || instructions[help.x] == '<')
-		{
-			extract_redirections(instructions, &help, head);
-			if (tmp->next)
-				tmp = tmp->next;
-			ft_putnstr(tmp->content, tmp->len);
-		}
-		else if (ft_iscompletechain(instructions + help.x))
-		{
-			extract_chain(instructions, &help, head);
+			tokenize_this_part(instructions, &help, head);
 			if (tmp->next)
 				tmp = tmp->next;
 		}
-		//else if ((ft_isquote(instructions[help.x])) || (ft_isalnum(instructions[help.x]))) manage binaries
 	}
 	ft_printf("Finished tokenizing\n");
 	tmp = head;
