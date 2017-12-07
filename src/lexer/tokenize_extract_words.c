@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-bool	check_redirection(char *instr, t_toke *help)
+static bool	check_redirection(char *instr, t_toke *help)
 {
 	int x;
 	int y;
