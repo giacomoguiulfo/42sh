@@ -18,60 +18,93 @@
 #include <stdlib.h>
 #include <limits.h>
 
-t_instruction	*tokenize_constructor(t_cmd_extractor *help, char *instr)
+typedef struct			s_toke
 {
-	help->found_bin = false;
+	char				*start;
+	char				*end;
+	char				quote_type;
+	int					x;
+	int					state;
+}						t_toke;
+
+typedef struct			s_tokelist
+{
+	void				*content;
+	size_t				len;
+	char				type;
+	struct s_tokelist	*next;
+}						t_tokelist;
+
+void	ft_putnstr(char *str, size_t len)
+{
+	write(1, str, len);
+}
+
+t_tokelist *start_toking(void)
+{
+	t_tokelist *head;
+
+	head = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+	head->content = NULL;
+	head->next = NULL;
+	head->len = 0;
+	return (head);
+}
+
+void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	help->quote_type = instr[help->x];
+	if (!head->content)
+		tmp = head;
+	else
+	{
+		tmp = head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+		tmp = tmp->next;
+	}
+	help->start = instr + help->x;
+	while (instr[++help->x] && instr[help->x] != help->quote_type)
+		;
+	help->end = instr + help->x;
+	tmp->len = (help->end - 1) - (help->start);
+	tmp->content = help->start + 1;
+}
+
+
+
+t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
+{
+	t_tokelist *head;
+
 	help->start = instr;
 	help->end = NULL;
-	help->bin_start = NULL;
-	help->bin_end = NULL;
-	help->arg_start = NULL;
-	help->arg_end = NULL;
-	ft_bzero((void*)help->buff, MAX_PATH_BIN_SIZE);
 	help->x = -1;
-	return (NULL);
-}
-
-int		is_redir_check(char *str, int index)
-{
-	while (ft_isdigit(str[++index]))
-		;
-	if (str[index] == '<' || str[index] == '>')
-		return (0);
-	return (1);
-}
-
-int		ft_isbin(char c, char *str, int index)
-{
-	if ((c == '"' || c == 39) || (ft_isalpha(c)))
-		return (1);
-	else if (ft_isdigit(c))
-	{
-		if (is_redir_check(str, index))
-			return (1);
-		else
-			return (0);
-	}
-	return (0);
+	help->state = 0;
+	return ((head = start_toking()));
 }
 
 void	tokenize(char *instructions)
 {
-	t_cmd_extractor help;
-	t_instruction	*commands;
+	t_toke 		help;
+	t_tokelist	*head;
 
-	ft_putstr("Inside tokenize\n");
-	commands = tokenize_constructor(&help, instructions);
+	head = NULL;
+	head = tokenize_constructor(&help, instructions);
+	ft_printf("Instructions are: %s\n", instructions);
 	while (instructions[++help.x])
 	{
-		if (ft_ischain(instructions[help.x]))
+		if (ft_isquote(instructions[help.x]))
 		{
-			help.end = instructions + help.x;
-			command_extractor(commands, help);
-			help.start = help.end + 1;
+			ft_printf("Inside ft_isquote\n");
+			extract_quotes(instructions, &help, head);
+			ft_putnstr(head->content, head->len);
+			ft_printf("finished quotes\n");
 		}
+
 	}
-	help.end = instructions + help.x;
-	command_extractor(commands, help);
-	ft_putstr("Finished tokenize\n");
+	ft_printf("Finished tokenizing\n");
 }
