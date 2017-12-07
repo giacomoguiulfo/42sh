@@ -17,60 +17,8 @@
 
 # define MAX_PATH_BIN_SIZE 8192
 
-typedef	struct			s_heredoc
-{
-	char				*delim;
-	char				*content;
-}						t_heredoc;
-
-typedef struct			s_redir_out
-{
-	char				**output_files;
-	int					*output_fds;
-	int					*output_fd_count;	
-}						t_redir_out;
-
-typedef struct			s_redir_in
-{
-	char				**input_files;
-	int					*input_fds;
-	int					input_fd_count;
-}						t_redir_in;
-
-typedef struct			s_command
-{
-	struct s_redir_in	*in;
-	struct s_redir_out	*out;
-	struct s_heredoc	*here;
-	char				**args;
-	char				*binary;
-}						t_command;
-
-typedef	struct			s_instruction
-{
-	size_t				count;
-	struct s_command	**commands;
-}						t_instruction;
-
-typedef struct	s_cmd_extractor
-{
-	bool		found_bin;
-	char		*start;
-	char		*end;
-	char		*bin_start;
-	char		*bin_end;
-	char		*arg_start;
-	char		*arg_end;
-	char		buff[MAX_PATH_BIN_SIZE];
-	int			x;
-}				t_cmd_extractor;
-
 bool			lexer(char **cmds);
 void			tokenize(char	*instructions);
-void			command_extractor(t_instruction *cmds, t_cmd_extractor help);
-
-t_instruction	*add_command(t_instruction *vector, t_command *cmd);
-char			**add_string(char **string, char *add);
 
 bool			validate_chain_bins(char *instr);
 bool			validate_quotes(char *inst);
