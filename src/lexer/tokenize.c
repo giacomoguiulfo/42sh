@@ -173,13 +173,33 @@ void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 	}
 }
 
-void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
+void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 {
 	int len;
-	char quote;
 
 	len = 0;
-	quote = 0;
+	node->redir_suffix_file = instr + help->x;
+	while (ft_isfilename(instr[++help->x]))
+		len++;
+	node->redir_suffix_len = len + 1;
+}
+
+void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
+{
+	int		len;
+	char	quote;
+
+	len = 0;
+	quote = instr[help->x];
+	node->redir_suffix_file = instr + help->x + 1;
+	quote = instr[help->x];
+	while (instr[++help->x] != quote)
+		len++;
+	node->redir_suffix_len = len;
+}
+
+void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
+{
 	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
 	{
 		node->type[0] = '&';
@@ -191,19 +211,12 @@ void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 	{
 		if (ft_isfilename(instr[help->x]))
 		{
-			node->redir_suffix_file = instr + help->x;
-			while (ft_isfilename(instr[++help->x]))
-				len++;
-			node->redir_suffix_len = len + 1;
+			get_suffix_word(instr, help, node);
 			break ;
 		}
 		else if (ft_isquote(instr[help->x]))
 		{
-			node->redir_suffix_file = instr + help->x + 1;
-			quote = instr[help->x];
-			while (instr[++help->x] != quote)
-				len++;
-			node->redir_suffix_len = len;
+			get_suffix_quote(instr, help, node);
 			break ;
 		}
 	}
@@ -213,7 +226,6 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	ft_printf("Starting redirection extraction\n");
 	if (!head->type[0])
 		tmp = head;
 	else
@@ -226,28 +238,11 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	}
 	get_prefix(instr, help, tmp);
 	get_suffix(instr, help, tmp);
-	ft_printf("Redirection type: %s\n", tmp->type);
-	if (tmp->redir_prefix_fd != -2)
-	{
-		if (tmp->redir_prefix_fd == -1)
-			ft_printf("Redirection fd prefix is &\n");
-		else
-			ft_printf("Redirection prefix fd: %d\n", tmp->redir_prefix_fd);
-	}
-	if (tmp->redir_suffix_fd != -2)
-	{
-		if (tmp->redir_suffix_fd != -2)
-			ft_printf("Redirection suffix is & and fd is %d\n", tmp->redir_suffix_fd);
-		else
-			ft_printf("Redirection suffix file: %s\n", tmp->redir_suffix_file);
-	}
 	if (tmp->redir_suffix_file)
 	{
-		ft_printf("Redirection suffix file: ");
 		ft_putnstr(tmp->redir_suffix_file, tmp->redir_suffix_len);
 		ft_putchar('\n');
 	}
-	ft_printf("Ending redirection extraction\n");
 }
 
 void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
@@ -277,7 +272,6 @@ void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
 	else
 		tmp = add_toke(head);
 	get_chain_type(instr, help, tmp);
-	ft_printf("Chain type is %s\n", tmp->type);
 }
 
 void	tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
@@ -319,6 +313,19 @@ void	tokenize(char *instructions)
 	{
 		ft_printf("\n----------\n");
 		ft_printf("type: %s\n", tmp->type);
+		if (tmp->type[0] == '>' || tmp->type[0] == '<')
+		{
+			if (tmp->redir_suffix_fd != -2)
+				ft_printf("Suffix_fd is %d\n", tmp->redir_suffix_fd);
+			else if (tmp->redir_suffix_file)
+			{
+				ft_printf("Suffix file is: ");
+				ft_putnstr(tmp->redir_suffix_file, tmp->redir_suffix_len);
+				ft_putchar('\n');
+			}
+			else if (tmp->redir_prefix_fd != -2)
+				ft_printf("Prefix_fd is %d\n", tmp->redir_prefix_fd);
+		}
 		if (ft_isquote(tmp->type[0]))
 		{
 			ft_printf("Quote text: ");
