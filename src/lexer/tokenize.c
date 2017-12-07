@@ -51,34 +51,6 @@ t_tokelist *start_toking(void)
 	return (head);
 }
 
-void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
-{
-	t_tokelist *tmp;
-
-	help->quote_type = instr[help->x];
-	if (!head->content)
-		tmp = head;
-	else
-	{
-		ft_printf("Inside else statement: %s\n", instr + help->x);
-		tmp = head;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
-		tmp = tmp->next;
-		ft_printf("Finished else statement\n");
-	}
-	help->start = instr + help->x;
-	while (instr[++help->x] && instr[help->x] != help->quote_type)
-		;
-	help->end = instr + help->x;
-	tmp->len = (help->end - 1) - (help->start);
-	tmp->content = help->start + 1;
-	ft_printf("Finished extracting more quotes\n");
-}
-
-
-
 t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 {
 	t_tokelist *head;
@@ -89,6 +61,44 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	help->state = 0;
 	return ((head = start_toking()));
 }
+
+t_tokelist *add_toke(t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	if (!head)
+		return (NULL);
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+	tmp->content = NULL;
+	tmp->next = NULL;
+	tmp->len = 0;
+	return (tmp);
+}
+
+void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	help->quote_type = instr[help->x];
+	if (!head->content)
+		tmp = head;
+	else
+		tmp = add_toke(head);
+	help->start = instr + help->x;
+	while (instr[++help->x] && instr[help->x] != help->quote_type)
+		;
+	help->end = instr + help->x;
+	tmp->len = (help->end - 1) - (help->start);
+	tmp->content = help->start + 1;
+}
+
+/*void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
+{
+
+}*/
 
 void	tokenize(char *instructions)
 {
@@ -104,13 +114,19 @@ void	tokenize(char *instructions)
 	{
 		if (ft_isquote(instructions[help.x]))
 		{
-			ft_printf("Inside ft_isquote: %s\n", instructions + help.x);
 			extract_quotes(instructions, &help, head);
 			if (tmp->next)
 				tmp = tmp->next;
 			ft_putnstr(tmp->content, tmp->len);
-			ft_printf("\nfinished quotes\n");
+			ft_putchar('\n');
 		}
+		/*else if (instructions[help.x] == '>' || instructions[help.x] == '<')
+		{
+			extract_redirections(instructions, &help, head);
+			if (tmp->next)
+				tmp = tmp->next;
+			ft_putnstr(tmp->content, tmp->len);
+		}*/
 
 	}
 	ft_printf("Finished tokenizing\n");
