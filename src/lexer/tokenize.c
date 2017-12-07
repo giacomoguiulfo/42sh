@@ -141,12 +141,10 @@ bool	check_redirection(char *instr, t_toke *help)
 
 	x = help->x;
 	y = 0;
-	ft_printf("Checking word for redirection\n");
 	while (instr[++y + x] && ft_isdigit(instr[y + x]))
 		;
 	if (instr[y + x] == '>')
 	{
-		ft_printf("-->%s\n", instr + x);
 		help->x += y - 1;
 		return (true);
 	}
@@ -190,7 +188,6 @@ void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 {
 	if (node->type[0] == '>')
 	{
-		ft_printf("Getting prefix\n");
 		if (help->x > 0 && instr[help->x - 1] == '&')
 			node->redir_prefix_fd = -1;
 		else if (help->x > 0 && ft_isdigit(instr[help->x - 1]))

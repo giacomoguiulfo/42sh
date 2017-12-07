@@ -74,7 +74,6 @@ bool	check_output_redir(char *instr, int *x)
 	int c;
 
 	c = *x;
-	ft_printf("Lexer: output redir found at %d, %s\n", *x, instr);
 	if (check_output_from(instr, *x))
 		return (true);
 	else if (check_output_to(instr, x))
