@@ -79,7 +79,8 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	help->end = NULL;
 	help->x = -1;
 	help->state = 0;
-	return ((head = start_toking()));
+	head = start_toking();
+	return (head);
 }
 
 t_tokelist *add_toke(t_tokelist *head)
@@ -92,6 +93,7 @@ t_tokelist *add_toke(t_tokelist *head)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+	tmp = tmp->next;
 	tmp->content = NULL;
 	tmp->next = NULL;
 	tmp->len = 0;
@@ -105,11 +107,21 @@ t_tokelist *add_toke(t_tokelist *head)
 	return (tmp);
 }
 
+int		ft_isfilename(char c)
+{
+	if (ft_isalnum(c))
+		return (1);
+	else if (c == '_' || c == '.' || c == ',' || c == '-' || c == '=' ||
+		c == '+' || c == '%' || c == '#' || c == '@' || c == '^')
+		return (1);
+	return  (0);
+}
+
 void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	if (!head->content)
+	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
@@ -122,12 +134,28 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	tmp->content = help->start + 1;
 }
 
+void	extract_words(char *instr, t_toke *help, t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	if (!head->type[0])
+		tmp = head;
+	else
+		tmp = add_toke(head);
+	tmp->type[0] = 'w';
+	help->start = instr + help->x;
+	while (instr[++help->x] && ft_isfilename(instr[help->x]))
+		;
+	help->end = instr + help->x;
+	tmp->len = help->end - help->start;
+	tmp->content = help->start;
+}
+
 void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
 {
 	int x;
 
 	x = help->x;
-	ft_printf("Gathering int redirection source\n");
 	while (--x > 0 && ft_isdigit(instr[x]))
 		;
 	if (instr[x] == ' ' || ft_isdigit(instr[x]))
@@ -143,16 +171,6 @@ void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 		else if (help->x > 0 && ft_isdigit(instr[help->x - 1]))
 			check_redir_source(instr, help, node);
 	}
-}
-
-int		ft_isfilename(char c)
-{
-	if (ft_isalnum(c))
-		return (1);
-	else if (c == '_' || c == '.' || c == ',' || c == '-' || c == '=' ||
-		c == '+' || c == '%' || c == '#' || c == '@' || c == '^')
-		return (1);
-	return  (0);
 }
 
 void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
@@ -196,7 +214,7 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	t_tokelist *tmp;
 
 	ft_printf("Starting redirection extraction\n");
-	if (!head->content)
+	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
@@ -254,7 +272,7 @@ void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	if (!head->content)
+	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
@@ -271,6 +289,8 @@ void	tokenize(char *instructions)
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
 	tmp = head;
+	if (!head)
+		ft_printf("Problem initializing head\n");
 	ft_printf("Instructions are: %s\n", instructions);
 	while (instructions[++help.x])
 	{
@@ -281,6 +301,15 @@ void	tokenize(char *instructions)
 				tmp = tmp->next;
 			ft_printf("Quote type is %c\n", tmp->type[0]);
 			ft_printf("Quote text is: ");
+			ft_putnstr(tmp->content, tmp->len);
+			ft_putchar('\n');
+		}
+		else if (ft_isfilename(instructions[help.x]))
+		{
+			extract_words(instructions, &help, head);
+			if (tmp->next)
+				tmp = tmp->next;
+			ft_printf("Word is: ");
 			ft_putnstr(tmp->content, tmp->len);
 			ft_putchar('\n');
 		}
@@ -297,8 +326,27 @@ void	tokenize(char *instructions)
 			if (tmp->next)
 				tmp = tmp->next;
 		}
-		// else if ft_ischain(instructions[help.x]) // manage chains
 		//else if ((ft_isquote(instructions[help.x])) || (ft_isalnum(instructions[help.x]))) manage binaries
 	}
 	ft_printf("Finished tokenizing\n");
+	tmp = head;
+	while (tmp)
+	{
+		ft_printf("\n----------\n");
+		ft_printf("type: %s\n", tmp->type);
+		if (ft_isquote(tmp->type[0]))
+		{
+			ft_printf("Quote text: ");
+			ft_putnstr(tmp->content, tmp->len);
+			ft_putchar('\n');
+		}
+		else if (tmp->type[0] == 'w')
+		{
+			ft_printf("Word text: ");
+			ft_putnstr(tmp->content, tmp->len);
+			ft_putchar('\n');
+		}
+		ft_printf("---------->\n");
+		tmp = tmp->next;
+	}
 }
