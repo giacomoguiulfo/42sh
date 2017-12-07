@@ -44,6 +44,15 @@ void	ft_putnstr(char *str, size_t len)
 	write(1, str, len);
 }
 
+int		ft_iscompletechain(char *str)
+{
+	if (ft_ischain(str))
+		return (1);
+	else if (str[0] == ';')
+		return (1);
+	return (0);
+}
+
 t_tokelist *start_toking(void)
 {
 	t_tokelist *head;
@@ -223,6 +232,36 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	ft_printf("Ending redirection extraction\n");
 }
 
+void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
+{
+	if (instr[help->x] == '&' && instr[help->x + 1] == '&')
+	{
+		node->type[0] = '&';
+		node->type[1] = '&';
+	}
+	else if (instr[help->x] == '|' && instr[help->x + 1] == '|')
+	{
+		node->type[0] = '|';
+		node->type[1] = '|';
+	}
+	else if (instr[help->x] == '|')
+		node->type[0] = '|';
+	else if (instr[help->x] == ';')
+		node->type[0] = ';';
+}
+
+void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	if (!head->content)
+		tmp = head;
+	else
+		tmp = add_toke(head);
+	get_chain_type(instr, help, tmp);
+	ft_printf("Chain type is %s\n", tmp->type);
+}
+
 void	tokenize(char *instructions)
 {
 	t_toke 		help;
@@ -252,8 +291,12 @@ void	tokenize(char *instructions)
 				tmp = tmp->next;
 			ft_putnstr(tmp->content, tmp->len);
 		}
-		else if (ft_ischain(instructions + help.x))
-			ft_printf("Found a chain: %c\n", instructions[help.x]);
+		else if (ft_iscompletechain(instructions + help.x))
+		{
+			extract_chain(instructions, &help, head);
+			if (tmp->next)
+				tmp = tmp->next;
+		}
 		// else if ft_ischain(instructions[help.x]) // manage chains
 		//else if ((ft_isquote(instructions[help.x])) || (ft_isalnum(instructions[help.x]))) manage binaries
 	}
