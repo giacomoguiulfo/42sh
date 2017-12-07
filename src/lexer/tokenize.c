@@ -143,19 +143,17 @@ void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 
 	len = 0;
 	quote = 0;
-	ft_printf("string location begin: %s\n", instr + help->x);
 	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
 	{
 		node->type[0] = '&';
 		node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
 		help->x += 1;
+		return ;
 	}
-	ft_printf("String location %s\n", instr + help->x);
 	while (instr[++help->x])
 	{
 		if (ft_isalnum(instr[help->x]))
 		{
-			ft_printf("String location3: %s\n", instr + help->x);
 			node->redir_suffix_file = instr + help->x;
 			while (ft_isalnum(instr[++help->x]))
 				len++;
@@ -233,7 +231,8 @@ void	tokenize(char *instructions)
 				tmp = tmp->next;
 			ft_putnstr(tmp->content, tmp->len);
 		}
-
+		// else if ft_ischain(instructions[help.x]) // manage chains
+		//else if ((ft_isquote(instructions[help.x])) || (ft_isalnum(instructions[help.x]))) manage binaries
 	}
 	ft_printf("Finished tokenizing\n");
 }
