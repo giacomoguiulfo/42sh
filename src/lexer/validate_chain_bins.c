@@ -111,7 +111,7 @@ bool	validate_chain_bins(char *instr)
 			else
 				state++;
 		}
-		else if (ft_ischain(instr[x]))
+		else if (ft_ischain(instr + x))
 		{
 			if (!change_state(instr + x, &x, state))
 				return (false);

@@ -24,9 +24,9 @@ int		ft_isquote(char c)
 	return (0);
 }
 
-int		ft_ischain(char c)
+int		ft_ischain(char *c)
 {
-	if (c == '|' || c == '&')
+	if (c[0] == '|' || (c[0] == '&' && c[1] == '&'))
 		return (1);
 	return (0);
 }
