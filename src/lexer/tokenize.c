@@ -136,6 +136,16 @@ void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 	}
 }
 
+int		ft_isfilename(char c)
+{
+	if (ft_isalnum(c))
+		return (1);
+	else if (c == '_' || c == '.' || c == ',' || c == '-' || c == '=' ||
+		c == '+' || c == '%' || c == '#' || c == '@' || c == '^')
+		return (1);
+	return  (0);
+}
+
 void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
 	int len;
@@ -152,10 +162,10 @@ void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 	}
 	while (instr[++help->x])
 	{
-		if (ft_isalnum(instr[help->x]))
+		if (ft_isfilename(instr[help->x]))
 		{
 			node->redir_suffix_file = instr + help->x;
-			while (ft_isalnum(instr[++help->x]))
+			while (ft_isfilename(instr[++help->x]))
 				len++;
 			node->redir_suffix_len = len + 1;
 			break ;
@@ -191,9 +201,19 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	get_suffix(instr, help, tmp);
 	ft_printf("Redirection type: %s\n", tmp->type);
 	if (tmp->redir_prefix_fd != -2)
-		ft_printf("Redirection prefix fd: %d\n", tmp->redir_prefix_fd);
+	{
+		if (tmp->redir_prefix_fd == -1)
+			ft_printf("Redirection fd prefix is &\n");
+		else
+			ft_printf("Redirection prefix fd: %d\n", tmp->redir_prefix_fd);
+	}
 	if (tmp->redir_suffix_fd != -2)
-		ft_printf("Redirection suffix fd: %d\n", tmp->redir_suffix_fd);
+	{
+		if (tmp->redir_suffix_fd != -2)
+			ft_printf("Redirection suffix is & and fd is %d\n", tmp->redir_suffix_fd);
+		else
+			ft_printf("Redirection suffix file: %s\n", tmp->redir_suffix_file);
+	}
 	if (tmp->redir_suffix_file)
 	{
 		ft_printf("Redirection suffix file: ");
@@ -221,6 +241,7 @@ void	tokenize(char *instructions)
 			if (tmp->next)
 				tmp = tmp->next;
 			ft_printf("Quote type is %c\n", tmp->type[0]);
+			ft_printf("Quote text is: ");
 			ft_putnstr(tmp->content, tmp->len);
 			ft_putchar('\n');
 		}
@@ -231,6 +252,8 @@ void	tokenize(char *instructions)
 				tmp = tmp->next;
 			ft_putnstr(tmp->content, tmp->len);
 		}
+		else if (ft_ischain(instructions + help.x))
+			ft_printf("Found a chain: %c\n", instructions[help.x]);
 		// else if ft_ischain(instructions[help.x]) // manage chains
 		//else if ((ft_isquote(instructions[help.x])) || (ft_isalnum(instructions[help.x]))) manage binaries
 	}
