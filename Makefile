@@ -45,6 +45,12 @@ core/sh_init\
 core/sh_singleton\
 lexer/lexer\
 lexer/tokenize\
+lexer/tokenize_utils\
+lexer/tokenize_extract_chains\
+lexer/tokenize_extract_redirections\
+lexer/tokenize_extract_quotes\
+lexer/tokenize_extract_words\
+lexer/tokenize_toke_list\
 lexer/validate_quotes_chains\
 lexer/validate_chains\
 lexer/validate_chain_bins\
