@@ -134,10 +134,34 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	tmp->content = help->start + 1;
 }
 
+bool	check_redirection(char *instr, t_toke *help)
+{
+	int x;
+	int y;
+
+	x = help->x;
+	y = 0;
+	ft_printf("Checking word for redirection\n");
+	while (instr[++y + x] && ft_isdigit(instr[y + x]))
+		;
+	if (instr[y + x] == '>')
+	{
+		ft_printf("-->%s\n", instr + x);
+		help->x += y - 1;
+		return (true);
+	}
+	return (false);
+}
+
 void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	if (ft_isdigit(instr[help->x]))
+	{
+		if (check_redirection(instr, help))
+			return ;
+	}
 	if (!head->type[0])
 		tmp = head;
 	else
@@ -159,13 +183,14 @@ void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
 	while (--x > 0 && ft_isdigit(instr[x]))
 		;
 	if (instr[x] == ' ' || ft_isdigit(instr[x]))
-		node->redir_prefix_fd = ft_atoi(instr + x);
+		node->redir_prefix_fd = ft_atoi(instr - x);
 }
 
 void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 {
 	if (node->type[0] == '>')
 	{
+		ft_printf("Getting prefix\n");
 		if (help->x > 0 && instr[help->x - 1] == '&')
 			node->redir_prefix_fd = -1;
 		else if (help->x > 0 && ft_isdigit(instr[help->x - 1]))

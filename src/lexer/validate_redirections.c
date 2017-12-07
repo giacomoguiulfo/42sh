@@ -41,13 +41,12 @@ bool	check_output_from(char *instr, int x)
 			return (true);
 		else if (ft_isdigit(instr[x - 1]))
 		{
-			while (x > -1 && ft_isdigit(instr[--x]))
-			{
-				if (ft_isalpha(instr[x]))
-					return (false);
-				else if (instr[x] == ' ')
-					return (true);
-			}
+			while (--x > 0 && ft_isdigit(instr[x]))
+				;
+			if (ft_isalpha(instr[x]))
+				return (false);
+			else if (instr[x] == ' ')
+				return (true);
 		}
 	}
 	ft_printf("Lexer: parse error near '%c'\n", instr[c]);
