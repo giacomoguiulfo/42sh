@@ -31,7 +31,8 @@ typedef struct			s_tokelist
 {
 	void				*content;
 	size_t				len;
-	char				type[2];
+	char				type[3];
+	int					redir_source;
 	struct s_tokelist	*next;
 }						t_tokelist;
 
@@ -48,6 +49,10 @@ t_tokelist *start_toking(void)
 	head->content = NULL;
 	head->next = NULL;
 	head->len = 0;
+	head->type[0] = '\0';
+	head->type[1] = '\0';
+	head->type[2] = '\0';
+	head->redir_source = -1;
 	return (head);
 }
 
@@ -77,6 +82,8 @@ t_tokelist *add_toke(t_tokelist *head)
 	tmp->len = 0;
 	tmp->type[0] = '\0';
 	tmp->type[1] = '\0';
+	tmp->type[2] = '\0';
+	tmp->redir_source = -1;
 	return (tmp);
 }
 
@@ -97,12 +104,36 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	tmp->content = help->start + 1;
 }
 
-/*void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
+/*void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
+{
+	int x;
+
+	x = help->x;
+	while (help->x > -1)
+}
+
+void	get_source(char *instr, t_toke *help, t_tokelist *node)
+{
+	if (instr[help->x - 1] == '&')
+		check_redir_source(instr, help, tmp);
+}*/
+
+void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	help
-}*/
+	ft_printf("Starting redirection extraction\n");
+	if (!head->content)
+		tmp = head;
+	else
+		tmp = add_toke(head);
+	tmp->type[0] = instr[help->x];
+	if (instr[help->x] == instr[help->x + 1])
+		tmp->type[1] = instr[help->x + 1];
+	//get_source(instr, help, tmp);
+	ft_printf("Redirection type: %s\n", tmp->type);
+	ft_printf("Ending redirection extraction\n");
+}
 
 void	tokenize(char *instructions)
 {
@@ -125,13 +156,13 @@ void	tokenize(char *instructions)
 			ft_putnstr(tmp->content, tmp->len);
 			ft_putchar('\n');
 		}
-		/*else if (instructions[help.x] == '>' || instructions[help.x] == '<')
+		else if (instructions[help.x] == '>' || instructions[help.x] == '<')
 		{
 			extract_redirections(instructions, &help, head);
 			if (tmp->next)
 				tmp = tmp->next;
 			ft_putnstr(tmp->content, tmp->len);
-		}*/
+		}
 
 	}
 	ft_printf("Finished tokenizing\n");
