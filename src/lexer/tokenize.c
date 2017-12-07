@@ -31,7 +31,7 @@ typedef struct			s_tokelist
 {
 	void				*content;
 	size_t				len;
-	char				type;
+	char				type[2];
 	struct s_tokelist	*next;
 }						t_tokelist;
 
@@ -75,6 +75,8 @@ t_tokelist *add_toke(t_tokelist *head)
 	tmp->content = NULL;
 	tmp->next = NULL;
 	tmp->len = 0;
+	tmp->type[0] = '\0';
+	tmp->type[1] = '\0';
 	return (tmp);
 }
 
@@ -82,13 +84,13 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	help->quote_type = instr[help->x];
 	if (!head->content)
 		tmp = head;
 	else
 		tmp = add_toke(head);
+	tmp->type[0] = instr[help->x];
 	help->start = instr + help->x;
-	while (instr[++help->x] && instr[help->x] != help->quote_type)
+	while (instr[++help->x] && instr[help->x] != tmp->type[0])
 		;
 	help->end = instr + help->x;
 	tmp->len = (help->end - 1) - (help->start);
@@ -97,7 +99,9 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 
 /*void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
+	t_tokelist *tmp;
 
+	help
 }*/
 
 void	tokenize(char *instructions)
@@ -117,6 +121,7 @@ void	tokenize(char *instructions)
 			extract_quotes(instructions, &help, head);
 			if (tmp->next)
 				tmp = tmp->next;
+			ft_printf("Quote type is %c\n", tmp->type[0]);
 			ft_putnstr(tmp->content, tmp->len);
 			ft_putchar('\n');
 		}
