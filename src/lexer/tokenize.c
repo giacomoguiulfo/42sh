@@ -32,7 +32,10 @@ typedef struct			s_tokelist
 	void				*content;
 	size_t				len;
 	char				type[3];
-	int					redir_source;
+	int					redir_prefix_fd;
+	char				*redir_suffix_file;
+	int					redir_suffix_len;
+	int					redir_suffix_fd;
 	struct s_tokelist	*next;
 }						t_tokelist;
 
@@ -52,7 +55,10 @@ t_tokelist *start_toking(void)
 	head->type[0] = '\0';
 	head->type[1] = '\0';
 	head->type[2] = '\0';
-	head->redir_source = -1;
+	head->redir_prefix_fd = -2;
+	head->redir_suffix_fd = -2;
+	head->redir_suffix_file = NULL;
+	head->redir_suffix_len = -1;
 	return (head);
 }
 
@@ -83,7 +89,10 @@ t_tokelist *add_toke(t_tokelist *head)
 	tmp->type[0] = '\0';
 	tmp->type[1] = '\0';
 	tmp->type[2] = '\0';
-	tmp->redir_source = -1;
+	tmp->redir_prefix_fd = -2;
+	tmp->redir_suffix_fd = -2;
+	tmp->redir_suffix_file = NULL;
+	tmp->redir_suffix_len = -2;
 	return (tmp);
 }
 
@@ -104,19 +113,66 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	tmp->content = help->start + 1;
 }
 
-/*void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
+void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
 {
 	int x;
 
 	x = help->x;
-	while (help->x > -1)
+	ft_printf("Gathering int redirection source\n");
+	while (--x > 0 && ft_isdigit(instr[x]))
+		;
+	if (instr[x] == ' ' || ft_isdigit(instr[x]))
+		node->redir_prefix_fd = ft_atoi(instr + x);
 }
 
-void	get_source(char *instr, t_toke *help, t_tokelist *node)
+void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 {
-	if (instr[help->x - 1] == '&')
-		check_redir_source(instr, help, tmp);
-}*/
+	if (node->type[0] == '>')
+	{
+		if (help->x > 0 && instr[help->x - 1] == '&')
+			node->redir_prefix_fd = -1;
+		else if (help->x > 0 && ft_isdigit(instr[help->x - 1]))
+			check_redir_source(instr, help, node);
+	}
+}
+
+void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
+{
+	int len;
+	char quote;
+
+	len = 0;
+	quote = 0;
+	ft_printf("string location begin: %s\n", instr + help->x);
+	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
+	{
+		node->type[0] = '&';
+		node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
+		help->x += 1;
+	}
+	ft_printf("String location %s\n", instr + help->x);
+	while (instr[++help->x])
+	{
+		if (ft_isalnum(instr[help->x]))
+		{
+			ft_printf("String location3: %s\n", instr + help->x);
+			node->redir_suffix_file = instr + help->x;
+			while (ft_isalnum(instr[++help->x]))
+				len++;
+			node->redir_suffix_len = len + 1;
+			break ;
+		}
+		else if (ft_isquote(instr[help->x]))
+		{
+			node->redir_suffix_file = instr + help->x + 1;
+			quote = instr[help->x];
+			while (instr[++help->x] != quote)
+				len++;
+			node->redir_suffix_len = len;
+			break ;
+		}
+	}
+}
 
 void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
@@ -133,9 +189,19 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 		tmp->type[1] = instr[help->x + 1];
 		help->x++;
 	}
-	help->x++;
-	//get_source(instr, help, tmp);
+	get_prefix(instr, help, tmp);
+	get_suffix(instr, help, tmp);
 	ft_printf("Redirection type: %s\n", tmp->type);
+	if (tmp->redir_prefix_fd != -2)
+		ft_printf("Redirection prefix fd: %d\n", tmp->redir_prefix_fd);
+	if (tmp->redir_suffix_fd != -2)
+		ft_printf("Redirection suffix fd: %d\n", tmp->redir_suffix_fd);
+	if (tmp->redir_suffix_file)
+	{
+		ft_printf("Redirection suffix file: ");
+		ft_putnstr(tmp->redir_suffix_file, tmp->redir_suffix_len);
+		ft_putchar('\n');
+	}
 	ft_printf("Ending redirection extraction\n");
 }
 
