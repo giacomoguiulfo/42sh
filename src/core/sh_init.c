@@ -42,7 +42,6 @@ int sh_data_init(int ac, char **av)
 {
     t_shell     *shell;
     extern char **environ;
-    char        *term_name;
     int         ret;
 
     shell = sh_singleton();
@@ -52,9 +51,9 @@ int sh_data_init(int ac, char **av)
     shell->env = ft_sstrdup(environ);
     // TODO: INIT SHLVL
     // TODO: SH DEFAULT OPTS
-    if (!(term_name = ft_getenv(shell->env, "TERM")))
-        term_name = "dumb";
-    if ((ret = tgetent(NULL, term_name)) < 0)
+    if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
+        shell->term_name = "dumb";
+    if ((ret = tgetent(NULL, shell->term_name)) < 0)
         return (SH_ERR_R1("Unable to access termcap database"));
     else if (ret == 0)
         return (SH_ERR_R1("Terminal type is not defined"));

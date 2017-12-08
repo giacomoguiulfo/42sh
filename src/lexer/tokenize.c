@@ -104,4 +104,5 @@ void	tokenize(char *instructions)
 		}
 	}
 	print_toke_list(head);
+	ft_heap_clear();
 }

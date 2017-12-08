@@ -18,10 +18,21 @@
 int builtin_exit()
 {
 	t_shell *shell;
+	int		x;
 
+	x = -1;
 	shell = sh_singleton();
 	history_cleanup(shell->history);
-	// TODO: Clean up stuff before exiting
+	while (shell->argv[++x] != 0)
+		free(shell->argv[x]);
+	free(shell->argv[x]);
+	x = -1;
+	while (shell->env[++x] != 0)
+		free(shell->env[x]);
+	free(shell->env[x]);
+	free(shell->argv);
+	free(shell->env);
+	free(shell);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

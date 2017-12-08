@@ -35,6 +35,7 @@ typedef struct  		s_shell
 {
 	bool				quit;
 	char				**env;
+	char				*term_name;
 	int           		argc;
 	char          		**argv;
 	struct s_cmds		*history;

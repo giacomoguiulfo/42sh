@@ -16,6 +16,17 @@
 #include <stdio.h>
 #include <unistd.h>
 
+static bool check_quit(t_shell *shell, char *cmds)
+{
+	if (shell->quit == true)
+	{
+		if (cmds)
+			free(cmds);
+		return (true);
+	}
+	return (false);
+}
+
 static int	sh_instruction(t_shell *shell)
 {
 	char	*cmds;
@@ -26,7 +37,7 @@ static int	sh_instruction(t_shell *shell)
 		prompt = msh_put_arrow();
 		cmds = readline(prompt);
 		free(prompt);
-		if (shell->quit == true)
+		if (check_quit(shell, cmds))
 			break ;
 		else if (!cmds)
 			continue ;

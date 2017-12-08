@@ -21,7 +21,7 @@ t_tokelist *add_toke(t_tokelist *head)
 	tmp = head;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+	tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 	tmp = tmp->next;
 	tmp->content = NULL;
 	tmp->next = NULL;
@@ -40,7 +40,7 @@ t_tokelist *start_toking(void)
 {
 	t_tokelist *head;
 
-	head = (t_tokelist*)ft_memalloc(sizeof(t_tokelist));
+	head = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 	head->content = NULL;
 	head->next = NULL;
 	head->len = 0;
