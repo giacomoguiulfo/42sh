@@ -26,22 +26,8 @@ typedef struct			s_toke
 	int					state;
 }						t_toke;
 
-typedef struct			s_tokelist
-{
-	void				*content;
-	size_t				len;
-	char				type[3];
-	int					redir_prefix_fd;
-	char				*redir_suffix_file;
-	int					redir_suffix_len;
-	int					redir_suffix_fd;
-	struct s_tokelist	*next;
-}						t_tokelist;
-
-bool			lexer(char **cmds);
-
 //tokenize
-void			tokenize(char	*instructions);
+t_tokelist		*tokenize(char	*instructions);
 
 void			extract_chain(char *instr, t_toke *help, t_tokelist *head);
 void			extract_redirections(char *instr, t_toke *help, t_tokelist *head);

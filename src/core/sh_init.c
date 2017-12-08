@@ -15,23 +15,12 @@
 #include <term.h>
 #include <termios.h>
 
-// TODO: Do we need this function?
-// void	sh_shutdown()
-// {
-// 	struct termios term;
-//
-// 	tcgetattr(0, &term);
-// 	term.c_lflag |= (ICANON | ECHO);
-// 	tcsetattr(0, TCSADRAIN, &term);
-// }
-
 void	sh_init_termios(void)
 {
 	struct termios term;
 
 	tcgetattr(STDIN, &term);
 	term.c_lflag &= ~(ICANON | ECHO | ISIG);
-    //term.c_oflag &= ~(OPOST);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
     term.c_cc[0] = 0;
@@ -49,8 +38,6 @@ int sh_data_init(int ac, char **av)
     shell->argc = ac;
     shell->argv = ft_sstrdup(av);
     shell->env = ft_sstrdup(environ);
-    // TODO: INIT SHLVL
-    // TODO: SH DEFAULT OPTS
     if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
         shell->term_name = "dumb";
     if ((ret = tgetent(NULL, shell->term_name)) < 0)
@@ -64,6 +51,6 @@ int sh_init(int ac, char **av)
 {
     if (sh_data_init(ac, av))
         return (1);
-    sh_init_termios(); // TODO: Move this to a better place
+    sh_init_termios();
 	return (0);
 }

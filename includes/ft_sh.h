@@ -41,13 +41,25 @@ typedef struct  		s_shell
 	struct s_cmds		*history;
 }						t_shell;
 
-int     sh_init();
-t_shell *sh_singleton();
-void	sh_shutdown();
+typedef struct			s_tokelist
+{
+	void				*content;
+	size_t				len;
+	char				type[3];
+	int					redir_prefix_fd;
+	char				*redir_suffix_file;
+	int					redir_suffix_len;
+	int					redir_suffix_fd;
+	struct s_tokelist	*next;
+}						t_tokelist;
+
+int     	sh_init();
+t_shell 	*sh_singleton();
+void		sh_shutdown();
 //int		msh_execute(char **args);
-char	*readline(char *prompt);
-bool	lexer(char **cmds);
-char	*msh_put_arrow(void);
-char	**msh_strsplit(char *line);
+char		*readline(char *prompt);
+t_tokelist	*lexer(char **cmds);
+char		*msh_put_arrow(void);
+char		**msh_strsplit(char *line);
 
 #endif

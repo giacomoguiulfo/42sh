@@ -14,7 +14,7 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-void	ft_putnstr(char *str, size_t len)
+void		ft_putnstr(char *str, size_t len)
 {
 	write(1, str, len);
 }
@@ -70,7 +70,7 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	return (head);
 }
 
-void	tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
+void		tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
 {
 	if (ft_isquote(instructions[help->x]))
 		extract_quotes(instructions, help, head);
@@ -82,7 +82,7 @@ void	tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
 		extract_chain(instructions, help, head);
 }
 
-void	tokenize(char *instructions)
+t_tokelist	*tokenize(char *instructions)
 {
 	t_toke 		help;
 	t_tokelist	*head;
@@ -105,4 +105,5 @@ void	tokenize(char *instructions)
 	}
 	print_toke_list(head);
 	ft_heap_clear();
+	return (head);
 }

@@ -15,6 +15,15 @@
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 
+static void	terminal_reset()
+{
+	struct termios term;
+
+	tcgetattr(0, &term);
+	term.c_lflag |= (ICANON | ECHO);
+	tcsetattr(0, TCSADRAIN, &term);
+}
+
 int builtin_exit()
 {
 	t_shell *shell;
@@ -33,6 +42,7 @@ int builtin_exit()
 	free(shell->argv);
 	free(shell->env);
 	free(shell);
+	terminal_reset();
 	exit(EXIT_SUCCESS);
 	return (0);
 }

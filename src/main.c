@@ -12,6 +12,7 @@
 
 #include "ft_sh.h"
 #include "libft.h"
+#include "lexer.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -29,8 +30,9 @@ static bool check_quit(t_shell *shell, char *cmds)
 
 static int	sh_instruction(t_shell *shell)
 {
-	char	*cmds;
-	char	*prompt;
+	char		*cmds;
+	char		*prompt;
+	t_tokelist	*abstract;
 
 	while (42)
 	{
@@ -41,8 +43,9 @@ static int	sh_instruction(t_shell *shell)
 			break ;
 		else if (!cmds)
 			continue ;
-		lexer(&cmds);
+		abstract = lexer(&cmds);
 		free(cmds);
+		parser(abstract);
 	}
 	// execute instruction
 	return (0);
@@ -51,6 +54,7 @@ static int	sh_instruction(t_shell *shell)
 int			main(int ac, char **av)
 {
 	t_shell *shell;
+
 	g_argv = av;
 	if (sh_init(ac, av))
 		return (0);

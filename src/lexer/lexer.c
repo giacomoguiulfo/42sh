@@ -15,7 +15,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-bool	validate(char **instr)
+bool		validate(char **instr)
 {
 	int		valid;
 
@@ -33,13 +33,15 @@ bool	validate(char **instr)
 	return (true);
 }
 			
-bool	lexer(char **instr)
+t_tokelist	*lexer(char **instr)
 {
+	t_tokelist *abstract;
+
 	if (!validate(instr))
 	{
 		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (false);
 	}
-	tokenize(*instr);
-	return (true);
+	abstract = tokenize(*instr);
+	return (abstract);
 }
