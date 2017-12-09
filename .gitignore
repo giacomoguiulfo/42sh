@@ -51,6 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# MacOs Files
+.DS_Store
+
 # Project Builds
 minishell
 21sh
