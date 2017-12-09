@@ -51,7 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# MacOs files
+# MacOS files
 .DS_Store
 
 # Project Builds
