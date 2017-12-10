@@ -73,15 +73,26 @@ typedef struct			s_tokelist
 
 void		add_binary(t_asttoken *build, t_tokelist *binary)
 {
-	build->binary = binary->content;
+	build->binary = ft_hstrndup(binary->content, binary->len);
+	ft_printf("binary: %s\n", build->binary);
 }
 
 void		add_args(t_asttoken *build, t_tokelist *arg)
 {
-	add_astarg(build, build->args, arg->content);
+	add_astarg(build, arg);
+	int x;
+
+	x = 0;
+	while (build->args[++x])
+		ft_printf("Args %d: %s\n", x, build->args[x]);
 }
 
-t_asttoken	**deconstruct(t_tokelist *tokens)
+void		add_chain(t_asttoken *build, t_tokelist *arg)
+{
+	build->chain = arg;
+}
+
+t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 {
 	t_tokelist	*tmp;
 	t_asttoken	**build;
@@ -97,9 +108,7 @@ t_asttoken	**deconstruct(t_tokelist *tokens)
 			if (!build[0]->binary)
 				add_binary(build[count], tmp);
 			else
-				add_args(build[count], tmp);
-			ft_putstr("Found a binary\n");
-		}
+				add_args(build[count], tmp);		}
 		else if (tmp->type[0] == '>' || tmp->type[0] == '<')
 		{
 			//add_redirection;
@@ -109,7 +118,8 @@ t_asttoken	**deconstruct(t_tokelist *tokens)
 		{
 			//add_chain;
 			ft_putstr("Found a chain\n");
-			add_asttoken(build);
+			add_chain(build[count], tmp);
+			ft_putstr("Finished adding a chain\n");
 			count++;
 		}
 		tmp = tmp->next;
@@ -122,6 +132,6 @@ bool	parser(t_tokelist *tokens)
 	t_asttoken **pre_ast;
 
 	print_toke_list(tokens);
-	pre_ast = deconstruct(tokens);
+	pre_ast = synthesize_tokens(tokens);
 	return (true);
 }

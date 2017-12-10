@@ -36,8 +36,10 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	t_asttoken	**new;
 
 	size = -1;
+	ft_putstr("Inside ast token\n");
 	while (array[++size])
 		;
+	ft_putstr("After first while loop\n");
 	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) + size + 1 + 1);
 	new[size + 1] = 0;
 	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
@@ -48,34 +50,39 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	x = -1;
 	while (x < size)
 		new[x] = array[x];
+	ft_putstr("After second while loop\n");
 	array = new;
 	return (new[size]);
 }
 
-void	add_astarg(t_asttoken *this, char **arg_array, char *arg)
+void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 {
 	char	**new;
 	int		size;
 	int		x;
 
-	if (!arg_array)
+	if (!this->args)
 	{
-		arg_array = (char**)ft_hmalloc(sizeof(char*) + 2 + 1);
-		arg_array[0] = this->binary;
-		arg_array[1] = ft_hstrdup(arg);
-		arg_array[2] = 0;
-		this->args = arg_array;
+		this->args = (char**)ft_hmalloc(sizeof(char*) + 2 + 1);
+		this->args[0] = this->binary;
+		ft_printf("arg value: %s, len value: %d\n", tmp->content, tmp->len);
+		this->args[1] = ft_hstrndup(tmp->content, tmp->len);
+		this->args[2] = 0;
 		return ;
 	}
 	size = -1;
-	while (arg_array[++size])
+	while (this->args[++size])
 		;
 	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1 + 1));
 	new[size + 1] = 0;
 	x = -1;
 	while (++x < size)
-		new[x] = arg_array[x];
-	new[x] = ft_hstrdup(arg);
+	{
+		new[x] = this->args[x];
+		ft_printf("new array: %s\n", new[x]);
+	}
+	new[x] = ft_hstrndup(tmp->content, tmp->len);
+	ft_printf("New string: %s\n", new[x]);
 	this->args = new;
 }
 

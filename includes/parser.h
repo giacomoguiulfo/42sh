@@ -26,6 +26,6 @@ typedef struct			s_asttoken
 
 t_asttoken	**start_asttoken(void);
 t_asttoken	*add_asttoken(t_asttoken **array);
-void		add_astarg(t_asttoken *this, char **arg_array, char *arg);
+void		add_astarg(t_asttoken *this, t_tokelist *tokens);
 
 #endif
