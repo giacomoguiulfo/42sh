@@ -20,12 +20,13 @@ typedef struct			s_asttoken
 {
 	char				*binary;
 	char				**args;
-	struct s_tokelist	*redirs;
+	struct s_tokelist	**redirs;
 	struct s_tokelist	*chain;
 }						t_asttoken;
 
 t_asttoken	**start_asttoken(void);
 t_asttoken	*add_asttoken(t_asttoken **array);
 void		add_astarg(t_asttoken *this, t_tokelist *tokens);
+void		add_astredir(t_asttoken *this, t_tokelist *redir);
 
 #endif

@@ -94,7 +94,7 @@ void		add_chain(t_asttoken *build, t_tokelist *arg)
 
 void		add_redir(t_asttoken *build, t_tokelist *arg)
 {
-	build->redir
+	add_astredir(build, arg);
 }
 
 t_asttoken	**synthesize_tokens(t_tokelist *tokens)
@@ -120,7 +120,7 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 		}
 		else if (tmp->type[0] == '>' || tmp->type[0] == '<')
 		{
-			add_redirection(build[x], tmp);
+			add_astredir(build[count], tmp);
 			ft_putstr("Found a redirection\n");
 		}
 		else if (ft_iscompletechain(tmp->type))
@@ -139,5 +139,6 @@ bool	parser(t_tokelist *tokens)
 
 	print_toke_list(tokens);
 	pre_ast = synthesize_tokens(tokens);
+	ft_heap_clear();
 	return (true);
 }

@@ -36,10 +36,8 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	t_asttoken	**new;
 
 	size = -1;
-	ft_putstr("Before ASTTOKEN\n");
 	while (array[++size])
 		;
-	ft_putstr("After first while loop ASTTOKEN\n");
 	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) + size + 1 + 1);
 	new[size + 1] = 0;
 	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
@@ -48,12 +46,35 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	new[size]->redirs = NULL;
 	new[size]->chain = NULL;
 	x = -1;
-	ft_putstr("Before SECOND ASTTOKEN\n");
 	while (++x < size)
 		new[x] = array[x];
-	ft_putstr("AFTER SECOND ASTTOKEN\n");
 	array = new;
 	return (new[size]);
+}
+
+void	add_astredir(t_asttoken *this, t_tokelist *redir)
+{
+	t_tokelist	**new;
+	int			size;
+	int			x;
+
+	if (!this->redirs)
+	{
+		this->redirs = (t_tokelist**)ft_hmalloc(sizeof(t_tokelist*) * (1 + 1));
+		this->redirs[1] = 0;
+		this->redirs[0] = redir;
+		return ;
+	}
+	size = -1;
+	while (this->redirs[++size])
+		;
+	new = (t_tokelist**)ft_hmalloc(sizeof(t_tokelist*) * (size + 1 + 1));
+	new[size + 1] = 0;
+	new[size] = redir;
+	x = -1;
+	while (++x < size)
+		new[x] = this->redirs[x];
+	this->redirs = new;
 }
 
 void	add_astarg(t_asttoken *this, t_tokelist *tmp)
@@ -66,7 +87,6 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	{
 		this->args = (char**)ft_hmalloc(sizeof(char*) + 2 + 1);
 		this->args[0] = this->binary;
-		ft_printf("arg value: %s, len value: %d\n", tmp->content, tmp->len);
 		this->args[1] = ft_hstrndup(tmp->content, tmp->len);
 		this->args[2] = 0;
 		return ;
@@ -78,12 +98,8 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	new[size + 1] = 0;
 	x = -1;
 	while (++x < size)
-	{
 		new[x] = this->args[x];
-		ft_printf("new array: %s\n", new[x]);
-	}
 	new[x] = ft_hstrndup(tmp->content, tmp->len);
-	ft_printf("New string: %s\n", new[x]);
 	this->args = new;
 }
 
