@@ -58,6 +58,8 @@ lexer/validate_chain_bins_utils\
 lexer/validate_redirections\
 lexer/validate_quotes\
 lexer/utils\
+parser/parser\
+parser/parser_vectors\
 readline/readline\
 readline/history_change\
 readline/history_utils\

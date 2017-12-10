@@ -14,50 +14,6 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-void		ft_putnstr(char *str, size_t len)
-{
-	write(1, str, len);
-}
-
-void		print_toke_list(t_tokelist *head)
-{
-	t_tokelist *tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		ft_printf("\n----------\n");
-		ft_printf("type: %s\n", tmp->type);
-		if (tmp->type[0] == '>' || tmp->type[0] == '<')
-		{
-			if (tmp->redir_suffix_fd != -2)
-				ft_printf("Suffix_fd is %d\n", tmp->redir_suffix_fd);
-			else if (tmp->redir_suffix_file)
-			{
-				ft_printf("Suffix file is: ");
-				ft_putnstr(tmp->redir_suffix_file, tmp->redir_suffix_len);
-				ft_putchar('\n');
-			}
-			else if (tmp->redir_prefix_fd != -2)
-				ft_printf("Prefix_fd is %d\n", tmp->redir_prefix_fd);
-		}
-		if (ft_isquote(tmp->type[0]))
-		{
-			ft_printf("Quote text: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
-		}
-		else if (tmp->type[0] == 'w')
-		{
-			ft_printf("Word text: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
-		}
-		ft_printf("---------->\n");
-		tmp = tmp->next;
-	}
-}
-
 t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 {
 	t_tokelist *head;
@@ -103,7 +59,5 @@ t_tokelist	*tokenize(char *instructions)
 				tmp = tmp->next;
 		}
 	}
-	print_toke_list(head);
-	ft_heap_clear();
 	return (head);
 }

@@ -62,4 +62,6 @@ t_tokelist	*lexer(char **cmds);
 char		*msh_put_arrow(void);
 char		**msh_strsplit(char *line);
 
+bool		parser(t_tokelist *abstract);
+
 #endif

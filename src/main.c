@@ -44,8 +44,8 @@ static int	sh_instruction(t_shell *shell)
 		else if (!cmds)
 			continue ;
 		abstract = lexer(&cmds);
-		free(cmds);
 		parser(abstract);
+		free(cmds);
 	}
 	// execute instruction
 	return (0);

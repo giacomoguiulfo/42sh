@@ -40,7 +40,7 @@ t_tokelist	*lexer(char **instr)
 	if (!validate(instr))
 	{
 		ft_printf("Lexer: Not a valid command: %s\n", *instr);
-		return (false);
+		return (NULL);
 	}
 	abstract = tokenize(*instr);
 	return (abstract);
