@@ -36,10 +36,10 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	t_asttoken	**new;
 
 	size = -1;
-	ft_putstr("Inside ast token\n");
+	ft_putstr("Before ASTTOKEN\n");
 	while (array[++size])
 		;
-	ft_putstr("After first while loop\n");
+	ft_putstr("After first while loop ASTTOKEN\n");
 	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) + size + 1 + 1);
 	new[size + 1] = 0;
 	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
@@ -48,9 +48,10 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	new[size]->redirs = NULL;
 	new[size]->chain = NULL;
 	x = -1;
-	while (x < size)
+	ft_putstr("Before SECOND ASTTOKEN\n");
+	while (++x < size)
 		new[x] = array[x];
-	ft_putstr("After second while loop\n");
+	ft_putstr("AFTER SECOND ASTTOKEN\n");
 	array = new;
 	return (new[size]);
 }

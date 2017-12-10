@@ -92,6 +92,11 @@ void		add_chain(t_asttoken *build, t_tokelist *arg)
 	build->chain = arg;
 }
 
+void		add_redir(t_asttoken *build, t_tokelist *arg)
+{
+	build->redir
+}
+
 t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 {
 	t_tokelist	*tmp;
@@ -105,21 +110,22 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 	{
 		if (tmp->type[0] == 'w' || ft_isquote(tmp->type[0]))
 		{
-			if (!build[0]->binary)
+			if (!build[count])
+				build[count] = add_asttoken(build);
+			if (!build[count]->binary)
 				add_binary(build[count], tmp);
 			else
-				add_args(build[count], tmp);		}
+				add_args(build[count], tmp);
+
+		}
 		else if (tmp->type[0] == '>' || tmp->type[0] == '<')
 		{
-			//add_redirection;
+			add_redirection(build[x], tmp);
 			ft_putstr("Found a redirection\n");
 		}
 		else if (ft_iscompletechain(tmp->type))
 		{
-			//add_chain;
-			ft_putstr("Found a chain\n");
 			add_chain(build[count], tmp);
-			ft_putstr("Finished adding a chain\n");
 			count++;
 		}
 		tmp = tmp->next;
