@@ -27,7 +27,7 @@ typedef struct			s_asttoken
 t_asttoken	**synthesize_tokens(t_tokelist *tokens);
 
 t_asttoken	**start_asttoken(void);
-t_asttoken	*add_asttoken(t_asttoken **array);
+t_asttoken	**add_asttoken(t_asttoken **array);
 void		add_astarg(t_asttoken *this, t_tokelist *tokens);
 void		add_astredir(t_asttoken *this, t_tokelist *redir);
 

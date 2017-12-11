@@ -19,7 +19,7 @@ t_asttoken	**start_asttoken(void)
 {
 	t_asttoken **new;
 
-	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) + 1 + 1);
+	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (1 + 1));
 	new[1] = 0;
 	new[0] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
 	new[0]->binary = NULL;
@@ -29,7 +29,7 @@ t_asttoken	**start_asttoken(void)
 	return (new);
 }
 
-t_asttoken	*add_asttoken(t_asttoken **array)
+t_asttoken	**add_asttoken(t_asttoken **array)
 {
 	int			size;
 	int			x;
@@ -38,7 +38,7 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	size = -1;
 	while (array[++size])
 		;
-	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) + size + 1 + 1);
+	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
 	new[size + 1] = 0;
 	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
 	new[size]->binary = NULL;
@@ -49,7 +49,7 @@ t_asttoken	*add_asttoken(t_asttoken **array)
 	while (++x < size)
 		new[x] = array[x];
 	array = new;
-	return (new[size]);
+	return (new);
 }
 
 void	add_astredir(t_asttoken *this, t_tokelist *redir)
@@ -102,12 +102,3 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	new[x] = ft_hstrndup(tmp->content, tmp->len);
 	this->args = new;
 }
-
-/*
-typedef struct			s_asttoken
-{
-	char				*binary;
-	char				**args;
-	struct s_tokelist	*redirs;
-	struct s_tokelist	*chain;
-}						t_asttoken;*/

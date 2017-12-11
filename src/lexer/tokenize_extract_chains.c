@@ -18,11 +18,13 @@ static void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
 	{
 		node->type[0] = '&';
 		node->type[1] = '&';
+		help->x++;
 	}
 	else if (instr[help->x] == '|' && instr[help->x + 1] == '|')
 	{
 		node->type[0] = '|';
 		node->type[1] = '|';
+		help->x++;
 	}
 	else if (instr[help->x] == '|')
 		node->type[0] = '|';
