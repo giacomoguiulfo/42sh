@@ -60,6 +60,7 @@ lexer/validate_quotes\
 lexer/utils\
 parser/parser\
 parser/parser_vectors\
+parser/parser_synthesizer\
 readline/readline\
 readline/history_change\
 readline/history_utils\
