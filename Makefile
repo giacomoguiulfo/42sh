@@ -59,6 +59,7 @@ lexer/validate_redirections\
 lexer/validate_quotes\
 lexer/utils\
 parser/parser\
+parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
 readline/readline\

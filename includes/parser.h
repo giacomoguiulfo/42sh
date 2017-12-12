@@ -24,7 +24,15 @@ typedef struct			s_asttoken
 	struct s_tokelist	*chain;
 }						t_asttoken;
 
+typedef struct			s_astree
+{
+	struct s_asttoken	*this;
+	struct s_astree		*left;
+	struct s_astree		*right;	
+}						t_astree;
+
 t_asttoken	**synthesize_tokens(t_tokelist *tokens);
+t_astree	*make_tree(t_asttoken **raw_materials);
 
 t_asttoken	**start_asttoken(void);
 t_asttoken	**add_asttoken(t_asttoken **array);
