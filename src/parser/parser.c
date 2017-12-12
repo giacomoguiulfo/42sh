@@ -81,28 +81,62 @@ typedef struct			s_tokelist
 typedef struct			s_astree
 {
 	struct s_asttoken	*this;
-	struct s_asttoken	*left;
-	struct s_asttoken	*right;	
+	struct s_astree		*left;
+	struct s_astree		*right;	
 }						t_astree;
+
+t_astree	*make_tree_node(void)
+{
+	t_astree	*new;
+
+	new = (t_astree*)ft_hmalloc(sizeof(t_astree));
+	new->left = NULL;
+	new->right = NULL;
+	new->this = NULL;
+	return (new);
+}
 
 t_astree	*make_tree(t_asttoken **raw_materials)
 {
 	int			x;
-	//t_astree	*mana;
+	t_astree	*mana;
+	t_astree	*tmp;
 
 	x = -1;
+	mana = (t_astree*)ft_hmalloc(sizeof(t_astree));
+	tmp = mana;
 	ft_printf("\nStarting make_tree\n");
 	while (raw_materials[++x])
 	{
-		if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '&')
-			ft_putstr("you found a dependent chain\n");
+		ft_printf("You are on t_asttoken index %d\n", x);
+		tmp->this = raw_materials[x];
+		if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '&' && raw_materials[x]->chain->type[1] == '&')
+		{
+			tmp->left = make_tree_node();
+			tmp = tmp->left;
+			ft_putstr("you just made a left branching &&\n");
+		}
 		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '|' && raw_materials[x]->chain->type[1] == '|')
 		{
-			ft_putstr("you found a dependent chain\n");
-			x++;
+			tmp->left = make_tree_node();
+			tmp = tmp->left;
+			ft_putstr("you just made a left branching ||\n");
 		}
-		else if (raw_materials[x]->chain)
-			ft_printf("You found a chain of variety %s\n", raw_materials[x]->chain->type);
+		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '|')
+		{
+			tmp->right = make_tree_node();
+			tmp = tmp->right;
+			ft_putstr("You just made aright branching pipe\n");
+		}
+		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == ';')
+		{
+			tmp = mana;
+			while (tmp->right)
+				tmp = tmp->right;
+			tmp->right = make_tree_node();
+			tmp = tmp->right;
+			ft_printf("You just made a new right branching ; that re-started off the head node\n", raw_materials[x]->chain->type);
+		}
 	}
 	ft_printf("\nFinished going through token list\n");
 	return (NULL);
