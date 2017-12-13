@@ -22,6 +22,7 @@ t_astree	*make_tree_node(void)
 	new->left = NULL;
 	new->right = NULL;
 	new->this = NULL;
+	new->type = NULL;
 	return (new);
 }
 
@@ -93,6 +94,7 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	{
 		ft_printf("You are on t_asttoken index %d\n", x);
 		tmp->this = raw_materials[x];
+		tmp->type = raw_materials[x]->chain->type;
 		if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '&' && raw_materials[x]->chain->type[1] == '&')
 			tmp = make_left_branch(tmp, 1);
 		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '|' && raw_materials[x]->chain->type[1] == '|')

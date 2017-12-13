@@ -24,6 +24,7 @@ typedef struct			s_toke
 	char				quote_type;
 	int					x;
 	int					state;
+	int					size;
 }						t_toke;
 
 //tokenize

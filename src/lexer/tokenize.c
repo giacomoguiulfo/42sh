@@ -22,6 +22,7 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	help->end = NULL;
 	help->x = -1;
 	help->state = 0;
+	help->size = ft_strlen(instr);
 	head = start_toking();
 	return (head);
 }
@@ -47,7 +48,7 @@ t_tokelist	*tokenize(char *instructions)
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
 	tmp = head;
-	while (instructions[++help.x])
+	while (++help.x < help.size)
 	{
 		if (ft_isquote(instructions[help.x]) ||
 			ft_isfilename(instructions[help.x]) ||
@@ -59,5 +60,6 @@ t_tokelist	*tokenize(char *instructions)
 				tmp = tmp->next;
 		}
 	}
+	tmp->next = NULL;
 	return (head);
 }
