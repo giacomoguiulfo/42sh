@@ -47,7 +47,6 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 	{
 		if (tmp->type[0] == 'w' || ft_isquote(tmp->type[0]))
 		{
-			ft_printf("--=--->%s\n", tmp->content);
 			if (!build[count])
 				build = add_asttoken(build);
 			if (!build[count]->binary)
