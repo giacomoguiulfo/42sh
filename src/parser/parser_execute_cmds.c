@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _BSD_SOURCE
+
 #include "parser.h"
 #include "lexer.h"
 #include "ft_sh.h"

@@ -14,6 +14,8 @@
 # define LEXER_H
 
 # include "ft_sh.h"
+# include <sys/stat.h>
+# include <sys/types.h>
 
 # define MAX_PATH_BIN_SIZE 8192
 
