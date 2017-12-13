@@ -62,6 +62,7 @@ parser/parser\
 parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
+parser/parser_execute_cmds\
 readline/readline\
 readline/history_change\
 readline/history_utils\

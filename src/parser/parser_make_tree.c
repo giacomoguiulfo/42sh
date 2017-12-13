@@ -105,5 +105,5 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	ft_printf("\nFinished going through token list\n");
 	x = 0;
 	print_tree(head, &x);
-	return (NULL);
+	return (head);
 }

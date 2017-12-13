@@ -33,6 +33,7 @@ typedef struct			s_astree
 
 t_asttoken	**synthesize_tokens(t_tokelist *tokens);
 t_astree	*make_tree(t_asttoken **raw_materials);
+void		execute_ast_cmds(t_astree *head);
 
 t_asttoken	**start_asttoken(void);
 t_asttoken	**add_asttoken(t_asttoken **array);
