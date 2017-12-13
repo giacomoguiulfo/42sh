@@ -28,6 +28,8 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 
 void		tokenize_this_part(char *instructions, t_toke *help, t_tokelist *head)
 {
+	ft_printf("tokenizing: %s\n", instructions + help->x);
+	ft_printf("x value: %d, strlen: %d\n", help->x, ft_strlen(instructions));
 	if (ft_isquote(instructions[help->x]))
 		extract_quotes(instructions, help, head);
 	else if (ft_isfilename(instructions[help->x]))
@@ -43,11 +45,13 @@ t_tokelist	*tokenize(char *instructions)
 	t_toke 		help;
 	t_tokelist	*head;
 	t_tokelist	*tmp;
+	int 		size;
 
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
 	tmp = head;
-	while (instructions[++help.x])
+	size = ft_strlen(instructions);
+	while (++help.x < size)
 	{
 		if (ft_isquote(instructions[help.x]) ||
 			ft_isfilename(instructions[help.x]) ||
@@ -59,5 +63,6 @@ t_tokelist	*tokenize(char *instructions)
 				tmp = tmp->next;
 		}
 	}
+	tmp->next = NULL;
 	return (head);
 }

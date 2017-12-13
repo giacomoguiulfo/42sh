@@ -26,6 +26,9 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	int		ret;
 
  	pid = fork();
+ 	ret = -1;
+ 	while (args[++ret])
+ 		ft_printf("Arg[%d]: %s\n", ret, args[ret]);
  	ret = 0;
  	if (pid == 0)
 	{

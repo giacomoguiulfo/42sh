@@ -85,20 +85,25 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 
 	if (!this->args)
 	{
-		this->args = (char**)ft_hmalloc(sizeof(char*) + 2 + 1);
+		this->args = (char**)ft_hmalloc(sizeof(char*) + 1 + 1);
 		this->args[0] = this->binary;
 		this->args[1] = ft_hstrndup(tmp->content, tmp->len);
 		this->args[2] = 0;
+		ft_printf("first args: %s\n%s\n%s\n", this->args[0], this->args[1], this->args[2]);
 		return ;
 	}
 	size = -1;
 	while (this->args[++size])
 		;
-	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1 + 1));
+	ft_printf("size is %d\n", size);
+	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1));
 	new[size + 1] = 0;
 	x = -1;
 	while (++x < size)
 		new[x] = this->args[x];
 	new[x] = ft_hstrndup(tmp->content, tmp->len);
 	this->args = new;
+	x = -1;
+	while (this->args[++x])
+		ft_printf("args: %s\n", this->args[x]);
 }
