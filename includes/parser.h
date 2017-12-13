@@ -26,6 +26,8 @@ typedef struct			s_asttoken
 
 typedef struct			s_astree
 {
+	char				*type;
+	int					ret;
 	struct s_asttoken	*this;
 	struct s_astree		*left;
 	struct s_astree		*right;	

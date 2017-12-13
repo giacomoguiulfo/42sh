@@ -63,7 +63,7 @@ bool	parser(t_tokelist *tokens)
 	t_asttoken	**pre_ast;
 	t_astree	*mana;
 
-	print_toke_list(tokens);
+	//print_toke_list(tokens);
 	pre_ast = synthesize_tokens(tokens);
 	mana = make_tree(pre_ast);
 	ft_printf("Finished make tree\n");
