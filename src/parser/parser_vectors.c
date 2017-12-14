@@ -95,7 +95,7 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 		;
 	ft_printf("size is %d\n", size);
 	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1));
-	new[size + 1] = 0;
+	new[size] = 0;
 	x = -1;
 	while (++x < size)
 		new[x] = this->args[x];
