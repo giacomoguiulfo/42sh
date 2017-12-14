@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asttoken_vector.c                                  :+:      :+:    :+:   */
+/*   parser_vectors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 11:54:57 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/12/13 16:31:52 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,11 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	size = -1;
 	while (this->args[++size])
 		;
-	ft_printf("size is %d\n", size);
 	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1 + 1));
 	new[size + 1] = 0;
 	x = -1;
 	while (++x < size)
 		new[x] = this->args[x];
-	ft_printf("size: %d, x: %d\n", size, x);
 	new[x] = ft_hstrndup(tmp->content, tmp->len);
-	new[x + 1] = 0;
 	this->args = new;
-	x = -1;
-	while (this->args[++x])
-		ft_printf("args: %s\n", this->args[x]);
 }
