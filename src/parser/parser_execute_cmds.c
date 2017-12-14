@@ -111,7 +111,7 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 	int x;
 
 	x = -1;
-	ft_printf("stdio backups:\n");
+	ft_printf("~stdio backups:\n");
 	ft_printf("in: %d, out: %d, err: %d\n", shell->stdin_backup, shell->stdout_backup, shell->stderr_backup);
 	while (redirs[++x])
 	{
