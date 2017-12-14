@@ -20,7 +20,7 @@ static void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
 	while (--x > 0 && ft_isdigit(instr[x]))
 		;
 	if (instr[x] == ' ' || ft_isdigit(instr[x]))
-		node->redir_prefix_fd = ft_atoi(instr - x);
+		node->redir_prefix_fd = ft_atoi(instr + x);
 }
 
 static void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
@@ -61,11 +61,15 @@ static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
 
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
+	ft_printf("Found suffix: %s\n", instr + help->x);
 	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
 	{
-		node->type[0] = '&';
+		//node->type[0] = '&';
 		node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
 		help->x += 1;
+		while (ft_isdigit(instr[++help->x]))
+			;
+		ft_printf("after redir %s\n", instr + help->x);
 		return ;
 	}
 	while (instr[++help->x])

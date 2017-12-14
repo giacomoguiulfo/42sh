@@ -44,33 +44,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	return (status);
 }
 
-char	*build_bin_path(char *path, char *binary)
-{
-	char		*start;
-	char		*end;
-	char		buff[MAX_PATH_BIN_SIZE];
-	struct stat sb;
-
-	start = path;
-	while ((end = ft_strchr(start, ':')) != NULL)
-	{
-		ft_bzero((void*)buff, MAX_PATH_BIN_SIZE);
-		ft_strncpy(buff, start, end - start);
-		ft_strcat(buff, "/");
-		ft_strcat(buff, binary);
-		if ((lstat(buff, &sb)) != -1)
-		{
-			if (!check_access(binary, buff))
-				return (NULL);
-			else if (!check_reg_file(sb.st_mode))
-				return (NULL);
-			return (ft_hstrdup(buff));
-		}
-		start = end + 1;
-	}
-	return (NULL);
-}
-
 /*
 typedef struct			s_asttoken
 {
@@ -101,9 +74,41 @@ typedef struct			s_tokelist
 }						t_tokelist;
 */
 
+char	*build_bin_path(char *path, char *binary)
+{
+	char		*start;
+	char		*end;
+	char		buff[MAX_PATH_BIN_SIZE];
+	struct stat sb;
+
+	start = path;
+	while ((end = ft_strchr(start, ':')) != NULL)
+	{
+		ft_bzero((void*)buff, MAX_PATH_BIN_SIZE);
+		ft_strncpy(buff, start, end - start);
+		ft_strcat(buff, "/");
+		ft_strcat(buff, binary);
+		if ((lstat(buff, &sb)) != -1)
+		{
+			if (!check_access(binary, buff))
+				return (NULL);
+			else if (!check_reg_file(sb.st_mode))
+				return (NULL);
+			return (ft_hstrdup(buff));
+		}
+		start = end + 1;
+	}
+	return (NULL);
+}
+
 void	redirect_output(t_tokelist *this, int opt)
 {
 	ft_printf("redir type: %s, opt: %d\n", this->type, opt);
+	ft_printf("prefix info: fd: %d\n", this->redir_prefix_fd);
+	ft_printf("suffix info: filename: %s, file descriptor: %d\n", this->redir_suffix_file, this->redir_suffix_fd);
+	//check if source is specified
+	//check if destination fd # is specified
+	//check if destination file is specified
 }
 
 void	setup_io(t_shell *shell, t_tokelist **redirs)
