@@ -44,7 +44,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	return (status);
 }
 
-char	*build_path111(char *path, char *binary)
+char	*build_bin_path(char *path, char *binary)
 {
 	char		*start;
 	char		*end;
@@ -101,20 +101,57 @@ typedef struct			s_tokelist
 }						t_tokelist;
 */
 
+void	redirect_output(t_tokelist *this, int opt)
+{
+	ft_printf("redir type: %s, opt: %d\n", this->type, opt);
+}
+
+void	setup_io(t_shell *shell, t_tokelist **redirs)
+{
+	int x;
+
+	x = -1;
+	ft_printf("stdio backups:\n");
+	ft_printf("in: %d, out: %d, err: %d\n", shell->stdin_backup, shell->stdout_backup, shell->stderr_backup);
+	while (redirs[++x])
+	{
+		ft_printf("redir index %d\n", x);
+		if (redirs[x]->type[0] == '>' && redirs[x]->type[1] == '>')
+			redirect_output(redirs[x], 2);
+		else if (redirs[x]->type[0] == '>')
+			redirect_output(redirs[x], 1);
+	}
+}
+
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
-	this_path = build_path111(path, node->this->binary);
+	this_path = build_bin_path(path, node->this->binary);
 	node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 	ft_printf("Just executed %s with return %d\n", this_path, node->ret);
-	ft_printf("starting new cmd\n");
+	ft_printf("File redirection info:\n");
+	if (node->this->redirs && node->this->redirs[0])
+	{
+		setup_io(shell, node->this->redirs);
+	}
+	else
+		ft_printf("No redirections found\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+	{
+		ft_printf("starting new cmd\n");
 		execute_specific_ast_cmds(shell, node->left, path);
+	}
 	else if (node->left && node->type && node->type[0] == '|' && node->type[1] == '|' && node->ret > 0)
+	{
+		ft_printf("starting new cmd\n");
 		execute_specific_ast_cmds(shell, node->left, path);
+	}
 	if (node->right)
+	{
+		ft_printf("starting new cmd\n");
 		execute_specific_ast_cmds(shell, node->right, path);
+	}
 }
 
 void	execute_ast_cmds(t_astree *head)

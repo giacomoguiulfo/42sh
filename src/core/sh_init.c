@@ -27,17 +27,18 @@ void	sh_init_termios(void)
 	tcsetattr(STDIN, TCSANOW, &term);
 }
 
-int sh_data_init(int ac, char **av)
+int sh_data_init(t_shell *shell, int ac, char **av)
 {
-    t_shell     *shell;
     extern char **environ;
     int         ret;
 
-    shell = sh_singleton();
     shell->quit = false;
     shell->argc = ac;
     shell->argv = ft_sstrdup(av);
     shell->env = ft_sstrdup(environ);
+    shell->stdin_backup = dup(0);
+    shell->stdout_backup = dup(1);
+    shell->stderr_backup = dup(2);
     if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
         shell->term_name = "dumb";
     if ((ret = tgetent(NULL, shell->term_name)) < 0)
@@ -49,7 +50,10 @@ int sh_data_init(int ac, char **av)
 
 int sh_init(int ac, char **av)
 {
-    if (sh_data_init(ac, av))
+    t_shell *shell;
+
+    shell = sh_singleton();
+    if (sh_data_init(shell, ac, av))
         return (1);
     sh_init_termios();
 	return (0);
