@@ -15,6 +15,8 @@
 #include "parser.h"
 #include "lexer.h"
 #include "ft_sh.h"
+#include <stdio.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -103,12 +105,44 @@ char	*build_bin_path(char *path, char *binary)
 
 void	redirect_output(t_tokelist *this, int opt)
 {
+	int		suffix_fd;
+	int		prefix_fd;
+	char	*file;
+
+	file = NULL;
+	suffix_fd = -1;
+	if (this->redir_suffix_file)
+		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+	ft_printf("File: %s\n", file);
 	ft_printf("redir type: %s, opt: %d\n", this->type, opt);
 	ft_printf("prefix info: fd: %d\n", this->redir_prefix_fd);
 	ft_printf("suffix info: filename: %s, file descriptor: %d\n", this->redir_suffix_file, this->redir_suffix_fd);
+	if (file)
+		suffix_fd = open(file, O_WRONLY | O_CREAT | ((opt) ? O_APPEND : O_TRUNC), 
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	else if (this->redir_suffix_fd)
+		suffix_fd = this->redir_suffix_fd;
+	prefix_fd = 1;
+	if (this->redir_prefix_fd > 0)
+	{
+		ft_printf("Prefix: %d\n", this->redir_prefix_fd);
+		prefix_fd = this->redir_prefix_fd;
+	}
+	ft_printf("prefix: %d, suffix: %d\n", prefix_fd, suffix_fd);
+	dup2(suffix_fd, prefix_fd);
 	//check if source is specified
 	//check if destination fd # is specified
 	//check if destination file is specified
+}
+
+void	restore_io(t_shell *shell)
+{
+	dup2(shell->stdout_backup, 1);
+	shell->stdout_backup = dup(1);
+	dup2(shell->stderr_backup, 2);
+	shell->stderr_backup = dup(2);
+	dup2(shell->stdin_backup, 0);
+	shell->stdin_backup = dup(0);
 }
 
 void	setup_io(t_shell *shell, t_tokelist **redirs)
@@ -116,16 +150,17 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 	int x;
 
 	x = -1;
-	ft_printf("~stdio backups:\n");
+	ft_printf("-->stdio start<---\n");
 	ft_printf("in: %d, out: %d, err: %d\n", shell->stdin_backup, shell->stdout_backup, shell->stderr_backup);
 	while (redirs[++x])
 	{
 		ft_printf("redir index %d\n", x);
 		if (redirs[x]->type[0] == '>' && redirs[x]->type[1] == '>')
-			redirect_output(redirs[x], 2);
-		else if (redirs[x]->type[0] == '>')
 			redirect_output(redirs[x], 1);
+		else if (redirs[x]->type[0] == '>')
+			redirect_output(redirs[x], 0);
 	}
+	ft_printf("-->stdio end!<---\n");
 }
 
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
@@ -133,15 +168,14 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	this_path = build_bin_path(path, node->this->binary);
-	node->ret = msh_run_prog(this_path, node->this->args, shell->env);
-	ft_printf("Just executed %s with return %d\n", this_path, node->ret);
-	ft_printf("File redirection info:\n");
 	if (node->this->redirs && node->this->redirs[0])
-	{
 		setup_io(shell, node->this->redirs);
-	}
 	else
 		ft_printf("No redirections found\n");
+	node->ret = msh_run_prog(this_path, node->this->args, shell->env);
+	restore_io(shell);
+	ft_printf("Just executed %s with return %d\n", this_path, node->ret);
+	ft_printf("File redirection info:\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 	{
 		ft_printf("starting new cmd\n");
