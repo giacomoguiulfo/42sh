@@ -44,10 +44,8 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 		tmp = add_toke(head);
 	tmp->type[0] = 'w';
 	help->start = instr + help->x;
-	ft_printf("---------->before: help->x value: %d, strlen: %d\n", help->x, ft_strlen(instr));
 	while (instr[++help->x] != '\0' && ft_isfilename(instr[help->x]))
 		;
-	ft_printf("---------->after: help->x value: %d, strlen: %d\n", help->x, ft_strlen(instr));
 	help->end = instr + help->x;
 	tmp->len = help->end - help->start;
 	tmp->content = help->start;

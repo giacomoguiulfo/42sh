@@ -23,16 +23,11 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 {
  	pid_t	pid;
  	int		status;
- 	int		ret;
 
  	pid = fork();
- 	ret = -1;
- 	while (args[++ret])
- 		ft_printf("Arg[%d]: %s\n", ret, args[ret]);
- 	ret = 0;
  	if (pid == 0)
 	{
-		if ((ret = execve(executable, args, newenvp)) == -1)
+		if (execve(executable, args, newenvp) == -1)
  		{
 			ft_dprintf(2, "msh: permission denied: %s\n", executable);
 		}
@@ -44,7 +39,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 		exit(EXIT_FAILURE);
  	}
  	wait(&status);
- 	return (ret);
+ 	return (status);
 }
 
 char	*build_path111(char *path, char *binary)
