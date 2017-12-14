@@ -93,7 +93,6 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	size = -1;
 	while (this->args[++size])
 		;
-	ft_printf("size is %d\n", size);
 	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1));
 	new[size + 1] = 0;
 	x = -1;
@@ -101,7 +100,4 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 		new[x] = this->args[x];
 	new[x] = ft_hstrndup(tmp->content, tmp->len);
 	this->args = new;
-	x = -1;
-	while (this->args[++x])
-		ft_printf("args: %s\n", this->args[x]);
 }
