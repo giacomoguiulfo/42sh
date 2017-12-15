@@ -103,6 +103,19 @@ char	*build_bin_path(char *path, char *binary)
 	return (NULL);
 }
 
+void	restore_io(t_shell *shell)
+{
+	dup2(shell->stdout_backup, 1);
+	close(shell->stdout_backup);
+	shell->stdout_backup = dup(1);
+	dup2(shell->stderr_backup, 2);
+	close(shell->stderr_backup);
+	shell->stderr_backup = dup(2);
+	dup2(shell->stdin_backup, 0);
+	close(shell->stdin_backup);
+	shell->stdin_backup = dup(0);
+}
+
 void	redirect_output(t_tokelist *this, int opt)
 {
 	int		suffix_fd;
@@ -113,36 +126,40 @@ void	redirect_output(t_tokelist *this, int opt)
 	suffix_fd = -1;
 	if (this->redir_suffix_file)
 		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
-	ft_printf("File: %s\n", file);
-	ft_printf("redir type: %s, opt: %d\n", this->type, opt);
-	ft_printf("prefix info: fd: %d\n", this->redir_prefix_fd);
-	ft_printf("suffix info: filename: %s, file descriptor: %d\n", this->redir_suffix_file, this->redir_suffix_fd);
 	if (file)
-		suffix_fd = open(file, O_WRONLY | O_CREAT | ((opt) ? O_APPEND : O_TRUNC), 
-			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		suffix_fd = open(file, O_WRONLY | O_CREAT | ((opt) ? O_APPEND : O_TRUNC),
+		 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	else if (this->redir_suffix_fd)
 		suffix_fd = this->redir_suffix_fd;
 	prefix_fd = 1;
 	if (this->redir_prefix_fd > 0)
-	{
-		ft_printf("Prefix: %d\n", this->redir_prefix_fd);
 		prefix_fd = this->redir_prefix_fd;
-	}
-	ft_printf("prefix: %d, suffix: %d\n", prefix_fd, suffix_fd);
 	dup2(suffix_fd, prefix_fd);
-	//check if source is specified
-	//check if destination fd # is specified
-	//check if destination file is specified
+	close(suffix_fd);
 }
 
-void	restore_io(t_shell *shell)
+void	redirect_input(t_tokelist *this)
 {
-	dup2(shell->stdout_backup, 1);
-	shell->stdout_backup = dup(1);
-	dup2(shell->stderr_backup, 2);
-	shell->stderr_backup = dup(2);
-	dup2(shell->stdin_backup, 0);
-	shell->stdin_backup = dup(0);
+	int		suffix_fd;
+	char	*file;
+
+	file = NULL;
+	suffix_fd = -2;
+
+	if (this->redir_suffix_file)
+		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+	ft_printf("redir input info:\n");
+	if (this->redir_suffix_file)
+	{
+		ft_printf("redir input file: %s\n", file);
+		suffix_fd = open(file, O_RDONLY);
+	}
+	if (suffix_fd > 0)
+	{
+		ft_printf("Duping %d\n", suffix_fd);
+		dup2(suffix_fd, 0);
+		close(suffix_fd);
+	}
 }
 
 void	setup_io(t_shell *shell, t_tokelist **redirs)
@@ -159,6 +176,8 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 			redirect_output(redirs[x], 1);
 		else if (redirs[x]->type[0] == '>')
 			redirect_output(redirs[x], 0);
+		else if (redirs[x]->type[0] == '<')
+			redirect_input(redirs[x]);
 	}
 	ft_printf("-->stdio end!<---\n");
 }
