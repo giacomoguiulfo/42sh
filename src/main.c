@@ -41,9 +41,8 @@ static int	sh_instruction(t_shell *shell)
 		free(prompt);
 		if (check_quit(shell, cmds))
 			break ;
-		else if (!cmds)
+		else if (!cmds || (!(abstract = lexer(&cmds))))
 			continue ;
-		abstract = lexer(&cmds);
 		parser(abstract);
 		free(cmds);
 	}

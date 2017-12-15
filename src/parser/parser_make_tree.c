@@ -23,6 +23,8 @@ t_astree	*make_tree_node(void)
 	new->right = NULL;
 	new->this = NULL;
 	new->type = NULL;
+	new->pipe_fd[0] = -2;
+	new->pipe_fd[1] = -2;
 	return (new);
 }
 

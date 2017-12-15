@@ -28,6 +28,7 @@ typedef struct			s_astree
 {
 	char				*type;
 	int					ret;
+	int					pipe_fd[2];
 	struct s_asttoken	*this;
 	struct s_astree		*left;
 	struct s_astree		*right;	

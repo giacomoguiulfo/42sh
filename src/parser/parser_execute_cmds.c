@@ -182,6 +182,27 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 	ft_printf("-->stdio end!<---\n");
 }
 
+void	manage_pipes(t_shell *shell, t_astree *node)
+{
+	ft_printf("~~>pipe start<~~~\n");
+	ft_printf("in: %d, out: %d, err: %d\n", shell->stdin_backup, shell->stdout_backup, shell->stderr_backup);
+	if (node->this->chain && node->this->chain->type[0] == '|')
+	{
+		ft_printf("creating pipe input for next cmd\n");
+		pipe(node->right->pipe_fd);
+		dup2(node->right->pipe_fd[1], 1);
+		close(node->right->pipe_fd[1]);
+		printf("pipe fds: %d, %d\n", node->right->pipe_fd[0], node->right->pipe_fd[1]);
+	}
+	if (node->pipe_fd[0] > -1)
+	{
+		ft_printf("getting piped output from previous cmd\n");
+		dup2(node->pipe_fd[0], 0);
+		close(node->pipe_fd[0]);
+	}
+	ft_printf("~~>pipe end<~~~\n");
+}
+
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
@@ -191,6 +212,12 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		setup_io(shell, node->this->redirs);
 	else
 		ft_printf("No redirections found\n");
+	//Problem is right here -- this gets assigned to a pointer, but that pointer doesn't have a value
+	if ((node->this->chain && node->this->chain->type[0] == '|' && node->this->chain->type[1] == '\0') || node->pipe_fd[0] > -1)
+	{
+		ft_printf("Pipe found %d\n", node->pipe_fd[0]);
+		manage_pipes(shell, node);
+	}
 	node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 	restore_io(shell);
 	ft_printf("Just executed %s with return %d\n", this_path, node->ret);
