@@ -32,6 +32,7 @@
 # define KEY_LEFT		68
 # define KEY_RIGHT		67
 # define KEY_UP			65
+# define KEY_CTRL_C		3
 
 typedef struct			s_text
 {
@@ -97,9 +98,11 @@ void	move_row(t_input *data, bool direction);
 void	move_word(t_input *data, bool direction);
 
 bool	str_protection(t_input *data, size_t first, size_t second);
+void	clear_insert(t_input *data);
 void	gather_position_data(t_input *data);
 void	get_terminal_meta(t_input *data);
 void	print_end_col_pad(size_t cursor_col);
+void 	start_stop_highlight(t_input *data, t_text *clipboard);
 
 void	enter_key(struct s_keychain *master);
 void	print_key(struct s_keychain *master);

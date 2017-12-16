@@ -30,7 +30,7 @@ static void	clear_highlights(t_input *data, bool opt)
 		tputs(tgetstr("rc", NULL), 1, ft_putchar);
 }
 
-static void start_stop_highlight(t_input *data, t_text *clipboard)
+void start_stop_highlight(t_input *data, t_text *clipboard)
 {
 	if (clipboard->copy_on == false)
 	{

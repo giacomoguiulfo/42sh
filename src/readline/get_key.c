@@ -90,6 +90,18 @@ void	edit_key(struct s_keychain *master)
 		copy_cut_paste(master->data, &master->data->clipboard, 2);
 }
 
+void	ctrl_c_key(struct s_keychain *master)
+{
+	if (master->data->clipboard.copy_on == true)
+		start_stop_highlight(master->data, &master->data->clipboard);
+	ft_bzero((void*)master->data->line_buff, LINE_BUFF_SIZE);
+	ft_putchar('\n');
+	ft_putstr(master->data->prompt);
+	master->data->cursor_pos = 0;
+	master->data->line_size = 0;
+	master->data->clipboard.copy_on = false;
+}
+
 t_key		g_key[] = {
 	{"print", 0, &print_key},
 	{"enter", KEY_ENTER, &enter_key},
@@ -102,6 +114,7 @@ t_key		g_key[] = {
 	{"move end", KEY_END, &end_key},
 	{"delete", KEY_DELETE, &delete_key},
 	{"edit text", 0, &edit_key},
+	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key}
 };
 
 void	get_key(t_input *data, t_cmds *history, t_keychain *find)
@@ -131,6 +144,8 @@ void	get_key(t_input *data, t_cmds *history, t_keychain *find)
 		find->this = &g_key[8];
 	else if (data->char_buff[0] < 0) //edit keys
 		find->this = &g_key[10];
+	else if (data->char_buff[0] == g_key[11].id) //ctrl-c key
+		find->this = &g_key[11];
 	else
 	{
 		find->found_key = false;

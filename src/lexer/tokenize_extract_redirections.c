@@ -67,6 +67,7 @@ static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 		help->x += 1;
 		while (ft_isdigit(instr[++help->x]))
 			;
+		ft_printf("Found a file descriptor turn-off request: %s\n", instr + help->x);
 		return ;
 	}
 	while (instr[++help->x])
