@@ -40,8 +40,15 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 
 	len = 0;
 	node->redir_suffix_file = instr + help->x;
-	while (ft_isfilename(instr[++help->x]))
+	while (ft_isfilename(instr[++help->x]) && instr[help->x + 1])
 		len++;
+	if (instr[help->x + 1])
+	{
+		ft_printf("-->%s\n", instr);
+		ft_printf("index: %d\n", help->x);
+		ft_printf("length: %d\n", len + 1);
+		len++;
+	}
 	node->redir_suffix_len = len + 1;
 }
 

@@ -130,7 +130,7 @@ void	close_fds(t_tokelist *this)
 	return ;
 }
 
-void	redirect_output(t_tokelist *this, int opt)
+void	redirect_output(t_shell *shell, t_tokelist *this, int opt)
 {
 	int		suffix_fd;
 	int		prefix_fd;
@@ -138,6 +138,8 @@ void	redirect_output(t_tokelist *this, int opt)
 
 	file = NULL;
 	suffix_fd = -1;
+	if (this->redir_prefix_fd == shell->stdin_backup)
+		return ;
 	if (this->redir_turn_off == true)
 	{
 		close_fds(this);
@@ -192,11 +194,12 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 	{
 		ft_printf("redir_prefix_fd: %d\n", redirs[x]->redir_prefix_fd);
 		ft_printf("redir_suffix_fd: %d\n", redirs[x]->redir_suffix_fd);
+		ft_printf("redir_suffix_file: %s\n", redirs[x]->redir_suffix_file);
 		ft_printf("redir index %d\n", x);
 		if (redirs[x]->type[0] == '>' && redirs[x]->type[1] == '>')
-			redirect_output(redirs[x], 1);
+			redirect_output(shell, redirs[x], 1);
 		else if (redirs[x]->type[0] == '>')
-			redirect_output(redirs[x], 0);
+			redirect_output(shell, redirs[x], 0);
 		else if (redirs[x]->type[0] == '<')
 			redirect_input(redirs[x]);
 	}
