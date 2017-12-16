@@ -116,6 +116,20 @@ void	restore_io(t_shell *shell)
 	shell->stdin_backup = dup(0);
 }
 
+void	close_fds(t_tokelist *this)
+{
+	if (this->redir_prefix_fd == -1)
+	{
+		close(1);
+		close(2);
+	}
+	else if (this->redir_prefix_fd > -1)
+		close(this->redir_prefix_fd);
+	else if (this->redir_prefix_fd == -2)
+		close(1);
+	return ;
+}
+
 void	redirect_output(t_tokelist *this, int opt)
 {
 	int		suffix_fd;
@@ -126,7 +140,7 @@ void	redirect_output(t_tokelist *this, int opt)
 	suffix_fd = -1;
 	if (this->redir_turn_off == true)
 	{
-		close(this->redir_prefix_fd);
+		close_fds(this);
 		return ;
 	}
 	if (this->redir_suffix_file)
