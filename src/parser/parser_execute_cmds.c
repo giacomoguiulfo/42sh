@@ -203,6 +203,69 @@ void	manage_pipes(t_shell *shell, t_astree *node)
 	ft_printf("~~>pipe end<~~~\n");
 }
 
+int		aget_binary_size(char *bin)
+{
+	int x;
+
+	x = -1;
+	while (bin[++x] && ft_isalnum(bin[x]))
+		;
+	return (x);
+}
+
+bool	acheck_builtin(char *binary)
+{
+	int 	end;
+	bool	found;
+
+	found = false;
+	ft_printf("builtin is %s\n", binary);
+	end = aget_binary_size(binary);
+	if ((ft_strncmp(binary, "cd", 2)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "exit", 4)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "env", 3)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "history", 7)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "setenv", 6)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "unsetenv", 8)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "exit", 4)) == 0)
+		found = true;
+	return (found);
+}
+/*
+typedef struct			s_asttoken
+{
+	char				*binary;
+	char				**args;
+	struct s_tokelist	**redirs;
+	struct s_tokelist	*chain;
+}						t_asttoken;*/
+
+int		msh_run_builtin(t_asttoken *this, char **env)
+{
+	int		ret;
+
+	ret = 0;
+	if ((ft_strcmp(this->binary, "cd")) == 0)
+		ret = builtin_cd(this->args, env);
+	else if ((ft_strcmp(this->binary, "exit")) == 0)
+		ret = builtin_exit();
+	else if ((ft_strcmp(this->binary, "history")) == 0)
+		ret = builtin_history();
+	else if ((ft_strcmp(this->binary, "echo")) == 0)
+		ret = builtin_echo(this->args, env);
+	else if ((ft_strcmp(this->binary, "setenv")) == 0)
+		ret = builtin_setenv(this->args, env);
+	else if ((ft_strcmp(this->binary, "unsetenv")) == 0)
+		ret = builtin_unsetenv(this->args, env);
+	return (ret);
+}
+
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
@@ -218,7 +281,10 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		ft_printf("Pipe found %d\n", node->pipe_fd[0]);
 		manage_pipes(shell, node);
 	}
-	node->ret = msh_run_prog(this_path, node->this->args, shell->env);
+	if (acheck_builtin(node->this->binary))
+		node->ret = msh_run_builtin(node->this, shell->env);
+	else
+		node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 	restore_io(shell);
 	ft_printf("Just executed %s with return %d\n", this_path, node->ret);
 	ft_printf("File redirection info:\n");

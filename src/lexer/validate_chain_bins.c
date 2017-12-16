@@ -95,6 +95,32 @@ int		change_state(char *instr, int *x, int state)
 	return (true);
 }
 
+bool	check_builtin(char *binary, int *x)
+{
+	int 	end;
+	bool	found;
+
+	found = false;
+	end = get_binary_size(binary);
+	if ((ft_strncmp(binary, "cd", 2)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "exit", 4)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "env", 3)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "history", 7)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "setenv", 6)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "unsetenv", 8)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "exit", 4)) == 0)
+		found = true;
+	if (found == true)
+		*x = *x + end;
+	return (found);
+}
+
 bool	validate_chain_bins(char *instr)
 {
 	char	*path;
@@ -108,7 +134,7 @@ bool	validate_chain_bins(char *instr)
 	{
 		if (ft_isalnum(instr[x]) && state == 0)
 		{
-			if (!check_binary(instr + x, path, &x))
+			if (!check_builtin(instr + x, &x) && !check_binary(instr + x, path, &x))
 				return (false);
 			else
 				state++;
