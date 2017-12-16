@@ -61,13 +61,20 @@ static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
 
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
-	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
+	if (instr[help->x + 1] == '&' && (ft_isdigit(instr[help->x + 2]) || instr[help->x + 2] == '-'))
 	{
-		node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
-		help->x += 1;
-		while (ft_isdigit(instr[++help->x]))
-			;
-		ft_printf("Found a file descriptor turn-off request: %s\n", instr + help->x);
+		if (ft_isdigit(instr[help->x + 2]))
+		{
+			node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
+			help->x += 1;
+			while (ft_isdigit(instr[++help->x]))
+				;
+		}
+		else if (instr[help->x + 2] == '-')
+		{
+			node->redir_turn_off = true;
+			help->x += 2;
+		}
 		return ;
 	}
 	while (instr[++help->x])
@@ -89,6 +96,7 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	ft_printf("-->Inside extract redirections!\n");
 	if (!head->type[0])
 		tmp = head;
 	else
@@ -101,4 +109,5 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	}
 	get_prefix(instr, help, tmp);
 	get_suffix(instr, help, tmp);
+	ft_printf("-->Finished extract redirections!\n");
 }

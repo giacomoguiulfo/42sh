@@ -50,6 +50,7 @@ bool		exit_status(t_input *data, int ret)
 	}
 	else if (ret < 0)
 	{
+		ft_printf("return is %d\n", ret);
 		ft_putstr("\nReadline: Read error\n");
 		return ((shell->quit = true));
 	}

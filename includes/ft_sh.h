@@ -46,20 +46,20 @@ typedef struct  		s_shell
 
 typedef struct			s_tokelist
 {
-	void				*content;
-	size_t				len;
+	bool				redir_turn_off;
 	char				type[3];
-	int					redir_prefix_fd;
 	char				*redir_suffix_file;
+	int					redir_prefix_fd;
 	int					redir_suffix_len;
 	int					redir_suffix_fd;
+	size_t				len;
 	struct s_tokelist	*next;
+	void				*content;
 }						t_tokelist;
 
 int     	sh_init();
 t_shell 	*sh_singleton();
 void		sh_shutdown();
-//int		msh_execute(char **args);
 char		*readline(char *prompt);
 t_tokelist	*lexer(char **cmds);
 char		*msh_put_arrow(void);

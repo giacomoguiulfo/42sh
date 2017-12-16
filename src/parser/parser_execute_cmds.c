@@ -124,6 +124,11 @@ void	redirect_output(t_tokelist *this, int opt)
 
 	file = NULL;
 	suffix_fd = -1;
+	if (this->redir_turn_off == true)
+	{
+		close(this->redir_prefix_fd);
+		return ;
+	}
 	if (this->redir_suffix_file)
 		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
 	if (file)
@@ -171,6 +176,8 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 	ft_printf("in: %d, out: %d, err: %d\n", shell->stdin_backup, shell->stdout_backup, shell->stderr_backup);
 	while (redirs[++x])
 	{
+		ft_printf("redir_prefix_fd: %d\n", redirs[x]->redir_prefix_fd);
+		ft_printf("redir_suffix_fd: %d\n", redirs[x]->redir_suffix_fd);
 		ft_printf("redir index %d\n", x);
 		if (redirs[x]->type[0] == '>' && redirs[x]->type[1] == '>')
 			redirect_output(redirs[x], 1);
