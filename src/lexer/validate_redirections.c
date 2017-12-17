@@ -58,6 +58,7 @@ bool	check_output_to(char *instr, int *x)
 	int c;
 
 	c = *x;
+	ft_printf("~~~~>%s\n", instr + *x);
 	while (instr[++*x])
 	{
 		if (ft_isquote(instr[*x]))

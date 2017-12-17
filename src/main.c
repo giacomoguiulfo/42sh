@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	history_add(t_cmds *history, char *cmds);
+void	history_add(char *cmds);
 
 static bool check_quit(t_shell *shell, char *cmds)
 {
@@ -46,7 +46,7 @@ static int	sh_instruction(t_shell *shell)
 			break ;
 		if (!cmds)
 			continue ;
-		history_add(shell->history, cmds);
+		history_add(cmds);
 		abstract = lexer(&cmds);
 		if (!abstract)
 		{
