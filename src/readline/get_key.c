@@ -12,6 +12,8 @@
 
 #include "readline.h"
 
+void	history_change(t_input *data, t_cmds *history, bool opt);
+
 void	opt_move_key(struct s_keychain *master)
 {
 	if (master->data->clipboard.copy_on == true)
@@ -117,10 +119,10 @@ t_key		g_key[] = {
 	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key}
 };
 
-void	get_key(t_input *data, t_cmds *history, t_keychain *find)
+void	get_key(t_input *data, t_keychain *find)
 {
 	find->data = data;
-	find->history = history;
+	find->history = (sh_singleton())->history;
 	find->found_key = true;
 	if (ft_isprint(data->char_buff[0])) // regular chars
 		find->this = &g_key[0];

@@ -61,14 +61,14 @@ lexer/validate_chain_bins_utils\
 lexer/validate_redirections\
 lexer/validate_quotes\
 lexer/utils\
+history/history_change\
+history/history_utils\
 parser/parser\
 parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
 parser/parser_execute_cmds\
 readline/readline\
-readline/history_change\
-readline/history_utils\
 readline/move_basic\
 readline/move_extended\
 readline/copy_cut_paste\
