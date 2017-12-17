@@ -14,6 +14,9 @@
 #include <stdlib.h>
 #include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
+#include "../../includes/history.h"
+
+void	history_cleanup(t_cmds *history);
 
 static void	terminal_reset()
 {

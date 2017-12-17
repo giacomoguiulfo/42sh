@@ -81,14 +81,9 @@ typedef struct			s_key
 
 char	*readline(char *prompt);
 void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
-void	get_key(t_input *data, t_cmds *history, t_keychain *find);
+void	get_key(t_input *data, t_keychain *find);
 void	insert(t_input *data);
 void	trim(t_input *data);
-
-void	history_add(t_input *data, t_cmds *head);
-void	history_change(t_input *data, t_cmds *history, bool direction);
-void	history_cleanup(t_cmds *history);
-void	history_constructor(t_cmds *history);
 
 void	move_end(t_input *data);
 void	move_home(t_input *data);

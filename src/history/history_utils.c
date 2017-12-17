@@ -13,11 +13,8 @@
 #include "readline.h"
 #include "ft_sh.h"
 
-void	history_constructor(t_cmds *history)
+void	history_constructor(t_shell *shell, t_cmds *history)
 {
-	t_shell *shell;
-
-	shell = sh_singleton();
 	shell->history = history;
 	history->init = true;
 	history->prev = NULL;
@@ -45,12 +42,12 @@ void	history_cleanup(t_cmds *head)
 	}
 }
 
-void	history_add(t_input *data, t_cmds *head)
+void	history_add(t_cmds *head, char *cmd)
 {
 	tputs(tgetstr("se", NULL), 1, ft_putchar);
 	if (!head->cmd)
 	{
-		head->cmd = ft_strdup(data->line_buff);
+		head->cmd = ft_strdup(cmd);
 		head->end = head;
 		return ;
 	}
@@ -60,12 +57,12 @@ void	history_add(t_input *data, t_cmds *head)
 		head->next->next = NULL;
 		head->next->prev = head;
 		head->end = head->next;
-		head->next->cmd = ft_strdup(data->line_buff);
+		head->next->cmd = ft_strdup(cmd);
 		return ;
 	}
 	head->end->next = (t_cmds*)ft_memalloc(sizeof(t_cmds));
 	head->end->next->next = NULL;
 	head->end->next->prev = head->end;
-	head->end->next->cmd = ft_strdup(data->line_buff);
+	head->end->next->cmd = ft_strdup(cmd);
 	head->end = head->end->next;
 }

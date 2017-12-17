@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
+static void	input_constructor(t_input *data, char *prompt)
 {
 	data->prompt = prompt;
 	data->prompt_size = ft_strlen(data->prompt);
@@ -31,10 +31,6 @@ static void	input_constructor(t_input *data, t_cmds *history, char *prompt)
 	data->cursor_row = 0;
 	data->continue_loop = true;
 	data->clipboard.copy_on = false;
-	history->current = NULL;
-	history->hit_end = false;
-	if (history->init == false)
-		history_constructor(history);
 }
 
 bool		exit_status(t_input *data, int ret)
@@ -59,11 +55,10 @@ bool		exit_status(t_input *data, int ret)
 
 char		*readline(char *prompt)
 {
-	static t_cmds	history;
 	t_input			data;
 	t_keychain		key;
 
-	input_constructor(&data, &history, prompt);
+	input_constructor(&data, prompt);
 	ft_putstr(prompt);
 	while (data.continue_loop == true)
 	{
@@ -71,7 +66,7 @@ char		*readline(char *prompt)
 		if (exit_status(&data, data.ret))
 			return (NULL);
 		get_terminal_meta(&data);
-		get_key(&data, &history, &key);
+		get_key(&data, &key);
 		if (key.found_key == true)
 			key.this->action(&key);
 		ft_bzero((void*)data.char_buff, data.ret);
@@ -79,6 +74,5 @@ char		*readline(char *prompt)
 	ft_putchar('\n');
 	if (ft_stris(data.line_buff, ft_isspace))
 		return (NULL);
-	history_add(&data, &history);
 	return (ft_strdup(data.line_buff));
 }
