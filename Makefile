@@ -6,25 +6,28 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/11/28 11:36:01 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/12/16 18:44:15 by giacomo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= kash
 
+DEBUG		:= 0
+
 CC			?= gcc
 CFLAGS		+= -std=c99
 CFLAGS		+= -Wall -Wextra -Werror
+CFLAGS		+= -DDEBUG=${DEBUG}
 # CLAFGS		+=  -Wfloat-equal -Wundef
 # CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
 # CFLAGS		+= -O3 -march=native -pipe -flto
 
 LIBS		:= -ltermcap
 
-DEBUG		:= 0
-ifeq ($(DEBUG),1)
-CFLAGS	+= -g -fsanitize=address
-endif
+# DEBUG		:= 0
+# ifeq ($(DEBUG),1)
+# CFLAGS	+= -g -fsanitize=address
+# endif
 
 ifndef VERBOSE
 MAKEFLAGS += --no-print-directory

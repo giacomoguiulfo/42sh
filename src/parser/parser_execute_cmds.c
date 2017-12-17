@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 11:54:57 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/12/16 18:14:07 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct			s_astree
 	int					ret;
 	struct s_asttoken	*this;
 	struct s_astree		*left;
-	struct s_astree		*right;	
+	struct s_astree		*right;
 }						t_astree;
 
 typedef struct			s_tokelist
@@ -259,6 +259,7 @@ bool	acheck_builtin(char *binary)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)
 		found = true;
+    (void)end;
 	return (found);
 }
 /*
@@ -341,28 +342,3 @@ void	execute_ast_cmds(t_astree *head)
 	ft_printf("Starting command execution\n");
 	execute_specific_ast_cmds(shell, tmp, path);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

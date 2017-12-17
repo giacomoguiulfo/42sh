@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 15:35:31 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/16 18:40:05 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+
 
 static bool check_quit(t_shell *shell, char *cmds)
 {
@@ -55,6 +56,7 @@ int			main(int ac, char **av)
 	t_shell *shell;
 
 	g_argv = av;
+	DBG("Welcome to Kash");
 	if (sh_init(ac, av))
 		return (0);
 	shell = sh_singleton();
