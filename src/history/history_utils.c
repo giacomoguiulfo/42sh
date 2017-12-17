@@ -42,8 +42,11 @@ void	history_cleanup(t_cmds *head)
 	}
 }
 
-void	history_add(t_cmds *head, char *cmd)
+void	history_add(char *cmd)
 {
+	t_cmds	*head;
+
+	head = sh_singleton()->history;
 	tputs(tgetstr("se", NULL), 1, ft_putchar);
 	if (!head->cmd)
 	{

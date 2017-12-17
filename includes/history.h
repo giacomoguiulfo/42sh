@@ -20,7 +20,7 @@
 struct s_input;
 struct s_cmds;
 
-void	history_add(t_cmds *head, char *cmd);
+void	history_add(char *cmd);
 void	history_change(t_input *data, t_cmds *history, bool direction);
 void	history_cleanup(t_cmds *history);
 void	history_constructor(t_cmds *history);
