@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:03:54 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 17:06:22 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/16 20:03:12 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LEXER_H
 
 # include "ft_sh.h"
+# include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 

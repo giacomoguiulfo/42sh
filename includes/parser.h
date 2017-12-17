@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 11:54:57 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/16 20:23:14 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct			s_astree
 	int					pipe_fd[2];
 	struct s_asttoken	*this;
 	struct s_astree		*left;
-	struct s_astree		*right;	
+	struct s_astree		*right;
 }						t_astree;
 
 t_asttoken	**synthesize_tokens(t_tokelist *tokens);
@@ -42,5 +42,6 @@ t_asttoken	**start_asttoken(void);
 t_asttoken	**add_asttoken(t_asttoken **array);
 void		add_astarg(t_asttoken *this, t_tokelist *tokens);
 void		add_astredir(t_asttoken *this, t_tokelist *redir);
+int			msh_run_builtins(t_asttoken *this);
 
 #endif

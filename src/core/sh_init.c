@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2017/11/28 05:58:16 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/16 21:03:12 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ void	sh_init_termios(void)
 	tcsetattr(STDIN, TCSANOW, &term);
 }
 
+static void init_shlvl(char **env)
+{
+	char	*shlvl;
+	char	*newlvl;
+
+	shlvl = ft_getenv(env, "SHLVL");
+	newlvl = (shlvl) ? ft_itoa(ft_atoi(shlvl) + 1) : ft_strdup("1");
+	builtin_setenv((char*[]){"a", "SHLVL", newlvl, NULL}, NULL);
+	ft_strdel(&newlvl);
+}
+
 int sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 {
     extern char **environ;
@@ -48,6 +59,7 @@ int sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
         return (SH_ERR_R1("Unable to access termcap database"));
     else if (ret == 0)
         return (SH_ERR_R1("Terminal type is not defined"));
+	init_shlvl(shell->env);
 	return (0);
 }
 

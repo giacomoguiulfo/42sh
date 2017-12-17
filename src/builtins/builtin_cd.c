@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/28 09:51:35 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/16 21:03:55 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void cd_setpwd(void)
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
-	builtin_setenv(NULL, (char*[]){"cd", "PWD", cwd, NULL}, NULL);
+	builtin_setenv((char*[]){"cd", "PWD", cwd, NULL}, NULL);
 	ft_strdel(&cwd);
 }
 

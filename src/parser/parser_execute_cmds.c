@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/16 18:14:07 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/16 20:31:37 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,8 @@ int		msh_run_builtin(t_asttoken *this, char **env)
 		ret = builtin_cd(this->args, env);
 	else if ((ft_strcmp(this->binary, "exit")) == 0)
 		ret = builtin_exit();
+	else if ((ft_strcmp(this->binary, "env")) == 0)
+		ret = builtin_exit();
 	else if ((ft_strcmp(this->binary, "history")) == 0)
 		ret = builtin_history();
 	else if ((ft_strcmp(this->binary, "echo")) == 0)
@@ -307,7 +309,7 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		manage_pipes(shell, node);
 	}
 	if (acheck_builtin(node->this->binary))
-		node->ret = msh_run_builtin(node->this, shell->env);
+		node->ret = msh_run_builtins(node->this);
 	else
 		node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 	restore_io(shell);

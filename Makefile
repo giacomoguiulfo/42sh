@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/12/16 18:44:15 by giacomo          ###   ########.fr        #
+#    Updated: 2017/12/16 20:24:02 by giacomo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ endif
 
 SRC_BASE :=\
 main\
-strsplit\
 utils\
+exec\
 builtins/builtin_cd\
 builtins/builtin_echo\
 builtins/builtin_env\
@@ -105,7 +105,6 @@ $(NAME): $(LIBFT_LIB) $(OBJ_DIR) $(OBJ)
 			$(LIBS)\
 			$(LIBFT_LIB)\
 			$(CFLAGS)
-	@strip -x $@
 	@printf "\r\033[38;5;15m✓ make   $(BASENAME)\033[0m\033[K\n";
 
 $(OBJ_DIR):
