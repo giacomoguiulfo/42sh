@@ -168,7 +168,7 @@ void	redirect_input(t_tokelist *this)
 	suffix_fd = -2;
 
 	if (this->redir_suffix_file)
-		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len + 1);
 	ft_printf("redir input info:\n");
 	if (this->redir_suffix_file)
 	{
