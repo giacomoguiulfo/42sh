@@ -146,7 +146,7 @@ void	redirect_output(t_shell *shell, t_tokelist *this, int opt)
 		return ;
 	}
 	if (this->redir_suffix_file)
-		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len + 1);
 	if (file)
 		suffix_fd = open(file, O_WRONLY | O_CREAT | ((opt) ? O_APPEND : O_TRUNC),
 		 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
@@ -168,7 +168,7 @@ void	redirect_input(t_tokelist *this)
 	suffix_fd = -2;
 
 	if (this->redir_suffix_file)
-		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len + 1);
 	ft_printf("redir input info:\n");
 	if (this->redir_suffix_file)
 	{
@@ -239,12 +239,10 @@ int		aget_binary_size(char *bin)
 
 bool	acheck_builtin(char *binary)
 {
-	int 	end;
 	bool	found;
 
 	found = false;
 	ft_printf("builtin is %s\n", binary);
-	end = aget_binary_size(binary);
 	if ((ft_strncmp(binary, "cd", 2)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)

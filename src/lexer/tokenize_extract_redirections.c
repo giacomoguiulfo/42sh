@@ -88,6 +88,7 @@ static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 	{
 		if (ft_isfilename(instr[help->x]))
 		{
+			ft_printf("Getting redir filename\n");
 			get_suffix_word(instr, help, node);
 			break ;
 		}
