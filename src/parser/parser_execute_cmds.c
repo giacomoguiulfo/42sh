@@ -239,12 +239,10 @@ int		aget_binary_size(char *bin)
 
 bool	acheck_builtin(char *binary)
 {
-	int 	end;
 	bool	found;
 
 	found = false;
 	ft_printf("builtin is %s\n", binary);
-	end = aget_binary_size(binary);
 	if ((ft_strncmp(binary, "cd", 2)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)
