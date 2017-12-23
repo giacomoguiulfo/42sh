@@ -14,7 +14,12 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-
+bool	ft_isredirection(char c)
+{
+	if (c == '<' || c == '>' || c)
+		return (true);
+	return (false);
+}
 
 t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 {
@@ -39,7 +44,7 @@ int		check_type(char *instructions, t_toke *help)
 		type = 1;
 	else if (ft_isquote(instructions[help->x]))
 		type = 2;
-	else if (instructions[help->x] == '>' || instructions[help->x] == '<')
+	else if (ft_isredirection(instructions[help->x]))
 		type = 3;
 	else if (ft_iscompletechain(instructions + help->x))
 		type = 4;
@@ -64,12 +69,10 @@ t_tokelist	*tokenize(char *instructions)
 {
 	t_toke 		help;
 	t_tokelist	*head;
-	t_tokelist	*tmp;
 	int			x;
 
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
-	tmp = head;
 	ft_printf("Starting tokenize\n");
 	x = -1;
 	while (++help.x < help.size)
@@ -78,6 +81,10 @@ t_tokelist	*tokenize(char *instructions)
 		help.ret = check_type(instructions + help.x, &help);
 		if (help.ret == 0)
 			continue ;
+		ft_printf("before tokenizer\n");
+		ft_printf("x index: %d, instructs: %s\n", x, instructions + help.x);
+		g_dispatch[help.ret].tokenizer(instructions + help.x, &help, head);
+		ft_printf("after tokenizer\n");
 		while (++x < 5)
 		{
 			ft_printf("type: %d, instructions: %s\n", g_dispatch[x].type, instructions + help.x);
@@ -99,6 +106,5 @@ t_tokelist	*tokenize(char *instructions)
 				tmp = tmp->next;
 		}*/
 	}
-	tmp->next = NULL;
 	return (head);
 }

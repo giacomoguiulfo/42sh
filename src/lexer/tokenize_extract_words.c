@@ -33,7 +33,6 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	ft_printf("Inside extract words\n");
 	if (ft_isdigit(instr[help->x]))
 	{
 		if (check_redirection(instr, help))
@@ -50,6 +49,4 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 	help->end = instr + help->x;
 	tmp->len = help->end - help->start;
 	tmp->content = help->start;
-	ft_printf("Here\n");
-	ft_printf("%s\n", tmp->content);
 }

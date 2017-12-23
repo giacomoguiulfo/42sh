@@ -10,11 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sh.h"
 #include "lexer.h"
-#include "libft.h"
 #include "history.h"
+#include "ft_sh.h"
+#include "libft.h"
 #include <stdlib.h>
+
+void	history_add(char *cmd);
 
 int		validate_quotes_chains(char **instr)
 {
@@ -61,6 +63,7 @@ t_tokelist	*lexer(char **instr)
 		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (NULL);
 	}
+	history_add(*instr);
 	abstract = tokenize(*instr);
 	return (abstract);
 }
