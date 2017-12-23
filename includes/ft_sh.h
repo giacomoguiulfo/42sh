@@ -44,13 +44,14 @@ typedef struct			s_cmds
 typedef struct  		s_shell
 {
 	bool				quit;
-	char				**env;
+	char				*path;
 	char				*term_name;
+	char				**argv;
+	char				**env;
 	int					argc;
 	int					stdout_backup;
 	int					stdin_backup;
 	int					stderr_backup;
-	char				**argv;
 	struct s_cmds		*history;
 }						t_shell;
 

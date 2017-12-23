@@ -62,7 +62,7 @@ bool			check_reg_file(mode_t st_mode);
 //helpers
 bool			get_close_chain(char *inst, int index);
 bool			try_pwd(char *binary);
-char			*get_path(void);
+//char			*get_path(void);
 int				ft_ischain(char *c);
 int				ft_isquote(char c);
 void			skip_quote(char *inst, int *x, char quote_type);

@@ -33,12 +33,24 @@ static bool check_quit(t_shell *shell, char *cmds)
 	return (false);
 }
 
+static	void print_lexical_chain(t_tokelist *this)
+{
+	t_tokelist *tmp;
+
+	tmp = this;
+	while (tmp)
+	{
+		ft_printf("tmp token type: %s\n", tmp->type);
+		tmp = tmp->next;
+	}
+}
+
 static int	sh_instruction(t_shell *shell)
 {
 	char			*cmds;
 	char			*prompt;
-	t_tokelist		*abstract;
-	t_astree		*palm;
+	t_tokelist		*tokenized;
+	//t_astree		*palm;
 
 	while (42)
 	{
@@ -50,12 +62,14 @@ static int	sh_instruction(t_shell *shell)
 		else if (!cmds)
 			continue ;
 		history_add(cmds);
-		abstract = lexer(&cmds);
-		if (abstract)
+		tokenized = lexer(&cmds);
+		if (tokenized)
 		{
-			palm = parser(abstract);
-			execute_ast_cmds(palm);
+			print_lexical_chain(tokenized);
+			//palm = parser(abstract);
+			//execute_ast_cmds(palm);
 		}
+		ft_heap_clear();
 		free(cmds);
 	}
 	return (0);

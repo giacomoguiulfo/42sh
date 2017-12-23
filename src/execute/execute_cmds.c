@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_execute_cmds.c                              :+:      :+:    :+:   */
+/*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,9 +12,11 @@
 
 #define _BSD_SOURCE
 
+#include "execute.h"
+#include "ft_sh.h"
 #include "parser.h"
 #include "lexer.h"
-#include "ft_sh.h"
+#include "builtins.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -23,11 +25,106 @@
 #include <error.h>
 #include <stdlib.h>
 
+bool	try_pwd(char *binary)
+{
+	char		cwd_path[MAX_PATH_BIN_SIZE];
+	char		*ptr;
+	struct stat sb;
+
+	ptr = cwd_path;
+	getcwd(ptr, MAX_PATH_BIN_SIZE);
+	ft_strcat(cwd_path, "/");
+	ft_strcat(cwd_path, binary);
+	if ((lstat(cwd_path, &sb)) == -1)
+		return (false);
+	else if (!check_access(binary, cwd_path))
+		return (false);
+	else if (!check_reg_file(sb.st_mode))
+		return (false);
+	return (true);
+}
+
+bool	check_access(char *binary, char *path)
+{
+	if (!((access(path, X_OK)) == 0))
+	{
+		ft_printf("Lexer: permission denied: %s\n", binary);
+		return (false);
+	}
+	return (true);
+}
+
+bool	check_reg_file(mode_t st_mode)
+{
+	if (!S_ISREG(st_mode))
+		return (false);
+	return (true);
+}
+
+int		get_binary_size(char *binary)
+{
+	int size;
+
+	size = -1;
+	while (ft_isfilename(binary[++size]))
+		;
+	return (size);
+}
+
+bool	try_paths(char *binary, char *path, char *try_this_path)
+{
+	struct stat sb;
+	char		*start;
+	char		*end;
+
+	start = path;
+	while ((end = ft_strchr(start, ':')) != NULL)
+	{
+		ft_bzero((void*)try_this_path, MAX_PATH_BIN_SIZE);
+		ft_strncpy(try_this_path, start, end - start);
+		ft_strcat(try_this_path, "/");
+		ft_strcat(try_this_path, binary);
+		if ((lstat(try_this_path, &sb)) != -1)
+		{
+			if (!check_access(binary, try_this_path))
+				return (false);
+			else if (!check_reg_file(sb.st_mode))
+				return (false);
+			return (true);
+		}
+		start = end + 1;
+	}
+	return (false);
+}
+
+bool	check_binary(char *binary, char *path, int *x)
+{
+	char	bin_name[MAX_PATH_BIN_SIZE];
+	char	valid_path[MAX_PATH_BIN_SIZE];
+	char	*ptr;
+	int		end;
+
+	end = get_binary_size(binary);
+	*x = *x + end;
+	ptr = valid_path;
+	ft_bzero(bin_name, MAX_PATH_BIN_SIZE);
+	ft_strncpy(bin_name, binary, end);
+	if (try_paths(bin_name, path, ptr))
+		return (true);
+	else if (try_pwd(binary))
+		return (true);
+	ft_printf("Lexer: command not found: %s\n", binary);
+	return (false);
+}
+
 int		msh_run_prog(char *executable, char **args, char **newenvp)
 {
  	pid_t	pid;
  	int		status;
+ 	//char	*full_executable;
 
+ 	//full_executable = NULL;
+ 	ft_printf("Execute: %s\n", executable);
  	pid = fork();
  	if (pid == 0)
 	{
@@ -268,9 +365,13 @@ void	execute_ast_cmds(t_astree *head)
 	char		*path;
 
 	shell = sh_singleton();
-	path = get_path();
+	path = shell->path;
+	if (!path)
+	{
+		ft_printf("NO CMDS!\n");
+		return ;
+	}
 	tmp = head;
 	//ft_printf("Starting command execution\n");
 	execute_specific_ast_cmds(shell, tmp, path);
-	ft_heap_clear();
 }

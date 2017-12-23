@@ -55,10 +55,7 @@ lexer/tokenize_extract_redirections\
 lexer/tokenize_extract_quotes\
 lexer/tokenize_extract_words\
 lexer/tokenize_toke_list\
-lexer/validate_quotes_chains\
 lexer/validate_chains\
-lexer/validate_chain_bins\
-lexer/validate_chain_bins_utils\
 lexer/validate_redirections\
 lexer/validate_quotes\
 lexer/utils\
