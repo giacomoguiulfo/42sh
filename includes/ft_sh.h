@@ -20,6 +20,16 @@
 # define SH_ERR(s, ...)     ft_dprintf(STDERR, SH_MSG(s, ##__VA_ARGS__))
 # define SH_ERR_R1(s, ...)  ((SH_ERR(s, ##__VA_ARGS__)) ? 1 : 1)
 
+typedef struct			s_astree
+{
+	char				*type;
+	int					ret;
+	int					pipe_fd[2];
+	struct s_asttoken	*this;
+	struct s_astree		*left;
+	struct s_astree		*right;
+}						t_astree;
+
 typedef struct			s_cmds
 {
 	bool				init;
@@ -65,6 +75,6 @@ t_tokelist	*lexer(char **cmds);
 char		*msh_put_arrow(void);
 char		**msh_strsplit(char *line);
 
-bool		parser(t_tokelist *abstract);
+t_astree	*parser(t_tokelist *abstract);
 
 #endif
