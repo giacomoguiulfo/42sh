@@ -25,9 +25,10 @@ typedef struct			s_toke
 	char				*start;
 	char				*end;
 	char				quote_type;
-	int					x;
+	int					ret;
 	int					state;
 	int					size;
+	int					x;
 }						t_toke;
 
 //tokenize

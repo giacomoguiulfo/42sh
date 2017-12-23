@@ -40,7 +40,7 @@ static	void print_lexical_chain(t_tokelist *this)
 	tmp = this;
 	while (tmp)
 	{
-		ft_printf("tmp token type: %s\n", tmp->type);
+		ft_printf("print_lexical_chain - tmp token type: %s\n", tmp->type);
 		tmp = tmp->next;
 	}
 }
