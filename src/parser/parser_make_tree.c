@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 11:54:57 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/12/17 02:07:12 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_astree	*make_right_branch_semi_colon(t_astree *head)
 		tmp = tmp->right;
 	tmp->right = make_tree_node();
 	tmp = tmp->right;
-	ft_printf("You just made a new right branching ; that re-started off the head node\n");
+	// ft_printf("You just made a new right branching ; that re-started off the head node\n");
 	return (tmp);
 }
 
@@ -65,19 +65,19 @@ void		print_tree(t_astree *head, int *node_count)
 	t_astree *tmp;
 
 	tmp = head;
-	if (head->this->binary)
-		ft_printf("Binary for %d is %s\n", *node_count, head->this->binary);
-	else
-		ft_printf("No binary found for node %d\n", *node_count);
+	// if (head->this->binary)
+		// ft_printf("Binary for %d is %s\n", *node_count, head->this->binary);
+	// else
+		// ft_printf("No binary found for node %d\n", *node_count);
 	*node_count = *node_count + 1;
 	if (tmp->left)
 	{
-		ft_printf("Dependent branches fond on the left--checking these first\n");
+		// ft_printf("Dependent branches fond on the left--checking these first\n");
 		print_tree(tmp->left, node_count);
 	}
 	if (tmp->right)
 	{
-		ft_printf("Checking out a right side branch\n");
+		// ft_printf("Checking out a right side branch\n");
 		print_tree(tmp->right, node_count);
 	}
 }
@@ -91,10 +91,10 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	x = -1;
 	head = make_tree_node();
 	tmp = head;
-	ft_printf("\nStarting make_tree\n");
+	// ft_printf("\nStarting make_tree\n");
 	while (raw_materials[++x])
 	{
-		ft_printf("You are on t_asttoken index %d\n", x);
+		// ft_printf("You are on t_asttoken index %d\n", x);
 		tmp->this = raw_materials[x];
 		tmp->type = raw_materials[x]->chain->type;
 		if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '&' && raw_materials[x]->chain->type[1] == '&')
@@ -106,7 +106,7 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == ';')
 			tmp = make_right_branch_semi_colon(head);
 	}
-	ft_printf("\nFinished going through token list\n");
+	// ft_printf("\nFinished going through token list\n");
 	x = 0;
 	print_tree(head, &x);
 	return (head);

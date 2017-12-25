@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:17:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/11/25 01:43:51 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/24 13:51:24 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int builtin_unsetenv(char **av, char **envp __attribute__((unused)))
 	int		i;
 	int		j;
 
-	env = &sh_singleton()->env;
+	env = (!ft_strcmp(av[0], "local")) ? &sh_singleton()->localenv : &sh_singleton()->env;
 	i = 0;
 	while (av[i])
 	{

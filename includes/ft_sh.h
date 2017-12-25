@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/16 20:22:50 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/24 13:22:08 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct  		s_shell
 {
 	bool				quit;
 	char				**env;
+	char				**localenv;
 	char				*term_name;
 	int					argc;
 	int					stdout_backup;

@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 11:54:57 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/12/17 02:06:12 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	parser(t_tokelist *tokens)
 	//print_toke_list(tokens);
 	pre_ast = synthesize_tokens(tokens);
 	mana = make_tree(pre_ast);
-	ft_printf("Finished make tree\n");
+	// ft_printf("Finished make tree\n");
 	execute_ast_cmds(mana);
 	ft_heap_clear();
 	return (true);

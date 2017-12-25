@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/16 21:03:55 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/23 22:48:09 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@
 #define CD_OPT_P 		(1 << 1)
 #define CD_HAS_OPT_L(x) (x & CD_OPT_L)
 #define CD_HAS_OPT_P(x) (x & CD_OPT_P)
-#define CD_ERR_0		"cd : %s: No such file or directory"
-#define CD_ERR_1		"cd : %s: Not a directory"
-#define CD_ERR_2		"cd : %s: Permission denied"
-#define CD_ERR_3		"cd : unable to proceed: %s"
+#define CD_ERR_0		"cd: %s: No such file or directory"
+#define CD_ERR_1		"cd: %s: Not a directory"
+#define CD_ERR_2		"cd: %s: Permission denied"
+#define CD_ERR_3		"cd: unable to proceed: %s"
 
-static t_ftopts g_cdopts[] =
+static t_optsdata g_cdopts =
 {
-	{'L', NULL, CD_OPT_L, CD_OPT_P, NULL, 0},
-	{'P', NULL, CD_OPT_P, CD_OPT_L, NULL, 0},
-	{0, NULL, 0, 0, NULL, 0}
+	"cd", NULL, NULL, NULL, 0, true, 0, {
+		{'L', NULL, NULL, NULL, NULL, CD_OPT_L, CD_OPT_P, NULL, 0, 0},
+		{'P', NULL, NULL, NULL, NULL, CD_OPT_P, CD_OPT_L, NULL, 0, 0},
+		{0, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0}
+	}
 };
 
 static void cd_setpwd(void)
@@ -90,12 +92,13 @@ static char *cd_operand(char *arg)
 
 int builtin_cd(char **av, char **envp __attribute((unused)))
 {
-	t_ftopts_data	data;
-	char			*operand;
-	char			*oldpwd;
-	int				ret;
+	t_optparser	data;
+	char		*operand;
+	char		*oldpwd;
+	int			ret;
 
-	if (ft_getopts(av, g_cdopts, &data))
+	data.flags = 0;
+	if (ft_opts(av, &g_cdopts, &data, true))
 		return (1);
 	operand = cd_operand(data.argv[0]);
 	oldpwd = getcwd(NULL, 0);

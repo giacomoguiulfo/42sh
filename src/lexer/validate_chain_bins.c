@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_chain_bins.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/20 09:12:47 by rschramm         ###   ########.fr       */
+/*   Updated: 2017/12/24 13:31:43 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool	check_binary(char *binary, char *path, int *x)
 
 int		change_state(char *instr, int *x, int state)
 {
-	if ((instr[*x] == '|' && instr[*x + 1] == '|') || 
+	if ((instr[*x] == '|' && instr[*x + 1] == '|') ||
 		(instr[*x] == '&' && instr[*x + 1] == '&'))
 	{
 		*x = *x + 1;
@@ -108,7 +108,11 @@ bool	check_builtin(char *binary, int *x)
 		found = true;
 	else if ((ft_strncmp(binary, "env", 3)) == 0)
 		found = true;
+	else if ((ft_strncmp(binary, "export", 3)) == 0)
+		found = true;
 	else if ((ft_strncmp(binary, "history", 7)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "local", 5)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "setenv", 6)) == 0)
 		found = true;

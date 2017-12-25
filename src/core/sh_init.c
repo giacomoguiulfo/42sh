@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2017/12/16 21:03:12 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/24 13:21:36 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void init_shlvl(char **env)
 
 	shlvl = ft_getenv(env, "SHLVL");
 	newlvl = (shlvl) ? ft_itoa(ft_atoi(shlvl) + 1) : ft_strdup("1");
-	builtin_setenv((char*[]){"a", "SHLVL", newlvl, NULL}, NULL);
+	builtin_setenv((char*[]){"setenv", "SHLVL", newlvl, NULL}, NULL);
 	ft_strdel(&newlvl);
 }
 
@@ -49,6 +49,7 @@ int sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
     shell->argc = ac;
     shell->argv = ft_sstrdup(av);
     shell->env = ft_sstrdup(environ);
+	shell->localenv = NULL;
     shell->stdin_backup = dup(0);
     shell->stdout_backup = dup(1);
     shell->stderr_backup = dup(2);

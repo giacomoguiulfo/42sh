@@ -6,13 +6,14 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/12/16 20:24:02 by giacomo          ###   ########.fr        #
+#    Updated: 2017/12/24 12:09:43 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= kash
 
-DEBUG		:= 0
+# DEBUG		:= 0
+DEBUG		:= 1
 
 CC			?= gcc
 CFLAGS		+= -std=c99
@@ -40,10 +41,11 @@ exec\
 builtins/builtin_cd\
 builtins/builtin_echo\
 builtins/builtin_env\
+builtins/builtin_exit\
+builtins/builtin_export\
 builtins/builtin_history\
 builtins/builtin_setenv\
 builtins/builtin_unsetenv\
-builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
 lexer/lexer\
