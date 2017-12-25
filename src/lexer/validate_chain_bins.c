@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/24 13:31:43 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/24 17:01:24 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ bool	check_builtin(char *binary, int *x)
 	else if ((ft_strncmp(binary, "local", 5)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "setenv", 6)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "unset", 5)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "unsetenv", 8)) == 0)
 		found = true;
