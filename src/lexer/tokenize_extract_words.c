@@ -49,4 +49,5 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 	help->end = instr + help->x;
 	tmp->len = help->end - help->start;
 	tmp->content = help->start;
+	ft_printf("%s\n", tmp->content);
 }

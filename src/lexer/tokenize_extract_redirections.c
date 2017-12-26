@@ -43,12 +43,7 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 	while (ft_isfilename(instr[++help->x]) && instr[help->x + 1])
 		len++;
 	if (instr[help->x + 1])
-	{
-		ft_printf("-->%s\n", instr);
-		ft_printf("index: %d\n", help->x);
-		ft_printf("length: %d\n", len + 1);
 		len++;
-	}
 	node->redir_suffix_len = len + 1;
 }
 
@@ -103,7 +98,6 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	ft_printf("-->Inside extract redirections!\n");
 	if (!head->type[0])
 		tmp = head;
 	else
@@ -116,5 +110,4 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	}
 	get_prefix(instr, help, tmp);
 	get_suffix(instr, help, tmp);
-	ft_printf("-->Finished extract redirections!\n");
 }

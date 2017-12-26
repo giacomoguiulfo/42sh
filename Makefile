@@ -49,6 +49,7 @@ builtins/builtin_unset\
 builtins/builtin_unsetenv\
 core/sh_init\
 core/sh_singleton\
+execute/execute_cmds\
 lexer/lexer\
 lexer/tokenize\
 lexer/tokenize_utils\
@@ -70,7 +71,6 @@ parser/parser\
 parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
-parser/parser_execute_cmds\
 readline/readline\
 readline/move_basic\
 readline/move_extended\

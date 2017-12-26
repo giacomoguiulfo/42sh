@@ -14,6 +14,8 @@
 #include "history.h"
 #include "libft.h"
 #include "lexer.h"
+#include "parser.h"
+#include "execute.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -36,6 +38,7 @@ static int	sh_instruction(t_shell *shell)
 	char			*cmds;
 	char			*prompt;
 	t_tokelist		*abstract;
+	t_astree		*palm;
 
 	while (42)
 	{
@@ -44,19 +47,17 @@ static int	sh_instruction(t_shell *shell)
 		free(prompt);
 		if (check_quit(shell, cmds))
 			break ;
-		if (!cmds)
+		else if (!cmds)
 			continue ;
 		history_add(cmds);
 		abstract = lexer(&cmds);
-		if (!abstract)
+		if (abstract)
 		{
-			free(cmds);
-			continue ;
+			palm = parser(abstract);
+			execute_ast_cmds(palm);
 		}
-		parser(abstract);
 		free(cmds);
 	}
-	// execute instruction
 	return (0);
 }
 
@@ -74,7 +75,6 @@ int			main(int ac, char **av)
 		sh_instruction(shell);
 		if (shell->quit == true)
 			break ;
-	// 	sh_reset();
 	}
 	builtin_exit();
 	return (0);

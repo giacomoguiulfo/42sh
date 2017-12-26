@@ -60,7 +60,7 @@ int sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
         return (SH_ERR_R1("Unable to access termcap database"));
     else if (ret == 0)
         return (SH_ERR_R1("Terminal type is not defined"));
-	init_shlvl(shell->env);
+    init_shlvl(shell->env);
 	return (0);
 }
 
