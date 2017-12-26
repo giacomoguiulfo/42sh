@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_execute_cmds.c                              :+:      :+:    :+:   */
+/*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/16 20:31:37 by giacomo          ###   ########.fr       */
+/*   Updated: 2017/12/25 20:19:25 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,31 +213,43 @@ bool	acheck_builtin(char *binary)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)
 		found = true;
+	else if ((ft_strncmp(binary, "export", 6)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "unset", 5)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "local", 5)) == 0)
+		found = true;
+	else if ((ft_strncmp(binary, "read", 4)) == 0)
+		found = true;
     (void)end;
 	return (found);
 }
 
-int		msh_run_builtin(t_asttoken *this, char **env)
-{
-	int		ret;
-
-	ret = 0;
-	if ((ft_strcmp(this->binary, "cd")) == 0)
-		ret = builtin_cd(this->args, env);
-	else if ((ft_strcmp(this->binary, "exit")) == 0)
-		ret = builtin_exit();
-	else if ((ft_strcmp(this->binary, "env")) == 0)
-		ret = builtin_exit();
-	else if ((ft_strcmp(this->binary, "history")) == 0)
-		ret = builtin_history();
-	else if ((ft_strcmp(this->binary, "echo")) == 0)
-		ret = builtin_echo(this->args, env);
-	else if ((ft_strcmp(this->binary, "setenv")) == 0)
-		ret = builtin_setenv(this->args, env);
-	else if ((ft_strcmp(this->binary, "unsetenv")) == 0)
-		ret = builtin_unsetenv(this->args, env);
-	return (ret);
-}
+// int		msh_run_builtin(t_asttoken *this, char **env)
+// {
+// 	int		ret;
+//
+// 	ret = 0;
+// 	if ((ft_strcmp(this->binary, "cd")) == 0)
+// 		ret = builtin_cd(this->args, env);
+// 	else if ((ft_strcmp(this->binary, "exit")) == 0)
+// 		ret = builtin_exit();
+// 	else if ((ft_strcmp(this->binary, "env")) == 0)
+// 		ret = builtin_exit();
+// 	else if ((ft_strcmp(this->binary, "history")) == 0)
+// 		ret = builtin_history();
+// 	else if ((ft_strcmp(this->binary, "echo")) == 0)
+// 		ret = builtin_echo(this->args, env);
+// 	else if ((ft_strcmp(this->binary, "setenv")) == 0)
+// 		ret = builtin_setenv(this->args, env);
+// 	else if ((ft_strcmp(this->binary, "unsetenv")) == 0)
+// 		ret = builtin_unsetenv(this->args, env);
+// 	else if ((ft_strcmp(this->binary, "unset")) == 0)
+// 		ret = builtin_unsetenv(this->args, env);
+// 	else if ((ft_strcmp(this->binary, "")) == 0)
+// 		ret = builtin_unsetenv(this->args, env);
+// 	return (ret);
+// }
 
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {

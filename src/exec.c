@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 21:57:23 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/24 17:01:42 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/25 20:16:59 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_strfmap	g_builtins[] =
 	{"export", &builtin_export},
 	{"history", &builtin_history},
 	{"local", &builtin_setenv},
+	{"read", &builtin_read},
 	{"setenv", &builtin_setenv},
 	{"unset", &builtin_unset},
 	{"unsetenv", &builtin_unsetenv},
