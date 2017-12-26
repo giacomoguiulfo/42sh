@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/23 22:48:09 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/25 18:09:58 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char *cd_operand(char *arg)
 	return (ft_strdup(ft_getenv(sh_singleton()->env, "HOME")));
 }
 
-int builtin_cd(char **av, char **envp __attribute((unused)))
+int builtin_cd(char **av)
 {
 	t_optparser	data;
 	char		*operand;

@@ -6,14 +6,14 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:17:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/24 13:51:24 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/25 18:10:50 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh.h"
 #include "libft.h"
 
-int builtin_unsetenv(char **av, char **envp __attribute__((unused)))
+int builtin_unsetenv(char **av)
 {
 	char	***env;
 	int		i;

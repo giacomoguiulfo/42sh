@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:16:54 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/24 13:46:52 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/25 18:10:36 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void assign_var(char **av, char ***env)
 	ft_strdel(&str);
 }
 
-int builtin_setenv(char **av, char **envp __attribute__((unused)))
+int builtin_setenv(char **av)
 {
 	char ***env;
 
