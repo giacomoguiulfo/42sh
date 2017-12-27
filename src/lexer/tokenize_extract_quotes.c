@@ -16,7 +16,6 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	ft_printf("Inside extract quotes %s\n", instr + help->x);
 	if (!head->type[0])
 		tmp = head;
 	else
@@ -28,5 +27,4 @@ void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
 	help->end = instr + help->x;
 	tmp->len = (help->end - 1) - (help->start);
 	tmp->content = help->start + 1;
-	ft_printf("Left extract quotes\n");
 }
