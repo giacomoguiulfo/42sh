@@ -169,7 +169,7 @@ char	*build_bin_path(char *path, char *binary)
 	}
 	return (NULL);
 }
-
+/*
 void	restore_io(t_shell *shell)
 {
 	dup2(shell->stdout_backup, 1);
@@ -277,7 +277,7 @@ void	manage_pipes(t_astree *node)
 		dup2(node->pipe_fd[0], 0);
 		close(node->pipe_fd[0]);
 	}
-}
+}*/
 
 int		aget_binary_size(char *bin)
 {
@@ -341,15 +341,15 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	this_path = build_bin_path(path, node->this->binary);
-	if (node->this->redirs && node->this->redirs[0])
-		setup_io(shell, node->this->redirs);
-	if ((node->this->chain && node->this->chain->type[0] == '|' && node->this->chain->type[1] == '\0') || node->pipe_fd[0] > -1)
-		manage_pipes(node);
+	//if (node->this->redirs && node->this->redirs[0])
+	//	setup_io(shell, node->this->redirs);
+	//if ((node->this->chain && node->this->chain->type[0] == '|' && node->this->chain->type[1] == '\0') || node->pipe_fd[0] > -1)
+	//	manage_pipes(node);
 	if (acheck_builtin(node->this->binary))
 		node->ret = msh_run_builtins(node->this);
 	else
 		node->ret = msh_run_prog(this_path, node->this->args, shell->env);
-	restore_io(shell);
+	//restore_io(shell);
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 		execute_specific_ast_cmds(shell, node->left, path);
 	else if (node->left && node->type && node->type[0] == '|' && node->type[1] == '|' && node->ret > 0)

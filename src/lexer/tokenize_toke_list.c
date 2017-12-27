@@ -18,22 +18,27 @@ t_tokelist *add_toke(t_tokelist *head)
 
 	if (!head)
 		return (NULL);
-	tmp = head;
-	while (tmp->next)
+	if (!head->last)
+	{
+		ft_printf("adding new tokenize member\n");
+		head->last = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
+		head->next = head->last;
+		tmp = head->last;
+	}
+	else
+	{
+		ft_printf("Adding another new tokenize member\n");
+		tmp = head->last;
+		tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 		tmp = tmp->next;
-	tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
-	tmp = tmp->next;
+	}
+	head->last = tmp;
 	tmp->content = NULL;
 	tmp->next = NULL;
 	tmp->len = 0;
 	tmp->type[0] = '\0';
 	tmp->type[1] = '\0';
 	tmp->type[2] = '\0';
-	tmp->redir_turn_off = false;
-	tmp->redir_prefix_fd = -2;
-	tmp->redir_suffix_fd = -2;
-	tmp->redir_suffix_file = NULL;
-	tmp->redir_suffix_len = -2;
 	return (tmp);
 }
 
@@ -48,10 +53,6 @@ t_tokelist *start_toking(void)
 	head->type[0] = '\0';
 	head->type[1] = '\0';
 	head->type[2] = '\0';
-	head->redir_turn_off = false;
-	head->redir_prefix_fd = -2;
-	head->redir_suffix_fd = -2;
-	head->redir_suffix_file = NULL;
-	head->redir_suffix_len = -1;
+	head->last = NULL;
 	return (head);
 }

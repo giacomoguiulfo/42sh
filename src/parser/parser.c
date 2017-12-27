@@ -28,7 +28,7 @@ void		print_toke_list(t_tokelist *head)
 	{
 		ft_printf("\n----------\n");
 		ft_printf("type: %s\n", tmp->type);
-		if (tmp->type[0] == '>' || tmp->type[0] == '<')
+		/*if (tmp->type[0] == '>' || tmp->type[0] == '<')
 		{
 			if (tmp->redir_suffix_fd != -2)
 				ft_printf("Suffix_fd is %d\n", tmp->redir_suffix_fd);
@@ -40,7 +40,7 @@ void		print_toke_list(t_tokelist *head)
 			}
 			else if (tmp->redir_prefix_fd != -2)
 				ft_printf("Prefix_fd is %d\n", tmp->redir_prefix_fd);
-		}
+		}*/
 		if (ft_isquote(tmp->type[0]))
 		{
 			ft_printf("Quote text: ");
@@ -63,8 +63,10 @@ t_astree	*parser(t_tokelist *tokens)
 	t_asttoken	**pre_ast;
 	t_astree	*mana;
 
-	//print_toke_list(tokens);
+	print_toke_list(tokens);
 	pre_ast = synthesize_tokens(tokens);
+	ft_printf("About to make tree\n");
 	mana = make_tree(pre_ast);
+	ft_printf("Finished with the tree\n");
 	return (mana);
 }

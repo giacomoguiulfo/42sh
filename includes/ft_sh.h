@@ -57,14 +57,10 @@ typedef struct  		s_shell
 
 typedef struct			s_tokelist
 {
-	bool				redir_turn_off;
 	char				type[3];
-	char				*redir_suffix_file;
-	int					redir_prefix_fd;
-	int					redir_suffix_len;
-	int					redir_suffix_fd;
 	size_t				len;
 	struct s_tokelist	*next;
+	struct s_tokelist	*last;
 	void				*content;
 }						t_tokelist;
 

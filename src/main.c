@@ -50,8 +50,9 @@ static int	sh_instruction(t_shell *shell)
 	char			*cmds;
 	char			*prompt;
 	t_tokelist		*tokenized;
-	//t_astree		*palm;
+	t_astree		*palm;
 
+	palm = NULL;
 	while (42)
 	{
 		prompt = msh_put_arrow();
@@ -66,8 +67,8 @@ static int	sh_instruction(t_shell *shell)
 		if (tokenized)
 		{
 			print_lexical_chain(tokenized);
-			//palm = parser(abstract);
-			//execute_ast_cmds(palm);
+			palm = parser(tokenized);
+			execute_ast_cmds(palm);
 		}
 		ft_heap_clear();
 		free(cmds);

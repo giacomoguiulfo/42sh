@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-static void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
+/*static void	check_redir_source(char *instr, t_toke *help, t_tokelist *node)
 {
 	int x;
 
@@ -92,7 +92,7 @@ static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 			break ;
 		}
 	}
-}
+}*/
 
 void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
@@ -104,11 +104,11 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	else
 		tmp = add_toke(head);
 	tmp->type[0] = instr[help->x];
-	if (instr[help->x] == instr[help->x + 1])
+	/*if (instr[help->x] == instr[help->x + 1])
 	{
 		tmp->type[1] = instr[help->x + 1];
 		help->x++;
 	}
 	get_prefix(instr, help, tmp);
-	get_suffix(instr, help, tmp);
+	get_suffix(instr, help, tmp);*/
 }

@@ -45,6 +45,7 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 	else
 		tmp = add_toke(head);
 	tmp->type[0] = 'w';
+	ft_printf("tmp type: %s\n", tmp);
 	help->start = instr + help->x;
 	ft_printf("before: %s\n", instr + help->x);
 	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
