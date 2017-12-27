@@ -76,30 +76,27 @@ t_asttoken	**add_asttoken(t_asttoken **array)
 
 t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **build, int count)
 {
-	t_tokelist *tmp;
-
-	tmp = start;
 	if (!build)
 		build = add_asttoken(build);
-	while (tmp && tmp != end)
+	while (start && start != end)
 	{
 		if (!build[count])
 			build = add_asttoken(build);
-		if (tmp->type[0] == 'w' && !build[count]->binary)
-			add_binary(build[count], tmp);
-		else if (tmp->type[0] == 'w')
-			add_astarg(build[count], tmp);
-		else if (ft_isredirection(tmp->type[0]))
-			add_redir(build[count], tmp);
-		else if (ft_iscompletechain(tmp->type))
-			add_chain(build[count], tmp);
-		tmp = tmp->next;
+		if (start->type[0] == 'w' && !build[count]->binary)
+			add_binary(build[count], start);
+		else if (start->type[0] == 'w')
+			add_astarg(build[count], start);
+		else if (ft_isredirection(start->type[0]))
+			add_redir(build[count], start);
+		else if (ft_iscompletechain(start->type))
+			add_chain(build[count], start);
+		start = start->next;
 	}
-	if (tmp && (!tmp->type[0] || ft_iscompletechain(tmp->type)))
+	if (start && (!start->type[0] || ft_iscompletechain(start->type)))
 	{
 		if (!build[count])
 			build = add_asttoken(build);
-		add_chain(build[count], tmp);
+		add_chain(build[count], start);
 	}
 	return (build);
 }

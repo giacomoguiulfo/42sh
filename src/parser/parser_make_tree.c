@@ -33,10 +33,6 @@ t_astree	*make_left_branch(t_astree *current/*, int opt*/)
 	ft_printf("Make left branch\n");
 	current->left = make_tree_node();
 	current = current->left;
-	/*if (opt == 1)
-		ft_putstr("you just made a left branching &&\n");
-	else if (opt == 2)
-		ft_putstr("you just made a left branching ||\n");*/
 	return (current);
 }
 
@@ -45,7 +41,6 @@ t_astree	*make_right_branch_pipe(t_astree *current)
 	ft_printf("Make right branch pipe\n");
 	current->right = make_tree_node();
 	current = current->right;
-	//ft_putstr("You just made aright branching pipe\n");
 	return (current);
 }
 
