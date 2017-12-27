@@ -17,7 +17,6 @@
 void		add_binary(t_asttoken *build, t_tokelist *binary)
 {
 	build->binary = ft_hstrndup(binary->content, binary->len);
-	add_astarg(build, NULL);
 }
 
 void		add_args(t_asttoken *build, t_tokelist *arg)
@@ -78,40 +77,30 @@ t_asttoken	**add_asttoken(t_asttoken **array)
 t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **build, int count)
 {
 	t_tokelist *tmp;
-	int			x;
 
 	tmp = start;
-	if (!build || build[count])
+	if (!build)
 		build = add_asttoken(build);
-	ft_printf("Inside get token info\n");
-	x = -1;
 	while (tmp && tmp != end)
 	{
-		x++;
-		ft_printf("x value: %d\n", x);
 		if (!build[count])
 			build = add_asttoken(build);
-		ft_printf("%tmp type: %s\n", tmp->type);
 		if (tmp->type[0] == 'w' && !build[count]->binary)
-			build[count]->binary = ft_hstrndup(tmp->content, tmp->len);
+			add_binary(build[count], tmp);
 		else if (tmp->type[0] == 'w')
 			add_astarg(build[count], tmp);
+		else if (ft_isredirection(tmp->type[0]))
+			add_redir(build[count], tmp);
 		else if (ft_iscompletechain(tmp->type))
-		{
 			add_chain(build[count], tmp);
-		}
 		tmp = tmp->next;
 	}
-	ft_printf("Finished loop %d\n", count);
 	if (tmp && (!tmp->type[0] || ft_iscompletechain(tmp->type)))
 	{
-		ft_printf("Adding chain\n");
 		if (!build[count])
 			build = add_asttoken(build);
 		add_chain(build[count], tmp);
-		ft_printf("Finished adding chain\n");
 	}
-	ft_printf("Finished final loop\n");
 	return (build);
 }
 
@@ -130,7 +119,6 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 	{
 		if (ft_iscompletechain(end->type))
 		{
-			ft_printf("Getting a chain\n");
 			count++;
 			build = get_token_info(start, end, build, count);
 			start = end->next;
@@ -140,13 +128,7 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 	if (start)
 	{
 		count++;
-		ft_printf("Getting last chain\n");
 		build = get_token_info(start, end, build, count);
 	}
-	count = -1;
-	ft_printf("Before final countdown\n");
-	while (build[++count])
-		;
-	ft_printf("~~->count: %d\n\n", count);
 	return (build);
 }

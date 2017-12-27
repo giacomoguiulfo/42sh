@@ -40,6 +40,7 @@ void			extract_words(char *instr, t_toke *help, t_tokelist *head);
 void			extract_quotes(char *instr, t_toke *help, t_tokelist *head);
 
 //helpers
+bool			ft_isredirection(char c);
 int				ft_iscompletechain(char *str);
 int				ft_isfilename(char c);
 
