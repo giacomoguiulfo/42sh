@@ -33,20 +33,26 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	ft_printf("Inside extract words\n");
 	if (ft_isdigit(instr[help->x]))
 	{
 		if (check_redirection(instr, help))
 			return ;
 	}
+	ft_printf("Not a redirection\n");
 	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
 	tmp->type[0] = 'w';
 	help->start = instr + help->x;
-	while (instr[++help->x] != '\0' && ft_isfilename(instr[help->x]))
+	ft_printf("before: %s\n", instr + help->x);
+	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
 		;
+	ft_printf("after: %s\n", instr + help->x);
 	help->end = instr + help->x;
 	tmp->len = help->end - help->start;
 	tmp->content = help->start;
+	ft_printf("word content: %s\n", tmp->content);
+	ft_printf("left off resume: %s\n", instr + help->x);
 }

@@ -98,6 +98,7 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	ft_printf("Inside extract redirections\n");
 	if (!head->type[0])
 		tmp = head;
 	else

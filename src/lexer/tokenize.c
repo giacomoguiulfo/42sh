@@ -16,7 +16,7 @@
 
 bool	ft_isredirection(char c)
 {
-	if (c == '<' || c == '>' || c)
+	if (c == '<' || c == '>')
 		return (true);
 	return (false);
 }
@@ -39,15 +39,22 @@ int		check_type(char *instructions, t_toke *help)
 {
 	int type;
 
-	type = 0;
+	type = 4;
+	ft_printf(">type info: %s, %c\n", instructions + help->x, instructions[help->x]);
 	if (ft_isfilename(instructions[help->x]))
-		type = 1;
+	{
+		ft_printf("Found a file: %s\n", instructions + help->x);
+		type = 0;
+	}
 	else if (ft_isquote(instructions[help->x]))
-		type = 2;
+		type = 1;
 	else if (ft_isredirection(instructions[help->x]))
-		type = 3;
+	{
+		ft_printf("Found a redirection: %s\n", instructions + help->x);
+		type = 2;
+	}
 	else if (ft_iscompletechain(instructions + help->x))
-		type = 4;
+		type = 3;
 	return (type);
 }
 
@@ -58,53 +65,40 @@ typedef	struct 	s_test
 }				t_test;
 
 t_test 		g_dispatch[] = {
-	{1, &extract_words},
-	{2, &extract_quotes},
-	{3, &extract_redirections},
-	{4, &extract_chain},
-	{0, NULL}
+	{0, &extract_words},
+	{1, &extract_quotes},
+	{2, &extract_redirections},
+	{3, &extract_chain},
+	{4, NULL}
 };
 
 t_tokelist	*tokenize(char *instructions)
 {
 	t_toke 		help;
 	t_tokelist	*head;
-	int			x;
 
 	head = NULL;
 	head = tokenize_constructor(&help, instructions);
-	ft_printf("Starting tokenize\n");
-	x = -1;
+	ft_printf("Starting tokenize: %d size\n", help.size);
+	ft_printf("Help counter: %d\n", help.x);
 	while (++help.x < help.size)
 	{
-		x = -1;
-		help.ret = check_type(instructions + help.x, &help);
-		if (help.ret == 0)
+		ft_printf("~~Checking type: %s\n", instructions + help.x);
+		help.ret = check_type(instructions, &help);
+		if (help.ret == 4)
 			continue ;
-		ft_printf("before tokenizer\n");
-		ft_printf("x index: %d, instructs: %s\n", x, instructions + help.x);
-		g_dispatch[help.ret].tokenizer(instructions + help.x, &help, head);
-		ft_printf("after tokenizer\n");
-		while (++x < 5)
-		{
-			ft_printf("type: %d, instructions: %s\n", g_dispatch[x].type, instructions + help.x);
-			if (g_dispatch[x].type == help.ret)
-			{
-				ft_printf("!!!type: %d bin->%s\n", g_dispatch[x].type, instructions + help.x);
-				g_dispatch[x].tokenizer(instructions, &help, head);
-				ft_printf("Crashing inside tokenize\n");
-				break ;
-			}
-		}
-		/*if (ft_isquote(instructions[help.x]) ||
-			ft_isfilename(instructions[help.x]) ||
-			(instructions[help.x] == '>' || instructions[help.x] == '<') ||
-			ft_iscompletechain(instructions + help.x))
-		{
-			tokenize_this_part(instructions, &help, head);
-			if (tmp->next)
-				tmp = tmp->next;
-		}*/
+		if (help.ret == 0)
+			ft_printf("extract words, instructs: %s\n", instructions + help.x);
+		else if (help.ret == 1)
+			ft_printf("extract quotes, instructs: %s\n", instructions + help.x);
+		else if (help.ret == 2)
+			ft_printf("extract redirection, instructs: %s\n", instructions + help.x);
+		else if (help.ret == 3)
+			ft_printf("extract chain, instructs: %s\n", instructions + help.x);
+		g_dispatch[help.ret].tokenizer(instructions, &help, head);
+		ft_printf("After tokenizer\n");
+		
 	}
+	ft_printf("End loop %d\n", help.x);
 	return (head);
 }

@@ -36,9 +36,11 @@ void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	ft_printf("Inside extract chains %s\n", instr + help->x);
 	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
 	get_chain_type(instr, help, tmp);
+	ft_printf("Chain type is: %s\n", tmp->type);
 }

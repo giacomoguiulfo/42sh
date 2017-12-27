@@ -47,10 +47,6 @@ bool		validate(char **instr)
 		if (valid == -1)
 			return (false);
 	}
-	//if (!validate_chain_bins(*instr)) To do: validate right before command execution
-	//	return (false);
-	if (!validate_redirections(*instr))
-		return (false);
 	return (true);
 }
 			
@@ -63,7 +59,6 @@ t_tokelist	*lexer(char **instr)
 		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (NULL);
 	}
-	history_add(*instr);
 	abstract = tokenize(*instr);
 	return (abstract);
 }
