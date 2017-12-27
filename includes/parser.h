@@ -20,8 +20,6 @@ typedef struct			s_asttoken
 {
 	char				*binary;
 	char				**args;
-	int					arg_count;
-	int					redir_count;
 	struct s_tokelist	**redirs;
 	struct s_tokelist	*chain;
 }						t_asttoken;

@@ -68,10 +68,12 @@ static int	sh_instruction(t_shell *shell)
 		{
 			print_lexical_chain(tokenized);
 			palm = parser(tokenized);
+			if (!palm)
+				continue;
 			execute_ast_cmds(palm);
 		}
-		ft_heap_clear();
-		free(cmds);
+		//ft_heap_clear();
+		//free(cmds);
 	}
 	return (0);
 }

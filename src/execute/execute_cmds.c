@@ -342,12 +342,10 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 
 	this_path = NULL;
 
-	if (!node->this->binary)
+	if (!node->this || !node->this->binary)
 		printf("no binary found\n");
 	else
 	{
-		ft_printf("Path: %s\n", path);
-		ft_printf("Binary: %s\n", node->this->binary);
 		this_path = build_bin_path(path, node->this->binary);
 	//if (node->this->redirs && node->this->redirs[0])
 	//	setup_io(shell, node->this->redirs);
