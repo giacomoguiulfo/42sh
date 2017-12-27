@@ -64,6 +64,7 @@ t_astree	*parser(t_tokelist *tokens)
 	t_astree	*mana;
 
 	print_toke_list(tokens);
+	ft_printf("Finished printing toke list\n");
 	pre_ast = synthesize_tokens(tokens);
 	ft_printf("About to make tree\n");
 	mana = make_tree(pre_ast);

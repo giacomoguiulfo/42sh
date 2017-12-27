@@ -340,22 +340,41 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
-	this_path = build_bin_path(path, node->this->binary);
+	this_path = NULL;
+
+	if (!node->this->binary)
+		printf("no binary found\n");
+	else
+	{
+		ft_printf("Path: %s\n", path);
+		ft_printf("Binary: %s\n", node->this->binary);
+		this_path = build_bin_path(path, node->this->binary);
 	//if (node->this->redirs && node->this->redirs[0])
 	//	setup_io(shell, node->this->redirs);
 	//if ((node->this->chain && node->this->chain->type[0] == '|' && node->this->chain->type[1] == '\0') || node->pipe_fd[0] > -1)
 	//	manage_pipes(node);
-	if (acheck_builtin(node->this->binary))
-		node->ret = msh_run_builtins(node->this);
-	else
-		node->ret = msh_run_prog(this_path, node->this->args, shell->env);
-	//restore_io(shell);
+		if (acheck_builtin(node->this->binary))
+			node->ret = msh_run_builtins(node->this);
+		else
+			node->ret = msh_run_prog(this_path, node->this->args, shell->env);
+		//restore_io(shell);
+	}
+	ft_printf("After execution\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+	{
+		ft_printf("Found left branching node\n");
 		execute_specific_ast_cmds(shell, node->left, path);
+	}
 	else if (node->left && node->type && node->type[0] == '|' && node->type[1] == '|' && node->ret > 0)
+	{
+		ft_printf("Found left branching node\n");
 		execute_specific_ast_cmds(shell, node->left, path);
+	}
 	if (node->right)
+	{
+		ft_printf("Found right branching node\n");
 		execute_specific_ast_cmds(shell, node->right, path);
+	}
 }
 
 void	execute_ast_cmds(t_astree *head)

@@ -94,7 +94,7 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	x = -1;
 	head = make_tree_node();
 	tmp = head;
-	//ft_printf("\nStarting make_tree\n");
+	ft_printf("\nStarting make_tree\n");
 	while (raw_materials[++x])
 	{
 		//ft_printf("You are on t_asttoken index %d\n", x);
@@ -109,7 +109,7 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == ';')
 			tmp = make_right_branch_semi_colon(head);
 	}
-	//ft_printf("\nFinished going through token list\n");
+	ft_printf("\nFinished synthesizer, len: %d\n", x);
 	x = 0;
 	print_tree(head, &x);
 	return (head);

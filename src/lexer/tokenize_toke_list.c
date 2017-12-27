@@ -20,14 +20,12 @@ t_tokelist *add_toke(t_tokelist *head)
 		return (NULL);
 	if (!head->last)
 	{
-		ft_printf("adding new tokenize member\n");
 		head->last = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 		head->next = head->last;
 		tmp = head->last;
 	}
 	else
 	{
-		ft_printf("Adding another new tokenize member\n");
 		tmp = head->last;
 		tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 		tmp = tmp->next;

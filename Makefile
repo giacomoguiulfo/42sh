@@ -56,7 +56,6 @@ lexer/tokenize_extract_quotes\
 lexer/tokenize_extract_words\
 lexer/tokenize_toke_list\
 lexer/validate_chains\
-lexer/validate_redirections\
 lexer/validate_quotes\
 lexer/utils\
 history/history_change\
