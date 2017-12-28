@@ -49,23 +49,13 @@ int				ft_isfilename(char c);
 t_tokelist 		*add_toke(t_tokelist *head);
 t_tokelist 		*start_toking(void);
 
-
 //validate
-bool			validate_chain_bins(char *instr);
 bool			validate_quotes(char *inst);
-bool			validate_redirections(char *instr);
 int				validate_chains(char *inst);
-int				validate_quotes_chains(char **instr);
-
-//utils
-bool			check_access(char *binary, char *path);
-bool			check_binary(char *binary, char *path, int *x);
-bool			check_reg_file(mode_t st_mode);
 
 //helpers
 bool			get_close_chain(char *inst, int index);
 bool			try_pwd(char *binary);
-//char			*get_path(void);
 int				ft_ischain(char *c);
 int				ft_isquote(char c);
 void			skip_quote(char *inst, int *x, char quote_type);

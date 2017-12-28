@@ -14,8 +14,8 @@
 
 #include "execute.h"
 #include "ft_sh.h"
-#include "parser.h"
 #include "lexer.h"
+#include "parser.h"
 #include "builtins.h"
 #include <stdio.h>
 #include <fcntl.h>
@@ -24,6 +24,23 @@
 #include <sys/wait.h>
 #include <error.h>
 #include <stdlib.h>
+
+bool	check_access(char *binary, char *path)
+{
+	if (!((access(path, X_OK)) == 0))
+	{
+		ft_printf("Lexer: permission denied: %s\n", binary);
+		return (false);
+	}
+	return (true);
+}
+
+bool	check_reg_file(mode_t st_mode)
+{
+	if (!S_ISREG(st_mode))
+		return (false);
+	return (true);
+}
 
 char	*try_pwdd(char *binary)
 {
@@ -42,23 +59,6 @@ char	*try_pwdd(char *binary)
 	else if (!check_reg_file(sb.st_mode))
 		return (NULL);
 	return (ft_hstrdup(cwd_path));
-}
-
-bool	check_access(char *binary, char *path)
-{
-	if (!((access(path, X_OK)) == 0))
-	{
-		ft_printf("Lexer: permission denied: %s\n", binary);
-		return (false);
-	}
-	return (true);
-}
-
-bool	check_reg_file(mode_t st_mode)
-{
-	if (!S_ISREG(st_mode))
-		return (false);
-	return (true);
 }
 
 int		get_binary_size(char *binary)
@@ -312,38 +312,40 @@ int		msh_run_builtin(t_asttoken *this, char **env)
 	return (ret);
 }
 
+void	check_pipes(t_astree *node)
+{
+	char	*chain;
+
+	chain = node->this->chain->type;
+	if (chain && chain[0] == '|' && chain[1] != '|')
+		manage_pipes(node);
+	else if (node->pipe_fd[0] > -1)
+		manage_pipes(node);
+}
+
 void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
 	this_path = NULL;
-
-	if (!node->this || !node->this->binary)
-		printf("no binary found\n");
 	if (node->this->redirs && node->this->redirs[0])
 		setup_io(shell, node->this->redirs);
-	ft_printf("chain type: %s\n", node->this->chain->type);
-	ft_printf("pipefd status: %d, %d\n", node->pipe_fd[0], node->pipe_fd[1]);
-	if (node->this->chain && node->this->chain->type[0] == '|')
-	{
-		manage_pipes(node);
-	}
-	else if (node->pipe_fd[0] > -1)
-	{
-		manage_pipes(node);
-	}
+	check_pipes(node);
 	if (node->this->binary)
 	{
-		this_path = build_bin_path(path, node->this->binary);
-		ft_printf("full path: %s\n", this_path);
 		if (acheck_builtin(node->this->binary))
+		{
 			node->ret = msh_run_builtins(node->this);
+			ft_printf("Ran builtin: %s\n", node->this->binary);
+		}
 		else
 		{
+			this_path = build_bin_path(path, node->this->binary);
+			ft_printf("full path: %s\n", this_path);
 			node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 		}
-		restore_io(shell);
 	}
+	restore_io(shell);
 	ft_printf("After execution\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 	{
@@ -360,6 +362,7 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		ft_printf("Found right branching node\n");
 		execute_specific_ast_cmds(shell, node->right, path);
 	}
+	restore_io(shell);
 }
 
 void	execute_ast_cmds(t_astree *head)
