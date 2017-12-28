@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
+void	tokenize_redirections(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
@@ -21,7 +21,10 @@ void	extract_redirections(char *instr, t_toke *help, t_tokelist *head)
 	else
 		tmp = add_toke(head);
 	tmp->type[0] = instr[help->x];
-	if (instr[help->x + 1] == tmp->type[0])
-		tmp->type[1] = instr[help->x + 1];
 	tmp->content = instr + help->x;
+	if (instr[help->x + 1] == tmp->type[0])
+	{
+		tmp->type[1] = instr[help->x + 1];
+		help->x++;
+	}
 }

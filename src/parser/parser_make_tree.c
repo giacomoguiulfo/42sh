@@ -89,7 +89,6 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	t_astree	*tmp;
 
 	x = -1;
-	//ft_printf("Making the tree\n");
 	head = make_tree_node();
 	tmp = head;
 	while (raw_materials[++x])
@@ -104,9 +103,7 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 			tmp = make_right_branch_pipe(tmp);
 		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == ';')
 			tmp = make_right_branch_semi_colon(head);
-		//ft_printf("After\n");
 	}
-	//ft_printf("About to print out tree\n");
 	x = 0;
 	print_tree(head, &x);
 	return (head);

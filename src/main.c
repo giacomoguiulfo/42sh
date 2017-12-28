@@ -33,18 +33,6 @@ static bool check_quit(t_shell *shell, char *cmds)
 	return (false);
 }
 
-static	void print_lexical_chain(t_tokelist *this)
-{
-	t_tokelist *tmp;
-
-	tmp = this;
-	while (tmp)
-	{
-		ft_printf("print_lexical_chain - tmp token type: %s\n", tmp->type);
-		tmp = tmp->next;
-	}
-}
-
 static int	sh_instruction(t_shell *shell)
 {
 	char			*cmds;
@@ -66,14 +54,14 @@ static int	sh_instruction(t_shell *shell)
 		tokenized = lexer(&cmds);
 		if (tokenized)
 		{
-			print_lexical_chain(tokenized);
 			palm = parser(tokenized);
 			if (!palm)
 				continue;
 			execute_ast_cmds(palm);
 		}
-		//ft_heap_clear();
-		//free(cmds);
+		ft_heap_clear();
+		free(cmds);
+		break ;
 	}
 	return (0);
 }

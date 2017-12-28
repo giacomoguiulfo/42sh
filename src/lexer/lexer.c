@@ -52,13 +52,10 @@ bool		validate(char **instr)
 			
 t_tokelist	*lexer(char **instr)
 {
-	t_tokelist *abstract;
+	t_tokelist *tokenized;
 
 	if (!validate(instr))
-	{
-		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (NULL);
-	}
-	abstract = tokenize(*instr);
-	return (abstract);
+	tokenized = tokenize(*instr);
+	return (tokenized);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                          :+:      :+:    :+:   */
+/*   tokenize_extract_quotes.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-void	extract_words(char *instr, t_toke *help, t_tokelist *head)
+void	tokenize_quotes(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
@@ -20,11 +20,11 @@ void	extract_words(char *instr, t_toke *help, t_tokelist *head)
 		tmp = head;
 	else
 		tmp = add_toke(head);
-	tmp->type[0] = 'w';
+	tmp->type[0] = instr[help->x];
 	help->start = instr + help->x;
-	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
+	while (instr[++help->x] && instr[help->x] != tmp->type[0])
 		;
 	help->end = instr + help->x;
-	tmp->len = help->end - help->start;
-	tmp->content = help->start;
+	tmp->len = (help->end - 1) - (help->start);
+	tmp->content = help->start + 1;
 }

@@ -34,10 +34,10 @@ typedef struct			s_toke
 //tokenize
 t_tokelist		*tokenize(char	*instructions);
 
-void			extract_chain(char *instr, t_toke *help, t_tokelist *head);
-void			extract_redirections(char *instr, t_toke *help, t_tokelist *head);
-void			extract_words(char *instr, t_toke *help, t_tokelist *head);
-void			extract_quotes(char *instr, t_toke *help, t_tokelist *head);
+void			tokenize_chain(char *instr, t_toke *help, t_tokelist *head);
+void			tokenize_redirections(char *instr, t_toke *help, t_tokelist *head);
+void			tokenize_words(char *instr, t_toke *help, t_tokelist *head);
+void			tokenize_quotes(char *instr, t_toke *help, t_tokelist *head);
 
 //helpers
 bool			ft_isredirection(char c);

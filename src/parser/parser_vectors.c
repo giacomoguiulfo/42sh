@@ -46,9 +46,10 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	int		size;
 	int		x;
 
+	ft_printf("Copy arg: %s\n", tmp->content);
 	if (!this->args)
 	{
-		this->args = (char**)ft_hmalloc(sizeof(char*) + 2 + 1);
+		this->args = (char**)ft_hmalloc(sizeof(char*) * (2 + 1));
 		this->args[0] = this->binary;
 		this->args[1] = ft_hstrndup(tmp->content, tmp->len);
 		this->args[2] = 0;
@@ -57,6 +58,7 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 	size = -1;
 	while (this->args[++size])
 		;
+	ft_printf("size for arg is: %d\n", size);
 	new = (char**)ft_hmalloc(sizeof(char*) * (size + 1 + 1));
 	new[size + 1] = 0;
 	x = -1;

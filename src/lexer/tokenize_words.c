@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_extract_chains.c                          :+:      :+:    :+:   */
+/*   tokenize_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,7 @@
 
 #include "lexer.h"
 
-static void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
-{
-	if (instr[help->x] == '&' && instr[help->x + 1] == '&')
-	{
-		node->type[0] = '&';
-		node->type[1] = '&';
-		help->x++;
-	}
-	else if (instr[help->x] == '|' && instr[help->x + 1] == '|')
-	{
-		node->type[0] = '|';
-		node->type[1] = '|';
-		help->x++;
-	}
-	else if (instr[help->x] == '|')
-		node->type[0] = '|';
-	else if (instr[help->x] == ';')
-		node->type[0] = ';';
-}
-
-void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
+void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
@@ -40,6 +20,11 @@ void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
 		tmp = head;
 	else
 		tmp = add_toke(head);
-	tmp->content = instr + help->x;
-	get_chain_type(instr, help, tmp);
+	tmp->type[0] = 'w';
+	help->start = instr + help->x;
+	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
+		;
+	help->end = instr + help->x;
+	tmp->len = help->end - help->start;
+	tmp->content = help->start;
 }

@@ -30,3 +30,10 @@ int		ft_isfilename(char c)
 		return (1);
 	return  (0);
 }
+
+bool	ft_isredirection(char c)
+{
+	if (c == '<' || c == '>')
+		return (true);
+	return (false);
+}
