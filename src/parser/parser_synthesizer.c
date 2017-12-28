@@ -79,12 +79,10 @@ bool		ft_isword(char c)
 {
 	if (c == 'w')
 	{
-		ft_printf("w type\n");
 		return (true);
 	}
 	else if (ft_isquote(c))
 	{
-		ft_printf("quote type\n");
 		return (true);
 	}
 	return (false);

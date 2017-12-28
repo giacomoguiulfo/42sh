@@ -102,7 +102,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	pid_t	pid;
  	int		status;
 
- 	ft_printf("Execute: %s\n", executable);
  	pid = fork();
  	if (pid == 0)
 	{
@@ -337,12 +336,10 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		if (acheck_builtin(node->this->binary))
 		{
 			node->ret = msh_run_builtins(node->this);
-			ft_printf("Ran builtin: %s\n", node->this->binary);
 		}
 		else
 		{
 			this_path = build_bin_path(path, node->this->binary);
-			ft_printf("full path: %s\n", this_path);
 			node->ret = msh_run_prog(this_path, node->this->args, shell->env);
 		}
 	}
@@ -370,10 +367,9 @@ void	execute_ast_cmds(t_astree *head)
 	shell = sh_singleton();
 	if (!shell->path)
 	{
-		ft_printf("path is unset\n");
+		ft_printf("Kash: path is unset\n");
 		return ;
 	}
 	tmp = head;
-	ft_printf("Starting command execution\n");
 	execute_specific_ast_cmds(shell, tmp, shell->path);
 }

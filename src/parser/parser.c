@@ -58,7 +58,7 @@ t_astree	*parser(t_tokelist *tokens)
 	t_astree	*mana;
 
 	pre_ast = synthesize_tokens(tokens);
-	print_tokened_list(pre_ast);
+	//print_tokened_list(pre_ast);
 	mana = make_tree(pre_ast);
 	return (mana);
 }
