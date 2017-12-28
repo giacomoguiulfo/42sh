@@ -76,7 +76,7 @@ void		print_tree(t_astree *head, int *node_count)
 	}
 }
 
-t_astree	*make_tree(t_asttoken **raw_materials)
+t_astree	*make_tree(t_asttoken **raw)
 {
 	int			x;
 	t_astree	*head;
@@ -85,20 +85,18 @@ t_astree	*make_tree(t_asttoken **raw_materials)
 	x = -1;
 	head = make_tree_node();
 	tmp = head;
-	while (raw_materials[++x])
+	while (raw[++x])
 	{
-		tmp->this = raw_materials[x];
-		tmp->type = raw_materials[x]->chain->type;
-		if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '&' && raw_materials[x]->chain->type[1] == '&')
-			tmp = make_left_branch(tmp/*, 1*/);
-		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '|' && raw_materials[x]->chain->type[1] == '|')
-			tmp = make_left_branch(tmp/*, 2*/);
-		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == '|')
+		tmp->this = raw[x];
+		tmp->type = raw[x]->chain->type;
+		if (raw[x]->chain && raw[x]->chain->type[0] == '&' && raw[x]->chain->type[1] == '&')
+			tmp = make_left_branch(tmp);
+		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' && raw[x]->chain->type[1] == '|')
+			tmp = make_left_branch(tmp);
+		else if (raw[x]->chain && raw[x]->chain->type[0] == '|')
 			tmp = make_right_branch_pipe(tmp);
-		else if (raw_materials[x]->chain && raw_materials[x]->chain->type[0] == ';')
+		else if (raw[x]->chain && raw[x]->chain->type[0] == ';')
 			tmp = make_right_branch_semi_colon(head);
 	}
-	x = 0;
-	//print_tree(head, &x);
 	return (head);
 }
