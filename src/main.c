@@ -20,6 +20,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
+typedef struct	s_helper
+{
+	char		*cmds;
+	char		*prompt;
+	int			ret;
+	t_tokelist	*tokenized;
+	t_astree	*palm;	
+}				t_helper;
+
 void	history_add();
 
 static bool check_quit(t_shell *shell, char *cmds)
@@ -50,21 +59,15 @@ static int	processor(t_helper *assist)
 	{
 		assist->palm = parser(assist->tokenized);
 		if (!assist->palm)
+		{
+			free(assist->cmds);
 			return (0);
+		}
 		execute_ast_cmds(assist->palm);
 	}
 	free(assist->cmds);
 	return (1);
 }
-
-typedef struct	s_helper
-{
-	char		*cmds;
-	char		*prompt;
-	int			x;
-	t_tokelist	*tokenized;
-	t_astree	*palm;	
-}				t_helper;
 
 static int	sh_instruction(t_shell *shell)
 {
@@ -74,11 +77,11 @@ static int	sh_instruction(t_shell *shell)
 	{
 		assist.prompt = msh_put_arrow();
 		assist.cmds = readline(assist.prompt);
-		if ((assist.x = pre_processor(&assist, shell)) == -1)
+		if ((assist.ret = pre_processor(&assist, shell)) == -1)
 			break;
-		else if (assist.x == 0)
+		else if (assist.ret == 0)
 			continue ;
-		if (!(assist.x = processor(&assist)))
+		if (!(assist.ret = processor(&assist)))
 			continue ;
 		break ;
 	}
@@ -100,7 +103,6 @@ int			main(int ac, char **av)
 		ft_heap_clear();
 		if (shell->quit == true)
 			break ;
-		ft_putstr("hi\n");
 	}
 	builtin_exit();
 	return (0);
