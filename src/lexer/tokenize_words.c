@@ -31,7 +31,7 @@ void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
-	if (instr[help->x] == '&' || ft_isdigit(instr[help->x]))
+	if (instr[help->x + 1] == '&' && ft_isdigit(instr[help->x + 2]))
 	{
 		if (check_redirs(instr, help))
 			tokenize_redirections(instr, help, head);
@@ -43,9 +43,13 @@ void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 		tmp = add_toke(head);
 	tmp->type[0] = 'w';
 	help->start = instr + help->x;
-	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
-		;
+	while (instr[help->x++])
+	{
+		if (!ft_isfilename(instr[help->x]))
+			break ;
+	}
 	help->end = instr + help->x;
 	tmp->len = help->end - help->start;
 	tmp->content = help->start;
+	help->x--;
 }
