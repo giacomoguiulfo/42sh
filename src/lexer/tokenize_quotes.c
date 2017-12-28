@@ -21,7 +21,6 @@ void	tokenize_quotes(char *instr, t_toke *help, t_tokelist *head)
 	else
 		tmp = add_toke(head);
 	tmp->type[0] = instr[help->x];
-	ft_printf("Quote added: %s\n", tmp->type);
 	help->start = instr + help->x;
 	while (instr[++help->x] && instr[help->x] != tmp->type[0])
 		;

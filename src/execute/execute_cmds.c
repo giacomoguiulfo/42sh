@@ -104,7 +104,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	pid_t	pid;
  	int		status;
 
- 	ft_printf("Executable: %s\n", executable);
  	pid = fork();
  	if (pid == 0)
 	{
