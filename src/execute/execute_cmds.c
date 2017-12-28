@@ -118,6 +118,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 		exit(EXIT_FAILURE);
  	}
  	wait(&status);
+ 	sh_init_termios();
  	return (status);
 }
 

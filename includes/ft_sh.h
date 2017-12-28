@@ -69,6 +69,7 @@ typedef struct			s_tokelist
 }						t_tokelist;
 
 int     	sh_init();
+void		sh_init_termios();
 t_shell 	*sh_singleton();
 void		sh_shutdown();
 char		*readline(char *prompt);
