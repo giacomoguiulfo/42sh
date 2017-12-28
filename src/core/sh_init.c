@@ -87,8 +87,8 @@ int 		sh_init(int ac, char **av, t_cmds *history)
 	t_shell *shell;
 
 	shell = sh_singleton();
+	sh_init_termios();
 	if (sh_data_init(shell, ac, av, history))
 		return (1);
-	sh_init_termios();
 	return (0);
 }
