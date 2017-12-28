@@ -60,36 +60,48 @@ static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
 	node->redir_suffix_file = ft_hstrndup(instr + help->x + 1, len);
 }
 
+static void	get_fd(char *instr, t_toke *help, t_tokelist *node)
+{
+	if (ft_isdigit(instr[help->x + 2]))
+	{
+		node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
+		help->x += 1;
+		while (ft_isdigit(instr[++help->x]))
+			;
+	}
+	else if (instr[help->x + 2] == '-')
+	{
+		node->redir_turn_off = true;
+		help->x += 2;
+	}
+}
+
+static bool get_file(char *instr, t_toke *help, t_tokelist *node)
+{
+	if (ft_isfilename(instr[help->x]))
+	{
+		get_suffix_word(instr, help, node);
+		return (true);
+	}
+	else if (ft_isquote(instr[help->x]))
+	{
+		get_suffix_quote(instr, help, node);
+		return (true);
+	}
+	return (false);
+}
+
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
 	if (instr[help->x + 1] == '&' && (ft_isdigit(instr[help->x + 2]) || instr[help->x + 2] == '-'))
 	{
-		if (ft_isdigit(instr[help->x + 2]))
-		{
-			node->redir_suffix_fd = ft_atoi(instr + help->x + 2);
-			help->x += 1;
-			while (ft_isdigit(instr[++help->x]))
-				;
-		}
-		else if (instr[help->x + 2] == '-')
-		{
-			node->redir_turn_off = true;
-			help->x += 2;
-		}
+		get_fd(instr, help, node);
 		return ;
 	}
 	while (instr[++help->x])
 	{
-		if (ft_isfilename(instr[help->x]))
-		{
-			get_suffix_word(instr, help, node);
+		if (get_file(instr, help, node))
 			break ;
-		}
-		else if (ft_isquote(instr[help->x]))
-		{
-			get_suffix_quote(instr, help, node);
-			break ;
-		}
 	}
 }
 

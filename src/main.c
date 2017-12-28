@@ -42,7 +42,7 @@ static bool check_quit(t_shell *shell, char *cmds)
 	return (false);
 }
 
-static int		pre_processor(t_helper *assist, t_shell *shell)
+static int	pre_processor(t_helper *assist, t_shell *shell)
 {
 	free(assist->prompt);
 	if (check_quit(shell, assist->cmds))
