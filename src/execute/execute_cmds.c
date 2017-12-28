@@ -42,7 +42,7 @@ bool	check_reg_file(mode_t st_mode)
 	return (true);
 }
 
-char	*try_pwdd(char *binary)
+char	*check_pwd(char *binary)
 {
 	char		cwd_path[MAX_PATH_BIN_SIZE];
 	char		*ptr;
@@ -129,7 +129,7 @@ char	*build_bin_path(char *path, char *binary)
 	struct stat sb;
 
 	start = path;
-	while ((end = ft_strchr(start, ':')) != NULL)
+	while (start && ((end = ft_strchr(start, ':')) != NULL))
 	{
 		ft_bzero((void*)buff, MAX_PATH_BIN_SIZE);
 		ft_strncpy(buff, start, end - start);
@@ -145,7 +145,7 @@ char	*build_bin_path(char *path, char *binary)
 		}
 		start = end + 1;
 	}
-	if ((end = try_pwdd(binary)))
+	if ((end = check_pwd(binary)))
 		return (end);
 	return (NULL);
 }
@@ -346,20 +346,16 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 		}
 	}
 	restore_io(shell);
-	ft_printf("After execution\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 	{
-		ft_printf("Found left branching node\n");
 		execute_specific_ast_cmds(shell, node->left, path);
 	}
 	else if (node->left && node->type && node->type[0] == '|' && node->type[1] == '|' && node->ret > 0)
 	{
-		ft_printf("Found left branching node\n");
 		execute_specific_ast_cmds(shell, node->left, path);
 	}
 	if (node->right)
 	{
-		ft_printf("Found right branching node\n");
 		execute_specific_ast_cmds(shell, node->right, path);
 	}
 	restore_io(shell);
