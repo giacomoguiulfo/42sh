@@ -48,10 +48,13 @@ void	new_quote_prompt(t_keychain *master, char *prompt)
 	char	*new_instr;
 	char	buff[4096];
 
+	ft_putchar('\n');
 	new_instr = readline(prompt);
 	if (!new_instr)
 		return ;
 	ft_bzero((void*)buff, 4096);
+	//ft_printf("~~~%s\n", new_instr);
+	//ft_printf("```%s\n", master->data->line_buff);
 	ft_strcpy(buff, master->data->line_buff);
 	ft_strcat(buff, new_instr);
 	ft_strcpy(master->data->line_buff, buff);
@@ -66,7 +69,6 @@ void	enter_key(struct s_keychain *master)
 		while (master->data->line_buff[master->data->line_size - 1] == '\\')
 		{
 			master->data->line_buff[master->data->line_size - 1] = '\n';
-			ft_putchar('\n');
 			new_quote_prompt(master, "> ");
 		}
 	}

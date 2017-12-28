@@ -16,7 +16,7 @@
 
 static void	clear_line(t_input *data)
 {
-	size_t row;
+	int row;
 
 	row = data->cursor_row;
 	while (row-- > 0)
@@ -24,21 +24,63 @@ static void	clear_line(t_input *data)
 	tputs(tgetstr("cr", NULL), 1, ft_putchar);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }
+/*
+void		gather_this_data(t_input *data)
+{
+	data->end_col = (data->prompt_size + data->line_size) % data->width;
+	data->end_row = (data->prompt_size + data->line_size) / data->width;
+	data->cursor_row = (data->prompt_size + data->cursor_pos) / data->width;
+	data->cursor_col = (data->prompt_size + data->cursor_pos) % data->width;
+}
+*/
+//fix this from messing up multiple line edits
+
+static int	ft_special_len(char *str, int width, int prompt_len)
+{
+	int x;
+	int special;
+	//int holderrow;
+	int holdercol;
+
+	x = -1;
+	special = 0;
+	while (str[++x])
+	{
+		if (str[x] == '\n')
+		{
+			holdercol = (x + prompt_len) % width;
+			//holderrow = (x + prompt_len) / width;
+			//ft_printf("row: %d, col: %d\n\n", holderrow, holdercol);
+			special += holdercol;
+			//special += (holderrow * width);
+		}
+		else
+			special++;
+	}
+	return (special);
+}
 
 static void	print(t_input *data, t_cmds *history)
 {
 	int x;
+	int special;
 
-	//ft_bzero(data->line_buff, data->line_size);
-	ft_strcpy(data->line_buff, history->current->cmd);
 	ft_putstr(history->current->cmd);
-	data->line_size = ft_strlen(history->current->cmd);
-	data->cursor_pos = data->line_size;
-	gather_position_data(data);
+	ft_strcpy(data->line_buff, history->current->cmd);
+	special = ft_special_len(history->current->cmd, data->prompt_size, data->width);
+	//ft_printf("special len: %d\n", special);
+	data->cursor_pos = ft_strlen(history->current->cmd);
+	data->line_size = data->cursor_pos;
+	data->end_col = (special) % data->width;
+	data->end_row = (special) / data->width;
+	data->cursor_col = (data->prompt_size + special) % data->width;
+	//data->cursor_row = (data->prompt_size + special) / data->width;
 	if (data->end_col == 0)
 		print_end_col_pad(data->cursor_col);
+	tputs(tgoto(tgetstr("ch", NULL), 0, data->cursor_col), 1, ft_putchar);
 	x = data->end_row - data->cursor_row;
-	while (x-- > 0)
+	//ft_printf("x up: %d\n", x);
+	while (--x > 0)
 		tputs(tgetstr("up", NULL), 1, ft_putchar);
 }
 

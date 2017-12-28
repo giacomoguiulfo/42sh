@@ -33,34 +33,53 @@ static bool check_quit(t_shell *shell, char *cmds)
 	return (false);
 }
 
+static int		pre_processor(t_helper *assist, t_shell *shell)
+{
+	free(assist->prompt);
+	if (check_quit(shell, assist->cmds))
+		return (-1);
+	else if (!assist->cmds)
+		return (0);
+	history_add(assist->cmds);
+	return (1);
+}
+
+static int	processor(t_helper *assist)
+{
+	if ((assist->tokenized = lexer(&assist->cmds)))
+	{
+		assist->palm = parser(assist->tokenized);
+		if (!assist->palm)
+			return (0);
+		execute_ast_cmds(assist->palm);
+	}
+	free(assist->cmds);
+	return (1);
+}
+
+typedef struct	s_helper
+{
+	char		*cmds;
+	char		*prompt;
+	int			x;
+	t_tokelist	*tokenized;
+	t_astree	*palm;	
+}				t_helper;
+
 static int	sh_instruction(t_shell *shell)
 {
-	char			*cmds;
-	char			*prompt;
-	t_tokelist		*tokenized;
-	t_astree		*palm;
+	t_helper	assist;
 
-	palm = NULL;
 	while (42)
 	{
-		prompt = msh_put_arrow();
-		cmds = readline(prompt);
-		free(prompt);
-		if (check_quit(shell, cmds))
-			break ;
-		else if (!cmds)
+		assist.prompt = msh_put_arrow();
+		assist.cmds = readline(assist.prompt);
+		if ((assist.x = pre_processor(&assist, shell)) == -1)
+			break;
+		else if (assist.x == 0)
 			continue ;
-		history_add(cmds);
-		tokenized = lexer(&cmds);
-		if (tokenized)
-		{
-			palm = parser(tokenized);
-			if (!palm)
-				continue;
-			execute_ast_cmds(palm);
-		}
-		ft_heap_clear();
-		free(cmds);
+		if (!(assist.x = processor(&assist)))
+			continue ;
 		break ;
 	}
 	return (0);
@@ -78,8 +97,10 @@ int			main(int ac, char **av)
 	while (42)
 	{
 		sh_instruction(shell);
+		ft_heap_clear();
 		if (shell->quit == true)
 			break ;
+		ft_putstr("hi\n");
 	}
 	builtin_exit();
 	return (0);
