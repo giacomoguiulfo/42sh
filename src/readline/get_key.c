@@ -43,10 +43,9 @@ void	move_key(struct s_keychain *master)
 	}
 }
 
-void	new_quote_prompt(t_keychain *master, char *instr, char *prompt)
+void	new_quote_prompt(t_keychain *master, char *prompt)
 {
 	char	*new_instr;
-	char	*tmp;
 	char	buff[4096];
 
 	new_instr = readline(prompt);
@@ -57,24 +56,18 @@ void	new_quote_prompt(t_keychain *master, char *instr, char *prompt)
 	ft_strcat(buff, new_instr);
 	ft_strcpy(master->data->line_buff, buff);
 	master->data->line_size += ft_strlen(new_instr);
-	ft_asprintf(&tmp, "%s%s", instr, new_instr);
 	free(new_instr);
-	instr = ft_strdup(tmp);
-	free(tmp);
 }
 
 void	enter_key(struct s_keychain *master)
 {
-	char *ptr;
-
 	if (master->data->line_buff[master->data->line_size - 1] == '\\')
 	{
 		while (master->data->line_buff[master->data->line_size - 1] == '\\')
 		{
 			master->data->line_buff[master->data->line_size - 1] = '\n';
-			ptr = master->data->line_buff;
 			ft_putchar('\n');
-			new_quote_prompt(master, ptr, "> ");
+			new_quote_prompt(master, "> ");
 		}
 	}
 	master->data->continue_loop = false;

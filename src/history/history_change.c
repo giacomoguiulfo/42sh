@@ -27,7 +27,9 @@ static void	clear_line(t_input *data)
 
 static void	print(t_input *data, t_cmds *history)
 {
-	ft_bzero(data->line_buff, data->line_size);
+	int x;
+
+	//ft_bzero(data->line_buff, data->line_size);
 	ft_strcpy(data->line_buff, history->current->cmd);
 	ft_putstr(history->current->cmd);
 	data->line_size = ft_strlen(history->current->cmd);
@@ -35,6 +37,9 @@ static void	print(t_input *data, t_cmds *history)
 	gather_position_data(data);
 	if (data->end_col == 0)
 		print_end_col_pad(data->cursor_col);
+	x = data->end_row - data->cursor_row;
+	while (x-- > 0)
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
 }
 
 static bool	get_history(t_cmds *history, bool direction)
