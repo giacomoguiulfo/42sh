@@ -43,8 +43,40 @@ void	move_key(struct s_keychain *master)
 	}
 }
 
+void	new_quote_prompt(t_keychain *master, char *instr, char *prompt)
+{
+	char	*new_instr;
+	char	*tmp;
+	char	buff[4096];
+
+	new_instr = readline(prompt);
+	if (!new_instr)
+		return ;
+	ft_bzero((void*)buff, 4096);
+	ft_strcpy(buff, master->data->line_buff);
+	ft_strcat(buff, new_instr);
+	ft_strcpy(master->data->line_buff, buff);
+	master->data->line_size += ft_strlen(new_instr);
+	ft_asprintf(&tmp, "%s%s", instr, new_instr);
+	free(new_instr);
+	instr = ft_strdup(tmp);
+	free(tmp);
+}
+
 void	enter_key(struct s_keychain *master)
 {
+	char *ptr;
+
+	if (master->data->line_buff[master->data->line_size - 1] == '\\')
+	{
+		while (master->data->line_buff[master->data->line_size - 1] == '\\')
+		{
+			master->data->line_buff[master->data->line_size - 1] = '\n';
+			ptr = master->data->line_buff;
+			ft_putchar('\n');
+			new_quote_prompt(master, ptr, "> ");
+		}
+	}
 	master->data->continue_loop = false;
 	return ;
 }
