@@ -16,6 +16,5 @@
 int	builtin_env(void)
 {
 	ft_sstrputs(sh_singleton()->env);
-	// TODO: Run a program in a modified environment
 	return (0);
 }

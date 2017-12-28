@@ -37,29 +37,29 @@ void		build_argv(t_tokelist *start, t_asttoken *build)
 		add_astarg(build, start);
 }
 
-t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **build, int count)
+t_asttoken	**get_toke(t_tokelist *s, t_tokelist *e, t_asttoken **b, int c)
 {
-	if (!build)
-		build = add_asttoken(build);
-	while (start && start != end)
+	if (!b)
+		b = add_asttoken(b);
+	while (s && s != e)
 	{
-		if (!build[count])
-			build = add_asttoken(build);
-		if (ft_isword(start->type[0]))
-			build_argv(start, build[count]);
-		else if (ft_isredirection(start->type[0]))
-			add_redir(build[count], start);
-		else if (ft_iscompletechain(start->type))
-			add_chain(build[count], start);
-		start = start->next;
+		if (!b[c])
+			b = add_asttoken(b);
+		if (ft_isword(s->type[0]))
+			build_argv(s, b[c]);
+		else if (ft_isredirection(s->type[0]))
+			add_redir(b[c], s);
+		else if (ft_iscompletechain(s->type))
+			add_chain(b[c], s);
+		s = s->next;
 	}
-	if (start && start == end)
+	if (s && s == e)
 	{
-		if (!build[count])
-			build = add_asttoken(build);
-		add_chain(build[count], start);
+		if (!b[c])
+			b = add_asttoken(b);
+		add_chain(b[c], s);
 	}
-	return (build);
+	return (b);
 }
 
 t_asttoken	**synthesize_tokens(t_tokelist *tokens)
@@ -78,7 +78,7 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 		if (ft_iscompletechain(end->type))
 		{
 			count++;
-			build = get_token_info(start, end, build, count);
+			build = get_toke(start, end, build, count);
 			start = end->next;
 		}
 		end = end->next;
@@ -86,7 +86,7 @@ t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 	if (start)
 	{
 		count++;
-		build = get_token_info(start, end, build, count);
+		build = get_toke(start, end, build, count);
 	}
 	return (build);
 }

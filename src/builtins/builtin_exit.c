@@ -10,15 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include "../../includes/readline.h"
 #include "../../includes/ft_sh.h"
 #include "../../includes/history.h"
+#include "../../includes/readline.h"
+#include <unistd.h>
+#include <stdlib.h>
 
-void	history_cleanup(t_cmds *history);
-
-static void	terminal_reset()
+static void	terminal_reset(void)
 {
 	struct termios term;
 
@@ -27,7 +25,7 @@ static void	terminal_reset()
 	tcsetattr(0, TCSADRAIN, &term);
 }
 
-int builtin_exit()
+int			builtin_exit(void)
 {
 	t_shell *shell;
 	int		x;

@@ -14,6 +14,14 @@
 #include "ft_sh.h"
 #include "libft.h"
 
+t_test		g_dispatch[] = {
+	{0, &tokenize_words},
+	{1, &tokenize_quotes},
+	{2, &tokenize_redirs},
+	{3, &tokenize_chain},
+	{4, NULL}
+};
+
 t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 {
 	t_tokelist *head;
@@ -28,7 +36,7 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	return (head);
 }
 
-int		check_type(char *instructions, t_toke *help)
+static int	check_type(char *instructions, t_toke *help)
 {
 	int type;
 
@@ -44,23 +52,9 @@ int		check_type(char *instructions, t_toke *help)
 	return (type);
 }
 
-typedef	struct 	s_test
-{
-	int			type;
-	void		(*tokenizer)(char *, t_toke *, t_tokelist *);
-}				t_test;
-
-t_test 		g_dispatch[] = {
-	{0, &tokenize_words},
-	{1, &tokenize_quotes},
-	{2, &tokenize_redirections},
-	{3, &tokenize_chain},
-	{4, NULL}
-};
-
 t_tokelist	*tokenize(char *instructions)
 {
-	t_toke 		help;
+	t_toke		help;
 	t_tokelist	*head;
 
 	head = NULL;

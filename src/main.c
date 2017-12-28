@@ -29,8 +29,6 @@ typedef struct	s_helper
 	t_astree	*palm;	
 }				t_helper;
 
-void	history_add();
-
 static bool check_quit(t_shell *shell, char *cmds)
 {
 	if (shell->quit == true)

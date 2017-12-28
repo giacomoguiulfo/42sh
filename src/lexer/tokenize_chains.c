@@ -32,7 +32,7 @@ static void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
 		node->type[0] = ';';
 }
 
-void	tokenize_chain(char *instr, t_toke *help, t_tokelist *head)
+void		tokenize_chain(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 

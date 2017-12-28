@@ -25,7 +25,7 @@ static void	init(t_tokelist *node)
 	node->redir_suffix_file = NULL;
 }
 
-t_tokelist 	*add_toke(t_tokelist *head)
+t_tokelist	*add_toke(t_tokelist *head)
 {
 	t_tokelist *tmp;
 

@@ -70,7 +70,7 @@ t_astree	*make_tree(t_asttoken **raw)
 		if (raw[x]->chain && raw[x]->chain->type[0] == '&' &&
 				raw[x]->chain->type[1] == '&')
 			tmp = make_left_branch(tmp);
-		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' && 
+		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' &&
 				raw[x]->chain->type[1] == '|')
 			tmp = make_left_branch(tmp);
 		else if (raw[x]->chain && raw[x]->chain->type[0] == '|')

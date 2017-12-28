@@ -31,34 +31,36 @@ typedef struct			s_toke
 	int					x;
 }						t_toke;
 
-//tokenize
-t_tokelist		*tokenize(char	*instructions);
+typedef	struct			s_test
+{
+	int					type;
+	void				(*tokenizer)(char *, t_toke *, t_tokelist *);
+}						t_test;
 
-void			tokenize_chain(char *instr, t_toke *help, t_tokelist *head);
-void			tokenize_redirections(char *instr, t_toke *help, t_tokelist *head);
-void			tokenize_words(char *instr, t_toke *help, t_tokelist *head);
-void			tokenize_quotes(char *instr, t_toke *help, t_tokelist *head);
+t_tokelist				*tokenize(char	*instructions);
 
-//helpers
-bool			ft_isredirection(char c);
-int				ft_iscompletechain(char *str);
-int				ft_isdepchain(char *c);
-int				ft_isfilename(char c);
+void					tokenize_chain(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_redirs(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_words(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_quotes(char *ins, t_toke *help, t_tokelist *h);
 
-//utils
-t_tokelist 		*add_toke(t_tokelist *head);
-t_tokelist 		*start_toking(void);
+bool					ft_isredirection(char c);
+int						ft_iscompletechain(char *str);
+int						ft_isdepchain(char *c);
+int						ft_isfilename(char c);
 
-//validate
-bool			validate_quotes(char *inst);
-int				validate_chains(char *inst);
+t_tokelist				*add_toke(t_tokelist *head);
+t_tokelist				*start_toking(void);
 
-//helpers
-bool			get_close_chain(char *inst, int index);
-bool			try_pwd(char *binary);
-int				ft_ischain(char *c);
-int				ft_isquote(char c);
-void			skip_quote(char *inst, int *x, char quote_type);
-void			quote_prompt(char **instr, char *prompt);
+bool					validate_quotes(char *inst);
+int						validate_chains(char *inst);
+
+bool					get_close_chain(char *inst, int index);
+bool					get_file(char *instr, t_toke *help, t_tokelist *node);
+bool					try_pwd(char *binary);
+int						ft_ischain(char *c);
+int						ft_isquote(char c);
+void					skip_quote(char *inst, int *x, char quote_type);
+void					quote_prompt(char **instr, char *prompt);
 
 #endif

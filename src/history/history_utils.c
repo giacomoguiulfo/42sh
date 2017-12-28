@@ -28,6 +28,7 @@ void	history_cleanup(t_cmds *head)
 {
 	t_cmds *tmp;
 	t_cmds *prev;
+
 	if (head->cmd)
 		free(head->cmd);
 	tmp = head->next;

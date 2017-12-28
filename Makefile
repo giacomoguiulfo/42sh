@@ -36,7 +36,6 @@ endif
 SRC_BASE :=\
 main\
 utils\
-exec\
 builtins/builtin_cd\
 builtins/builtin_echo\
 builtins/builtin_env\
@@ -52,6 +51,7 @@ lexer/tokenize\
 lexer/tokenize_chains\
 lexer/tokenize_quotes\
 lexer/tokenize_redirections\
+lexer/tokenize_redirections_utils\
 lexer/tokenize_toke_list\
 lexer/tokenize_utils\
 lexer/tokenize_words\
@@ -66,6 +66,8 @@ parser/parser_vectors\
 parser/parser_synthesizer\
 parser/parser_synthesizer_utils\
 readline/readline\
+readline/key_filters_core\
+readline/key_filters_logistics\
 readline/move_basic\
 readline/move_extended\
 readline/copy_cut_paste\

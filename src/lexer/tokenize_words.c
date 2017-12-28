@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                          :+:      :+:    :+:   */
+/*   tokenize_words.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -34,7 +34,7 @@ void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 	if (instr[help->x] == '&' || ft_isdigit(instr[help->x]))
 	{
 		if (check_redirs(instr, help))
-			tokenize_redirections(instr, help, head);
+			tokenize_redirs(instr, help, head);
 		return ;
 	}
 	if (!head->type[0])

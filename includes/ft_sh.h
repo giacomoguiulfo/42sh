@@ -41,7 +41,7 @@ typedef struct			s_cmds
 	struct s_cmds		*prev;
 }						t_cmds;
 
-typedef struct  		s_shell
+typedef struct			s_shell
 {
 	bool				quit;
 	char				*path;
@@ -68,15 +68,14 @@ typedef struct			s_tokelist
 	void				*content;
 }						t_tokelist;
 
-int     	sh_init();
-void		sh_init_termios();
-t_shell 	*sh_singleton();
-void		sh_shutdown();
-char		*readline(char *prompt);
-t_tokelist	*lexer(char **cmds);
-char		*msh_put_arrow(void);
-char		**msh_strsplit(char *line);
-
-t_astree	*parser(t_tokelist *abstract);
+int						sh_init();
+void					sh_init_termios();
+t_shell					*sh_singleton();
+void					sh_shutdown();
+char					*readline(char *prompt);
+t_tokelist				*lexer(char **cmds);
+t_astree				*parser(t_tokelist *abstract);
+char					*msh_put_arrow(void);
+char					**msh_strsplit(char *line);
 
 #endif

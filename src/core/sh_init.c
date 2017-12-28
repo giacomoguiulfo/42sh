@@ -17,7 +17,7 @@
 
 void		history_constructor(t_shell *shell, t_cmds *history);
 
-static char		*get_path(t_shell *shell)
+static char	*get_path(t_shell *shell)
 {
 	char	*path;
 	int		x;
@@ -47,7 +47,7 @@ void		sh_init_termios(void)
 	tcsetattr(STDIN, TCSANOW, &term);
 }
 
-static void init_shlvl(char **env)
+static void	init_shlvl(char **env)
 {
 	char	*shlvl;
 	char	*newlvl;
@@ -61,7 +61,7 @@ static void init_shlvl(char **env)
 int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 {
 	extern char **environ;
-	int         ret;
+	int			ret;
 
 	shell->quit = false;
 	shell->argc = ac;
@@ -82,7 +82,7 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	return (0);
 }
 
-int 		sh_init(int ac, char **av, t_cmds *history)
+int			sh_init(int ac, char **av, t_cmds *history)
 {
 	t_shell *shell;
 

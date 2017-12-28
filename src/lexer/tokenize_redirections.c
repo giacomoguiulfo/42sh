@@ -34,32 +34,6 @@ static void	get_prefix(char *instr, t_toke *help, t_tokelist *node)
 	}
 }
 
-static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
-{
-	int len;
-
-	len = 0;
-	node->redir_suffix_file = instr + help->x;
-	while (ft_isfilename(instr[len + help->x]) && instr[help->x + 1])
-		len++;
-	node->redir_suffix_file = ft_hstrndup(instr + help->x, len);
-	help->x += len - 1;
-}
-
-static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
-{
-	int		len;
-	char	quote;
-
-	len = 0;
-	quote = instr[help->x];
-	node->redir_suffix_file = instr + help->x + 1;
-	quote = instr[help->x];
-	while (instr[help->x + len] != quote)
-		len++;
-	node->redir_suffix_file = ft_hstrndup(instr + help->x + 1, len);
-}
-
 static void	get_fd(char *instr, t_toke *help, t_tokelist *node)
 {
 	if (ft_isdigit(instr[help->x + 2]))
@@ -74,21 +48,6 @@ static void	get_fd(char *instr, t_toke *help, t_tokelist *node)
 		node->redir_turn_off = true;
 		help->x += 2;
 	}
-}
-
-static bool get_file(char *instr, t_toke *help, t_tokelist *node)
-{
-	if (ft_isfilename(instr[help->x]))
-	{
-		get_suffix_word(instr, help, node);
-		return (true);
-	}
-	else if (ft_isquote(instr[help->x]))
-	{
-		get_suffix_quote(instr, help, node);
-		return (true);
-	}
-	return (false);
 }
 
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
@@ -106,7 +65,7 @@ static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 	}
 }
 
-void	tokenize_redirections(char *instr, t_toke *help, t_tokelist *head)
+void		tokenize_redirs(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 

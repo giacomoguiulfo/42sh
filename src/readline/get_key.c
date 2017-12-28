@@ -11,37 +11,22 @@
 /* ************************************************************************** */
 
 #include "readline.h"
+#include "history.h"
 
-void	history_change(t_input *data, t_cmds *history, bool opt);
-
-void	opt_move_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		return ;
-	if (master->data->char_buff[3] == 'D') //left
-		move_word(master->data, false);
-	else if (master->data->char_buff[3] == 'C') //right
-		move_word(master->data, true);
-	else if (master->data->char_buff[3] == 'B') //down
-		move_row(master->data, false);
-	else if (master->data->char_buff[3] == 'A') //up
-		move_row(master->data, true);
-}
-
-void	move_key(struct s_keychain *master)
-{
-	if (master->data->char_buff[2] == KEY_LEFT)
-		move_left(master->data);
-	else if (master->data->char_buff[2] == KEY_RIGHT)
-		move_right(master->data);
-	if (master->data->clipboard.copy_on == false)
-	{
-		if (master->data->char_buff[2] == KEY_UP)
-			history_change(master->data, master->history, true);
-		else if (master->data->char_buff[2] == KEY_DOWN)
-			history_change(master->data, master->history, false);
-	}
-}
+t_key		g_key[] = {
+	{"print", 0, &print_key},
+	{"enter", KEY_ENTER, &enter_key},
+	{"opt-move", '[', &opt_move_key},
+	{"move left", KEY_LEFT, &move_key},
+	{"move right", KEY_RIGHT, &move_key},
+	{"move up", KEY_UP, &move_key},
+	{"move down", KEY_DOWN, &move_key},
+	{"move home", KEY_HOME, &home_key},
+	{"move end", KEY_END, &end_key},
+	{"delete", KEY_DELETE, &delete_key},
+	{"edit text", 0, &edit_key},
+	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key}
+};
 
 void	new_quote_prompt(t_keychain *master, char *prompt)
 {
@@ -53,8 +38,6 @@ void	new_quote_prompt(t_keychain *master, char *prompt)
 	if (!new_instr)
 		return ;
 	ft_bzero((void*)buff, 4096);
-	//ft_printf("~~~%s\n", new_instr);
-	//ft_printf("```%s\n", master->data->line_buff);
 	ft_strcpy(buff, master->data->line_buff);
 	ft_strcat(buff, new_instr);
 	ft_strcpy(master->data->line_buff, buff);
@@ -76,104 +59,34 @@ void	enter_key(struct s_keychain *master)
 	return ;
 }
 
-void	print_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		return ;
-	insert(master->data);
-	return ;
-}
-
-void	home_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		return ;
-	move_home(master->data);
-}
-
-void	end_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		return ;
-	move_end(master->data);
-}
-
-void	delete_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		return ;
-	else if (master->data->cursor_pos == 0)
-		return ;
-	trim(master->data);
-}
-
-void	edit_key(struct s_keychain *master)
-{
-	if (master->data->char_buff[0] == -30 && master->data->char_buff[1] == -119) //x
-		copy_cut_paste(master->data, &master->data->clipboard, 1);
-	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -102) //v
-		copy_cut_paste(master->data, &master->data->clipboard, 3);
-	else if (master->data->char_buff[0] == -61 && master->data->char_buff[1] == -89) //c
-		copy_cut_paste(master->data, &master->data->clipboard, 0);
-	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -85) //b
-		copy_cut_paste(master->data, &master->data->clipboard, 2);
-}
-
-void	ctrl_c_key(struct s_keychain *master)
-{
-	if (master->data->clipboard.copy_on == true)
-		start_stop_highlight(master->data, &master->data->clipboard);
-	ft_bzero((void*)master->data->line_buff, LINE_BUFF_SIZE);
-	ft_putchar('\n');
-	ft_putstr(master->data->prompt);
-	master->data->cursor_pos = 0;
-	master->data->line_size = 0;
-	master->data->clipboard.copy_on = false;
-}
-
-t_key		g_key[] = {
-	{"print", 0, &print_key},
-	{"enter", KEY_ENTER, &enter_key},
-	{"opt-move", '[', &opt_move_key},
-	{"move left", KEY_LEFT, &move_key},
-	{"move right", KEY_RIGHT, &move_key},
-	{"move up", KEY_UP, &move_key},
-	{"move down", KEY_DOWN, &move_key},
-	{"move home", KEY_HOME, &home_key},
-	{"move end", KEY_END, &end_key},
-	{"delete", KEY_DELETE, &delete_key},
-	{"edit text", 0, &edit_key},
-	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key}
-};
-
 void	get_key(t_input *data, t_keychain *find)
 {
 	find->data = data;
 	find->history = (sh_singleton())->history;
 	find->found_key = true;
-	if (ft_isprint(data->char_buff[0])) // regular chars
+	if (ft_isprint(data->char_buff[0]))
 		find->this = &g_key[0];
-	else if (data->char_buff[0] == KEY_DELETE) // delete
+	else if (data->char_buff[0] == KEY_DELETE)
 		find->this = &g_key[9];
-	else if (data->char_buff[2] == g_key[3].id) //move left
+	else if (data->char_buff[2] == g_key[3].id)
 		find->this = &g_key[3];
-	else if (data->char_buff[2] == g_key[4].id) //move right
+	else if (data->char_buff[2] == g_key[4].id)
 		find->this = &g_key[4];
-	else if (data->char_buff[2] == g_key[2].id) //opt-move
+	else if (data->char_buff[2] == g_key[2].id)
 		find->this = &g_key[2];
-	else if (data->char_buff[2] == g_key[5].id) //move up
+	else if (data->char_buff[2] == g_key[5].id)
 		find->this = &g_key[5];
-	else if (data->char_buff[2] == g_key[6].id) //move down
+	else if (data->char_buff[2] == g_key[6].id)
 		find->this = &g_key[6];
-	else if (data->char_buff[0] == g_key[1].id) //enter key
+	else if (data->char_buff[0] == g_key[1].id)
 		find->this = &g_key[1];
-	else if (data->char_buff[2] == g_key[7].id) //home key
+	else if (data->char_buff[2] == g_key[7].id)
 		find->this = &g_key[7];
-	else if (data->char_buff[2] == g_key[8].id) //end key
+	else if (data->char_buff[2] == g_key[8].id)
 		find->this = &g_key[8];
-	else if (data->char_buff[0] < 0) //edit keys
+	else if (data->char_buff[0] < 0)
 		find->this = &g_key[10];
-	else if (data->char_buff[0] == g_key[11].id) //ctrl-c key
+	else if (data->char_buff[0] == g_key[11].id)
 		find->this = &g_key[11];
 	else
 	{

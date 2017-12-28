@@ -13,23 +13,6 @@
 #include "readline.h"
 #include <termios.h>
 
-static void	clear_highlights(t_input *data, bool opt)
-{
-	size_t row;
-	size_t col;
-
-	row = data->cursor_row;
-	col = data->prompt_size % data->width;
-	tputs(tgetstr("sc", NULL), 1, ft_putchar);
-	while (row-- > 0)
-		tputs(tgetstr("up", NULL), 1, ft_putchar);
-	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_putchar);
-	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	ft_putstr(data->line_buff);
-	if (opt == true)
-		tputs(tgetstr("rc", NULL), 1, ft_putchar);
-}
-
 void start_stop_highlight(t_input *data, t_text *clipboard)
 {
 	if (clipboard->copy_on == false)

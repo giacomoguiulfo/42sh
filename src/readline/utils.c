@@ -28,13 +28,13 @@ static void	get_cursor_pos(t_input *data)
 	data->end_col = (data->line_size + data->prompt_size) % data->width;
 }
 
-void	get_terminal_meta(t_input *data)
+void		get_terminal_meta(t_input *data)
 {
 	get_window_size(data);
 	get_cursor_pos(data);
 }
 
-bool	str_protection(t_input *data, size_t first, size_t second)
+bool		str_protection(t_input *data, size_t first, size_t second)
 {
 	size_t overflow;
 
@@ -47,4 +47,21 @@ bool	str_protection(t_input *data, size_t first, size_t second)
 		return (false);
 	}
 	return (true);
+}
+
+void clear_highlights(t_input *data, bool opt)
+{
+	size_t row;
+	size_t col;
+
+	row = data->cursor_row;
+	col = data->prompt_size % data->width;
+	tputs(tgetstr("sc", NULL), 1, ft_putchar);
+	while (row-- > 0)
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("ch", NULL), 0, col), 1, ft_putchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	ft_putstr(data->line_buff);
+	if (opt == true)
+		tputs(tgetstr("rc", NULL), 1, ft_putchar);
 }

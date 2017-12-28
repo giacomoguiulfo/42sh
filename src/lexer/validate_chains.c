@@ -36,8 +36,8 @@ bool	manage_chain(char *inst, int *x)
 
 void	check_quotes(char *inst, int *x, int *state)
 {
-		*state = 1;
-		skip_quote(inst, x, inst[*x]);
+	*state = 1;
+	skip_quote(inst, x, inst[*x]);
 }
 
 void	check_chain(char *inst, int *x, int *state)

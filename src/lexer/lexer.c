@@ -16,9 +16,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-void	history_add(char *cmd);
-
-int		validate_quotes_chains(char **instr)
+int			validate_quotes_chains(char **instr)
 {
 	int valid;
 
@@ -38,7 +36,7 @@ int		validate_quotes_chains(char **instr)
 
 bool		validate(char **instr)
 {
-	int		valid;
+	int	valid;
 
 	valid = 0;
 	while (!valid)
@@ -49,7 +47,7 @@ bool		validate(char **instr)
 	}
 	return (true);
 }
-			
+
 t_tokelist	*lexer(char **instr)
 {
 	t_tokelist *tokenized;

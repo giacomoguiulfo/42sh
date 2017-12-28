@@ -13,6 +13,7 @@
 #define _BSD_SOURCE
 
 #include "execute.h"
+#include "builtins.h"
 #include "ft_sh.h"
 #include "lexer.h"
 #include "parser.h"
@@ -342,7 +343,7 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 	{
 		if (acheck_builtin(node->this->binary))
 		{
-			node->ret = msh_run_builtins(node->this);
+			node->ret = msh_run_builtin(node->this, shell->env);
 		}
 		else
 		{

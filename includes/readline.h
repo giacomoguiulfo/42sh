@@ -40,7 +40,7 @@ typedef struct			s_text
 	bool				copied;
 	char				temp_buff[LINE_BUFF_SIZE];
 	size_t				start;
-	size_t				end;	
+	size_t				end;
 }						t_text;
 
 typedef struct			s_input
@@ -79,29 +79,35 @@ typedef struct			s_key
 	void				(*action)(t_keychain *);
 }						t_key;
 
-char	*readline(char *prompt);
-void	copy_cut_paste(t_input *data, t_text *clipboard, int mode);
-void	get_key(t_input *data, t_keychain *find);
-void	insert(t_input *data);
-void	trim(t_input *data);
+char					*readline(char *prompt);
+void					copy_cut_paste(t_input *data, t_text *clip, int mode);
+void					get_key(t_input *data, t_keychain *find);
+void					insert(t_input *data);
+void					trim(t_input *data);
 
-void	move_end(t_input *data);
-void	move_home(t_input *data);
-void	move_left(t_input *data);
-void	move_right(t_input *data);
-void	move_row(t_input *data, bool direction);
-void	move_word(t_input *data, bool direction);
+void					move_end(t_input *data);
+void					move_home(t_input *data);
+void					move_left(t_input *data);
+void					move_right(t_input *data);
+void					move_row(t_input *data, bool direction);
+void					move_word(t_input *data, bool direction);
 
-bool	str_protection(t_input *data, size_t first, size_t second);
-void	clear_insert(t_input *data);
-void	gather_position_data(t_input *data);
-void	get_terminal_meta(t_input *data);
-void	print_end_col_pad(size_t cursor_col);
-void 	start_stop_highlight(t_input *data, t_text *clipboard);
+bool					str_protection(t_input *d, size_t f, size_t s);
+void					clear_insert(t_input *data);
+void 					clear_highlights(t_input *data, bool opt);
+void					gather_position_data(t_input *data);
+void					get_terminal_meta(t_input *data);
+void					print_end_col_pad(size_t cursor_col);
+void					start_stop_highlight(t_input *data, t_text *clipboard);
 
-void	enter_key(struct s_keychain *master);
-void	print_key(struct s_keychain *master);
-void	opt_move_key(struct s_keychain *master);
-void	move_key(struct s_keychain *master);
+void					ctrl_c_key(struct s_keychain *master);
+void					delete_key(struct s_keychain *master);
+void					edit_key(struct s_keychain *master);
+void					end_key(struct s_keychain *master);
+void					enter_key(struct s_keychain *master);
+void					home_key(struct s_keychain *master);
+void					move_key(struct s_keychain *master);
+void					opt_move_key(struct s_keychain *master);
+void					print_key(struct s_keychain *master);
 
 #endif
