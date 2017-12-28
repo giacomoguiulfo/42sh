@@ -37,9 +37,11 @@ bool	check_access(char *binary, char *path)
 
 bool	check_reg_file(mode_t st_mode)
 {
-	if (!S_ISREG(st_mode))
-		return (false);
-	return (true);
+	if (S_ISLNK(st_mode))
+		return (true);
+	if (S_ISREG(st_mode))
+		return (true);
+	return (false);
 }
 
 char	*check_pwd(char *binary)
@@ -102,6 +104,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
  	pid_t	pid;
  	int		status;
 
+ 	ft_printf("Executable: %s\n", executable);
  	pid = fork();
  	if (pid == 0)
 	{
@@ -138,9 +141,13 @@ char	*build_bin_path(char *path, char *binary)
 		if ((lstat(buff, &sb)) != -1)
 		{
 			if (!check_access(binary, buff))
+			{
 				return (NULL);
+			}
 			else if (!check_reg_file(sb.st_mode))
+			{
 				return (NULL);
+			}
 			return (ft_hstrdup(buff));
 		}
 		start = end + 1;
@@ -231,6 +238,8 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 {
 	int x;
 
+	if (!redirs)
+		return ;
 	x = -1;
 	while (redirs[++x])
 	{
@@ -328,8 +337,7 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	this_path = NULL;
-	if (node->this->redirs && node->this->redirs[0])
-		setup_io(shell, node->this->redirs);
+	setup_io(shell, node->this->redirs);
 	check_pipes(node);
 	if (node->this->binary)
 	{
