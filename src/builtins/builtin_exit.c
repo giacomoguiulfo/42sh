@@ -47,5 +47,6 @@ int builtin_exit()
 	free(shell);
 	terminal_reset();
 	exit(EXIT_SUCCESS);
+	ft_printf("Goodbye :]\n");
 	return (0);
 }

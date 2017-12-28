@@ -52,7 +52,7 @@ t_asttoken	**add_asttoken(t_asttoken **array)
 	if (!array)
 	{
 		size = 0;
-		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1));
+		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
 	}
 	else
 	{
