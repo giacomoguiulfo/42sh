@@ -75,6 +75,31 @@ t_asttoken	**add_asttoken(t_asttoken **array)
 	return (new);
 }
 
+bool		ft_isword(char c)
+{
+	if (c == 'w')
+	{
+		ft_printf("w type\n");
+		return (true);
+	}
+	else if (ft_isquote(c))
+	{
+		ft_printf("quote type\n");
+		return (true);
+	}
+	return (false);
+}
+
+void		build_argv(t_tokelist *start, t_asttoken *build)
+{
+	if (start->type[0] == 'w' && !build->binary)
+		add_binary(build, start);
+	else if (start->type[0] == 'w')
+		add_astarg(build, start);
+	else if (ft_isquote(start->type[0]))
+		add_astarg(build, start);
+}
+
 t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **build, int count)
 {
 	if (!build)
@@ -83,10 +108,8 @@ t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **bui
 	{
 		if (!build[count])
 			build = add_asttoken(build);
-		if (start->type[0] == 'w' && !build[count]->binary)
-			add_binary(build[count], start);
-		else if (start->type[0] == 'w')
-			add_astarg(build[count], start);
+		if (ft_isword(start->type[0]))
+			build_argv(start, build[count]);
 		else if (ft_isredirection(start->type[0]))
 			add_redir(build[count], start);
 		else if (ft_iscompletechain(start->type))
