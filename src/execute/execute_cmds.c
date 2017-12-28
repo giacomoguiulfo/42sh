@@ -121,9 +121,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 {
  	pid_t	pid;
  	int		status;
- 	//char	*full_executable;
 
- 	//full_executable = NULL;
  	ft_printf("Execute: %s\n", executable);
  	pid = fork();
  	if (pid == 0)
@@ -160,18 +158,26 @@ char	*build_bin_path(char *path, char *binary)
 		if ((lstat(buff, &sb)) != -1)
 		{
 			if (!check_access(binary, buff))
+			{
+				ft_printf("Bad access\n");
 				return (NULL);
+			}
 			else if (!check_reg_file(sb.st_mode))
+			{
+				ft_printf("Not a reg file\n");
 				return (NULL);
+			}
+			ft_printf("Found path: %s\n", buff);
 			return (ft_hstrdup(buff));
 		}
 		start = end + 1;
 	}
 	return (NULL);
 }
-/*
+
 void	restore_io(t_shell *shell)
 {
+	ft_printf("Inside restore io\n");
 	dup2(shell->stdout_backup, 1);
 	close(shell->stdout_backup);
 	shell->stdout_backup = dup(1);
@@ -185,6 +191,7 @@ void	restore_io(t_shell *shell)
 
 void	close_fds(t_tokelist *this)
 {
+	ft_printf("Inside close fds\n");
 	if (this->redir_prefix_fd == -1)
 	{
 		close(1);
@@ -237,10 +244,10 @@ void	redirect_input(t_tokelist *this)
 	suffix_fd = -2;
 
 	if (this->redir_suffix_file)
-		file = ft_hstrndup(this->redir_suffix_file, this->redir_suffix_len);
+		file = this->redir_suffix_file;
 	if (this->redir_suffix_file)
 		suffix_fd = open(file, O_RDONLY);
-	if (suffix_fd > 0)
+	if (suffix_fd > -1)
 	{
 		dup2(suffix_fd, 0);
 		close(suffix_fd);
@@ -266,8 +273,10 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 
 void	manage_pipes(t_astree *node)
 {
+	ft_printf("Inside manage pipes\n");
 	if (node->this->chain && node->this->chain->type[0] == '|')
 	{
+		ft_printf("Inside manage pipes\n");
 		pipe(node->right->pipe_fd);
 		dup2(node->right->pipe_fd[1], 1);
 		close(node->right->pipe_fd[1]);
@@ -277,7 +286,7 @@ void	manage_pipes(t_astree *node)
 		dup2(node->pipe_fd[0], 0);
 		close(node->pipe_fd[0]);
 	}
-}*/
+}
 
 int		aget_binary_size(char *bin)
 {
@@ -344,18 +353,29 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 
 	if (!node->this || !node->this->binary)
 		printf("no binary found\n");
-	else
+	if (node->this->redirs && node->this->redirs[0])
+		setup_io(shell, node->this->redirs);
+	ft_printf("chain type: %s\n", node->this->chain->type);
+	ft_printf("pipefd status: %d, %d\n", node->pipe_fd[0], node->pipe_fd[1]);
+	if (node->this->chain && node->this->chain->type[0] == '|')
+	{
+		manage_pipes(node);
+	}
+	else if (node->pipe_fd[0] > -1)
+	{
+		manage_pipes(node);
+	}
+	if (node->this->binary)
 	{
 		this_path = build_bin_path(path, node->this->binary);
-	//if (node->this->redirs && node->this->redirs[0])
-	//	setup_io(shell, node->this->redirs);
-	//if ((node->this->chain && node->this->chain->type[0] == '|' && node->this->chain->type[1] == '\0') || node->pipe_fd[0] > -1)
-	//	manage_pipes(node);
+		ft_printf("full path: %s\n", this_path);
 		if (acheck_builtin(node->this->binary))
 			node->ret = msh_run_builtins(node->this);
 		else
+		{
 			node->ret = msh_run_prog(this_path, node->this->args, shell->env);
-		//restore_io(shell);
+		}
+		restore_io(shell);
 	}
 	ft_printf("After execution\n");
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
@@ -379,16 +399,15 @@ void	execute_ast_cmds(t_astree *head)
 {
 	t_astree	*tmp;
 	t_shell		*shell;
-	char		*path;
 
 	shell = sh_singleton();
-	path = shell->path;
-	if (!path)
+	ft_printf("Shell path is: %s\n", shell->path);
+	if (!shell->path)
 	{
-		ft_printf("NO CMDS!\n");
+		ft_printf("path is unset\n");
 		return ;
 	}
 	tmp = head;
-	//ft_printf("Starting command execution\n");
-	execute_specific_ast_cmds(shell, tmp, path);
+	ft_printf("Starting command execution\n");
+	execute_specific_ast_cmds(shell, tmp, shell->path);
 }

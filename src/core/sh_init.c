@@ -26,7 +26,7 @@ static char		*get_path(t_shell *shell)
 	x = -1;
 	while (shell->env[++x])
 	{
-		if (ft_strncmp(shell->env[x], "PATH", 4))
+		if (ft_strncmp(shell->env[x], "PATH=", 5) == 0)
 		{
 			path = shell->env[x];
 			break ;

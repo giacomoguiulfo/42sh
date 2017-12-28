@@ -17,6 +17,7 @@
 void		add_binary(t_asttoken *build, t_tokelist *binary)
 {
 	build->binary = ft_hstrndup(binary->content, binary->len);
+	add_astarg(build, NULL);
 }
 
 void		add_args(t_asttoken *build, t_tokelist *arg)

@@ -47,10 +47,9 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 
 	if (!this->args)
 	{
-		this->args = (char**)ft_hmalloc(sizeof(char*) * (2 + 1));
+		this->args = (char**)ft_hmalloc(sizeof(char*) * (1 + 1));
 		this->args[0] = this->binary;
-		this->args[1] = ft_hstrndup(tmp->content, tmp->len);
-		this->args[2] = 0;
+		this->args[1] = 0;
 		return ;
 	}
 	size = -1;
