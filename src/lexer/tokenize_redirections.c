@@ -93,7 +93,8 @@ static bool get_file(char *instr, t_toke *help, t_tokelist *node)
 
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
-	if (instr[help->x + 1] == '&' && (ft_isdigit(instr[help->x + 2]) || instr[help->x + 2] == '-'))
+	if (instr[help->x + 1] == '&' && (ft_isdigit(instr[help->x + 2]) ||
+		instr[help->x + 2] == '-'))
 	{
 		get_fd(instr, help, node);
 		return ;
