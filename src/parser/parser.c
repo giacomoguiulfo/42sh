@@ -29,11 +29,21 @@ void		print_tokened_list(t_asttoken **head)
 	{
 		ft_printf("\n----------\n");
 		ft_printf("binary: %s\n", head[x]->binary);
-		y = -1;
 		if (head[x]->args)
 		{
+			y = -1;
 			while (head[x]->args[++y])
 				ft_printf("args: %s\n", head[x]->args[y]);
+		}
+		if (head[x]->redirs)
+		{
+			y = -1;
+			while (head[x]->redirs[++y])
+			{
+				if (head[x]->redirs[y]->redir_suffix_file)
+					ft_printf("Redir file: %s\n", head[x]->redirs[y]->redir_suffix_file);
+			}
+			ft_printf("redirs: %d\n", y);
 		}
 		ft_printf("redirections: TO DO\n");
 		ft_printf("chain: %s\n", head[x]->chain);

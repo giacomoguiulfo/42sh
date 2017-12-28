@@ -12,10 +12,31 @@
 
 #include "lexer.h"
 
+bool	check_redirs(char *instr, t_toke *help)
+{
+	int x;
+
+	x = -1;
+	while (ft_isdigit(instr[help->x + (++x)]))
+		;
+	if (instr[help->x + x] == '>' || instr[help->x + x] == '<')
+	{
+		help->x += x;
+		return (true);
+	}
+	return (false);
+}
+
 void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	if (instr[help->x] == '&' || ft_isdigit(instr[help->x]))
+	{
+		if (check_redirs(instr, help))
+			tokenize_redirections(instr, help, head);
+		return ;
+	}
 	if (!head->type[0])
 		tmp = head;
 	else
