@@ -43,7 +43,7 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 	while (ft_isfilename(instr[len + help->x]) && instr[help->x + 1])
 		len++;
 	node->redir_suffix_file = ft_hstrndup(instr + help->x, len);
-	help->x += len;
+	help->x += len - 1;
 }
 
 static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
