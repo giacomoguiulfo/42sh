@@ -14,6 +14,46 @@
 #include "lexer.h"
 #include "ft_sh.h"
 
+t_asttoken	**start_asttoken()
+{
+	t_asttoken	**new;
+
+	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (1));
+	new[0] = NULL;
+	return (new);
+}
+
+t_asttoken	**add_asttoken(t_asttoken **array)
+{
+	int			size;
+	int			x;
+	t_asttoken	**new;
+
+	if (!array)
+	{
+		size = 0;
+		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
+	}
+	else
+	{
+		size = -1;
+		while (array[++size])
+			;
+		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
+	}
+	new[size + 1] = 0;
+	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
+	new[size]->binary = NULL;
+	new[size]->args = NULL;
+	new[size]->redirs = NULL;
+	new[size]->chain = NULL;
+	x = -1;
+	while (++x < size)
+		new[x] = array[x];
+	array = new;
+	return (new);
+}
+
 void	add_astredir(t_asttoken *this, t_tokelist *redir)
 {
 	t_tokelist	**new;

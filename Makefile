@@ -64,6 +64,7 @@ parser/parser\
 parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
+parser/parser_synthesizer_utils\
 readline/readline\
 readline/move_basic\
 readline/move_extended\

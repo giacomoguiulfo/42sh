@@ -28,9 +28,8 @@ t_astree	*make_tree_node(void)
 	return (new);
 }
 
-t_astree	*make_left_branch(t_astree *current/*, int opt*/)
+t_astree	*make_left_branch(t_astree *current)
 {
-	//ft_printf("Make left branch\n");
 	current->left = make_tree_node();
 	current = current->left;
 	return (current);
@@ -38,7 +37,6 @@ t_astree	*make_left_branch(t_astree *current/*, int opt*/)
 
 t_astree	*make_right_branch_pipe(t_astree *current)
 {
-	//ft_printf("Make right branch pipe\n");
 	current->right = make_tree_node();
 	current = current->right;
 	return (current);
@@ -48,32 +46,12 @@ t_astree	*make_right_branch_semi_colon(t_astree *head)
 {
 	t_astree *tmp;
 
-	//ft_printf("Make right branch semi-colon\n");
 	tmp = head;
 	while (tmp->right)
 		tmp = tmp->right;
 	tmp->right = make_tree_node();
 	tmp = tmp->right;
-	//ft_printf("You just made a new right branching ; that re-started off the head node\n");
 	return (tmp);
-}
-
-void		print_tree(t_astree *head, int *node_count)
-{
-	t_astree *tmp;
-
-	tmp = head;
-	if (!head)
-		return ;
-	*node_count = *node_count + 1;
-	if (tmp->left)
-	{
-		print_tree(tmp->left, node_count);
-	}
-	if (tmp->right)
-	{
-		print_tree(tmp->right, node_count);
-	}
 }
 
 t_astree	*make_tree(t_asttoken **raw)
@@ -89,9 +67,11 @@ t_astree	*make_tree(t_asttoken **raw)
 	{
 		tmp->this = raw[x];
 		tmp->type = raw[x]->chain->type;
-		if (raw[x]->chain && raw[x]->chain->type[0] == '&' && raw[x]->chain->type[1] == '&')
+		if (raw[x]->chain && raw[x]->chain->type[0] == '&' &&
+				raw[x]->chain->type[1] == '&')
 			tmp = make_left_branch(tmp);
-		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' && raw[x]->chain->type[1] == '|')
+		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' && 
+				raw[x]->chain->type[1] == '|')
 			tmp = make_left_branch(tmp);
 		else if (raw[x]->chain && raw[x]->chain->type[0] == '|')
 			tmp = make_right_branch_pipe(tmp);

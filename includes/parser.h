@@ -34,4 +34,9 @@ void		add_astarg(t_asttoken *this, t_tokelist *tokens);
 void		add_astredir(t_asttoken *this, t_tokelist *redir);
 int			msh_run_builtins(t_asttoken *this);
 
+void		add_binary(t_asttoken *build, t_tokelist *binary);
+void		add_chain(t_asttoken *build, t_tokelist *binary);
+void		add_redir(t_asttoken *build, t_tokelist *binary);
+void		add_args(t_asttoken *build, t_tokelist *binary);
+
 #endif
