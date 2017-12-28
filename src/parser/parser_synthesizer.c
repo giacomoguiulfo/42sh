@@ -92,7 +92,7 @@ t_asttoken	**get_token_info(t_tokelist	*start, t_tokelist *end, t_asttoken **bui
 			add_chain(build[count], start);
 		start = start->next;
 	}
-	if (start && (!start->type[0] || ft_iscompletechain(start->type)))
+	if (start && start == end)
 	{
 		if (!build[count])
 			build = add_asttoken(build);

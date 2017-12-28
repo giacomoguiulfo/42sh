@@ -65,19 +65,13 @@ void		print_tree(t_astree *head, int *node_count)
 	tmp = head;
 	if (!head)
 		return ;
-	/*if (head->this->binary)
-		ft_printf("Binary for %d is %s\n", *node_count, head->this->binary);
-	else
-		ft_printf("No binary found for node %d\n", *node_count);*/
 	*node_count = *node_count + 1;
 	if (tmp->left)
 	{
-		//ft_printf("Dependent branches fond on the left--checking these first\n");
 		print_tree(tmp->left, node_count);
 	}
 	if (tmp->right)
 	{
-		//ft_printf("Checking out a right side branch\n");
 		print_tree(tmp->right, node_count);
 	}
 }

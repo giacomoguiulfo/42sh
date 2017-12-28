@@ -19,43 +19,26 @@ void		ft_putnstr(char *str, size_t len)
 	write(1, str, len);
 }
 
-void		print_toke_list(t_tokelist *head)
+void		print_tokened_list(t_asttoken **head)
 {
-	t_tokelist *tmp;
+	int	x;
+	int y;
 
-	tmp = head;
-	while (tmp)
+	x = -1;
+	while (head[++x])
 	{
 		ft_printf("\n----------\n");
-		ft_printf("type: %s\n", tmp->type);
-		/*if (tmp->type[0] == '>' || tmp->type[0] == '<')
+		ft_printf("binary: %s\n", head[x]->binary);
+		y = -1;
+		if (head[x]->args)
 		{
-			if (tmp->redir_suffix_fd != -2)
-				ft_printf("Suffix_fd is %d\n", tmp->redir_suffix_fd);
-			else if (tmp->redir_suffix_file)
-			{
-				ft_printf("Suffix file is: ");
-				ft_putnstr(tmp->redir_suffix_file, tmp->redir_suffix_len);
-				ft_putchar('\n');
-			}
-			else if (tmp->redir_prefix_fd != -2)
-				ft_printf("Prefix_fd is %d\n", tmp->redir_prefix_fd);
-		}*/
-		if (ft_isquote(tmp->type[0]))
-		{
-			ft_printf("Quote text: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
+			while (head[x]->args[++y])
+				ft_printf("args: %s\n", head[x]->args[y]);
 		}
-		else if (tmp->type[0] == 'w')
-		{
-			ft_printf("Word text: ");
-			ft_putnstr(tmp->content, tmp->len);
-			ft_putchar('\n');
-		}
-		ft_printf("---------->\n");
-		tmp = tmp->next;
+		ft_printf("redirections: TO DO\n");
+		ft_printf("chain: %s\n", head[x]->chain);
 	}
+	ft_printf("----------\n");
 }
 
 t_astree	*parser(t_tokelist *tokens)
@@ -63,10 +46,8 @@ t_astree	*parser(t_tokelist *tokens)
 	t_asttoken	**pre_ast;
 	t_astree	*mana;
 
-	print_toke_list(tokens);
 	pre_ast = synthesize_tokens(tokens);
-	ft_printf("About to make tree\n");
+	print_tokened_list(pre_ast);
 	mana = make_tree(pre_ast);
-	ft_printf("Finished with the tree\n");
 	return (mana);
 }
