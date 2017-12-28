@@ -44,7 +44,6 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 		len++;
 	node->redir_suffix_file = ft_hstrndup(instr + help->x, len);
 	help->x += len;
-	ft_printf("Redir file: %s\n", node->redir_suffix_file);
 }
 
 static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)

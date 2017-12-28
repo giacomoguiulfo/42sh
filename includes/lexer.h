@@ -42,6 +42,7 @@ void			tokenize_quotes(char *instr, t_toke *help, t_tokelist *head);
 //helpers
 bool			ft_isredirection(char c);
 int				ft_iscompletechain(char *str);
+int				ft_isdepchain(char *c);
 int				ft_isfilename(char c);
 
 //utils

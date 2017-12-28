@@ -40,12 +40,13 @@ void		print_tokened_list(t_asttoken **head)
 			y = -1;
 			while (head[x]->redirs[++y])
 			{
+				ft_printf("Redir type: %s\n", head[x]->redirs[y]->type);
 				if (head[x]->redirs[y]->redir_suffix_file)
 					ft_printf("Redir file: %s\n", head[x]->redirs[y]->redir_suffix_file);
+				ft_printf("suffix fd: %d, prefix fd: %d\n", head[x]->redirs[y]->redir_suffix_fd, head[x]->redirs[y]->redir_prefix_fd);
 			}
 			ft_printf("redirs: %d\n", y);
 		}
-		ft_printf("redirections: TO DO\n");
 		ft_printf("chain: %s\n", head[x]->chain);
 	}
 	ft_printf("----------\n");

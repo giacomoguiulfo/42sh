@@ -37,6 +37,9 @@ t_tokelist *add_toke(t_tokelist *head)
 	tmp->type[0] = '\0';
 	tmp->type[1] = '\0';
 	tmp->type[2] = '\0';
+	tmp->redir_prefix_fd = -2;
+	tmp->redir_suffix_fd = -2;
+	tmp->redir_suffix_file = NULL;
 	return (tmp);
 }
 
@@ -51,6 +54,9 @@ t_tokelist *start_toking(void)
 	head->type[0] = '\0';
 	head->type[1] = '\0';
 	head->type[2] = '\0';
+	head->redir_prefix_fd = -2;
+	head->redir_suffix_fd = -2;
+	head->redir_suffix_file = NULL;
 	head->last = NULL;
 	return (head);
 }

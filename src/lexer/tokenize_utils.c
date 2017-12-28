@@ -14,7 +14,7 @@
 
 int		ft_iscompletechain(char *str)
 {
-	if (ft_ischain(str))
+	if (ft_isdepchain(str))
 		return (1);
 	else if (str[0] == ';')
 		return (1);
