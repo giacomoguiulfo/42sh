@@ -49,7 +49,7 @@ bool		str_protection(t_input *data, size_t first, size_t second)
 	return (true);
 }
 
-void clear_highlights(t_input *data, bool opt)
+void		clear_highlights(t_input *data, bool opt)
 {
 	size_t row;
 	size_t col;

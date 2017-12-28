@@ -56,12 +56,16 @@ void	ctrl_c_key(struct s_keychain *master)
 
 void	edit_key(struct s_keychain *master)
 {
-	if (master->data->char_buff[0] == -30 && master->data->char_buff[1] == -119)
+	if (master->data->char_buff[0] == -30 &&
+		master->data->char_buff[1] == -119)
 		copy_cut_paste(master->data, &master->data->clipboard, 1);
-	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -102)
+	else if (master->data->char_buff[0] == -30 &&
+		master->data->char_buff[2] == -102)
 		copy_cut_paste(master->data, &master->data->clipboard, 3);
-	else if (master->data->char_buff[0] == -61 && master->data->char_buff[1] == -89)
+	else if (master->data->char_buff[0] == -61 &&
+		master->data->char_buff[1] == -89)
 		copy_cut_paste(master->data, &master->data->clipboard, 0);
-	else if (master->data->char_buff[0] == -30 && master->data->char_buff[2] == -85)
+	else if (master->data->char_buff[0] == -30 &&
+		master->data->char_buff[2] == -85)
 		copy_cut_paste(master->data, &master->data->clipboard, 2);
 }
