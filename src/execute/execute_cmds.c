@@ -25,7 +25,7 @@
 #include <error.h>
 #include <stdlib.h>
 
-bool	try_pwd(char *binary)
+char	*try_pwdd(char *binary)
 {
 	char		cwd_path[MAX_PATH_BIN_SIZE];
 	char		*ptr;
@@ -36,12 +36,12 @@ bool	try_pwd(char *binary)
 	ft_strcat(cwd_path, "/");
 	ft_strcat(cwd_path, binary);
 	if ((lstat(cwd_path, &sb)) == -1)
-		return (false);
+		return (NULL);
 	else if (!check_access(binary, cwd_path))
-		return (false);
+		return (NULL);
 	else if (!check_reg_file(sb.st_mode))
-		return (false);
-	return (true);
+		return (NULL);
+	return (ft_hstrdup(cwd_path));
 }
 
 bool	check_access(char *binary, char *path)
@@ -97,26 +97,6 @@ bool	try_paths(char *binary, char *path, char *try_this_path)
 	return (false);
 }
 
-bool	check_binary(char *binary, char *path, int *x)
-{
-	char	bin_name[MAX_PATH_BIN_SIZE];
-	char	valid_path[MAX_PATH_BIN_SIZE];
-	char	*ptr;
-	int		end;
-
-	end = get_binary_size(binary);
-	*x = *x + end;
-	ptr = valid_path;
-	ft_bzero(bin_name, MAX_PATH_BIN_SIZE);
-	ft_strncpy(bin_name, binary, end);
-	if (try_paths(bin_name, path, ptr))
-		return (true);
-	else if (try_pwd(binary))
-		return (true);
-	ft_printf("Lexer: command not found: %s\n", binary);
-	return (false);
-}
-
 int		msh_run_prog(char *executable, char **args, char **newenvp)
 {
  	pid_t	pid;
@@ -158,26 +138,20 @@ char	*build_bin_path(char *path, char *binary)
 		if ((lstat(buff, &sb)) != -1)
 		{
 			if (!check_access(binary, buff))
-			{
-				ft_printf("Bad access\n");
 				return (NULL);
-			}
 			else if (!check_reg_file(sb.st_mode))
-			{
-				ft_printf("Not a reg file\n");
 				return (NULL);
-			}
-			ft_printf("Found path: %s\n", buff);
 			return (ft_hstrdup(buff));
 		}
 		start = end + 1;
 	}
+	if ((end = try_pwdd(binary)))
+		return (end);
 	return (NULL);
 }
 
 void	restore_io(t_shell *shell)
 {
-	ft_printf("Inside restore io\n");
 	dup2(shell->stdout_backup, 1);
 	close(shell->stdout_backup);
 	shell->stdout_backup = dup(1);
@@ -191,7 +165,6 @@ void	restore_io(t_shell *shell)
 
 void	close_fds(t_tokelist *this)
 {
-	ft_printf("Inside close fds\n");
 	if (this->redir_prefix_fd == -1)
 	{
 		close(1);
@@ -268,15 +241,12 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 		else if (redirs[x]->type[0] == '<')
 			redirect_input(redirs[x]);
 	}
-	ft_printf("-->stdio end!<---\n");
 }
 
 void	manage_pipes(t_astree *node)
 {
-	ft_printf("Inside manage pipes\n");
 	if (node->this->chain && node->this->chain->type[0] == '|')
 	{
-		ft_printf("Inside manage pipes\n");
 		pipe(node->right->pipe_fd);
 		dup2(node->right->pipe_fd[1], 1);
 		close(node->right->pipe_fd[1]);
@@ -300,11 +270,9 @@ int		aget_binary_size(char *bin)
 
 bool	acheck_builtin(char *binary)
 {
-	int 	end;
 	bool	found;
 
 	found = false;
-	end = aget_binary_size(binary);
 	if ((ft_strncmp(binary, "cd", 2)) == 0)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)
@@ -319,7 +287,6 @@ bool	acheck_builtin(char *binary)
 		found = true;
 	else if ((ft_strncmp(binary, "exit", 4)) == 0)
 		found = true;
-    (void)end;
 	return (found);
 }
 
@@ -401,7 +368,6 @@ void	execute_ast_cmds(t_astree *head)
 	t_shell		*shell;
 
 	shell = sh_singleton();
-	ft_printf("Shell path is: %s\n", shell->path);
 	if (!shell->path)
 	{
 		ft_printf("path is unset\n");
