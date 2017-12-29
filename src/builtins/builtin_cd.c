@@ -35,7 +35,7 @@ static t_optsdata g_cdopts =
 	}
 };
 
-static void cd_setpwd(void)
+static void	cd_setpwd(void)
 {
 	char	*cwd;
 
@@ -79,7 +79,7 @@ static int	cd_routine(char *operand, int flags)
 	return (0);
 }
 
-static char *cd_operand(char *arg)
+static char	*cd_operand(char *arg)
 {
 	if (arg)
 	{
@@ -90,7 +90,7 @@ static char *cd_operand(char *arg)
 	return (ft_strdup(ft_getenv(sh_singleton()->env, "HOME")));
 }
 
-int builtin_cd(char **av)
+int			builtin_cd(char **av)
 {
 	t_optparser	data;
 	char		*operand;

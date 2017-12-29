@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int builtin_echo(char *const av[])
+int	builtin_echo(char *const av[])
 {
 	av++;
 	while (*av)

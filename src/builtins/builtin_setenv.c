@@ -13,7 +13,7 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-static void assign_var(char **av, char ***env)
+static void	assign_var(char **av, char ***env)
 {
 	char	*str;
 	int		i;
@@ -23,7 +23,7 @@ static void assign_var(char **av, char ***env)
 	while ((*env) && (*env)[i])
 	{
 		if (ft_strcmp((*env)[i], av[1]) == '=' &&
-			ft_strlen(av[1]) == ft_strlenchr((*env)[i], '=')) // TODO: word_is_var()
+			ft_strlen(av[1]) == ft_strlenchr((*env)[i], '='))
 		{
 			ft_strdel(&(*env)[i]);
 			(*env)[i] = str;
@@ -35,16 +35,17 @@ static void assign_var(char **av, char ***env)
 	ft_strdel(&str);
 }
 
-int builtin_setenv(char **av)
+int			builtin_setenv(char **av)
 {
 	char ***env;
 
 	if (!av || !av[0])
 		return (1);
-	env = (!ft_strcmp(av[0], "local")) ? &sh_singleton()->localenv : &sh_singleton()->env;
+	env = (!ft_strcmp(av[0], "local")) ?
+		&sh_singleton()->localenv : &sh_singleton()->env;
 	if (!av[1])
 		ft_sstrputs(*env);
-	else // TODO: Check that is a proper assignemnt - validations
+	else
 		assign_var(av, env);
 	return (0);
 }

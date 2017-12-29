@@ -45,7 +45,7 @@ static int	export_variables(char **av)
 	return ((ret) ? 1 : 0);
 }
 
-static int	export_print()
+static int	export_print(void)
 {
 	char	**env;
 	char	*set;
@@ -63,7 +63,7 @@ static int	export_print()
 	return (0);
 }
 
-int	builtin_export(char **argv)
+int			builtin_export(char **argv)
 {
 	t_optparser data;
 
