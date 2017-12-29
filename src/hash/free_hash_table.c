@@ -12,53 +12,37 @@
 
 #include <stdlib.h>
 
-/*
-* Functions to free binary hash table
-*/
-
-/*
-* Brief summary
-* Delete list
-* @param bin: list to be deleted
-*/
-
-static void     ft_bin_lstdel(t_bin *bin)
+static void	ft_bin_lstdel(t_bin *bin)
 {
-    t_bin   *temp;
+	t_bin	*temp;
 
-    if (!bin)
-        return ;
-    while (bin)
-    {
-        temp = bin->next;
-        free(bin->path);
-        free(bin->name);
-        free(bin);
-        bin = temp;
-    }
+	if (!bin)
+		return ;
+	while (bin)
+	{
+		temp = bin->next;
+		free(bin->path);
+		free(bin->name);
+		free(bin);
+		bin = temp;
+	}
 }
 
-/*
-* Brief summary
-* Free hash
-* @param hash_table: hash table to be freed
-*/
-
-void            free_hash(t_hash *hash_table)
+void		free_hash(t_hash *hash_table)
 {
-    int     i;
-    t_bin   *bin;
-    
-    i = 0;
-    while (i < hash_table->capacity)
-    {
-        bin = hash_table->binaries[i];
-        if(bin != 0)
-        {
-            ft_bin_lstdel(bin);
-        }
-        i++;
-    }
-    free(hash_table->binaries);
-    free(hash_table);
+	int		i;
+	t_bin	*bin;
+
+	i = 0;
+	while (i < hash_table->capacity)
+	{
+		bin = hash_table->binaries[i];
+		if (bin != 0)
+		{
+			ft_bin_lstdel(bin);
+		}
+		i++;
+	}
+	free(hash_table->binaries);
+	free(hash_table);
 }

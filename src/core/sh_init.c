@@ -11,11 +11,10 @@
 /* ************************************************************************** */
 
 #include "ft_sh.h"
+#include "history.h"
 #include "libft.h"
 #include <term.h>
 #include <termios.h>
-
-void		history_constructor(t_shell *shell, t_cmds *history);
 
 static char	*get_path(t_shell *shell)
 {

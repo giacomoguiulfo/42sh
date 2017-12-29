@@ -16,9 +16,14 @@
 # include "ft_sh.h"
 # include "lexer.h"
 
+void	check_pipes(t_astree *node);
 void	execute_ast_cmds(t_astree *head);
+void	setup_io(t_shell *shell, t_tokelist **redirs);
 
-bool	check_reg_file(mode_t st_mode);
+char	*build_bin_path(char *path, char *binary);
+
 bool	check_access(char *binary, char *path);
+bool	check_builtin(char *binary);
+bool	check_reg_file(mode_t st_mode);
 
 #endif

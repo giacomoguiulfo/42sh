@@ -68,6 +68,15 @@ typedef struct			s_tokelist
 	void				*content;
 }						t_tokelist;
 
+typedef struct			s_helper
+{
+	char				*cmds;
+	char				*prompt;
+	int					ret;
+	t_tokelist			*tokenized;
+	t_astree			*palm;	
+}						t_helper;
+
 int						sh_init();
 void					sh_init_termios();
 t_shell					*sh_singleton();

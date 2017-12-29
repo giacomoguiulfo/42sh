@@ -45,7 +45,11 @@ builtins/builtin_unsetenv\
 builtins/builtin_exit\
 core/sh_init\
 core/sh_singleton\
+execute/execute_build_path\
+execute/execute_builtins\
 execute/execute_cmds\
+execute/execute_pipes\
+execute/execute_redirections\
 lexer/lexer\
 lexer/tokenize\
 lexer/tokenize_chains\

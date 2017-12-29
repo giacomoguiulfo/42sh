@@ -20,16 +20,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-typedef struct	s_helper
-{
-	char		*cmds;
-	char		*prompt;
-	int			ret;
-	t_tokelist	*tokenized;
-	t_astree	*palm;	
-}				t_helper;
-
-static bool check_quit(t_shell *shell, char *cmds)
+static bool	check_quit(t_shell *shell, char *cmds)
 {
 	if (shell->quit == true)
 	{
@@ -76,7 +67,7 @@ static int	sh_instruction(t_shell *shell)
 		assist.prompt = msh_put_arrow();
 		assist.cmds = readline(assist.prompt);
 		if ((assist.ret = pre_processor(&assist, shell)) == -1)
-			break;
+			break ;
 		else if (assist.ret == 0)
 			continue ;
 		if (!(assist.ret = processor(&assist)))
@@ -88,7 +79,7 @@ static int	sh_instruction(t_shell *shell)
 
 int			main(int ac, char **av)
 {
-	t_shell 		*shell;
+	t_shell			*shell;
 	static t_cmds	history;
 
 	g_argv = av;

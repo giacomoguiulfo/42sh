@@ -20,6 +20,6 @@
 void	history_add(char *cmd);
 void	history_change(t_input *data, t_cmds *history, bool direction);
 void	history_cleanup(t_cmds *history);
-void	history_constructor(t_cmds *history);
+void	history_constructor(t_shell *shell, t_cmds *history);
 
 #endif
