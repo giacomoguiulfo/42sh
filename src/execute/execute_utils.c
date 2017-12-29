@@ -12,6 +12,7 @@
 
 #define _BSD_SOURCE
 
+#include "execute.h"
 #include "lexer.h"
 #include "ft_sh.h"
 #include <stdlib.h>
@@ -55,21 +56,4 @@ char	*get_path(void)
 		}
 	}
 	return (NULL);
-}
-
-bool	check_access(char *binary, char *path)
-{
-	if (!((access(path, X_OK)) == 0))
-	{
-		ft_printf("Lexer: permission denied: %s\n", binary);
-		return (false);
-	}
-	return (true);
-}
-
-bool	check_reg_file(mode_t st_mode)
-{
-	if (!S_ISREG(st_mode))
-		return (false);
-	return (true);
 }

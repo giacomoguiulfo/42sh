@@ -54,6 +54,7 @@ execute/execute_heredoc\
 execute/execute_cmds\
 execute/execute_pipes\
 execute/execute_redirections\
+execute/execute_utils\
 lexer/lexer\
 lexer/tokenize\
 lexer/tokenize_chains\

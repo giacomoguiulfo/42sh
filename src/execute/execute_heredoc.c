@@ -57,7 +57,10 @@ static bool	check_heredoc_delim(t_tokelist *redir)
 	t_here	doc;
 
 	if (redir->redir_suffix_file)
+	{
+		ft_printf("Suffix file: %s\n");
 		return (true);
+	}
 	ft_printf("Kash: please enter a delimiter character or phrase\n");
 	ft_printf("Or, alternatively, you could just press enter and\n");
 	ft_printf("we'll forget all about this heredoc business.\n");
