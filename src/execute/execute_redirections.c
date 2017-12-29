@@ -75,11 +75,9 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 {
 	int x;
 
-	ft_printf("inside setupio\n");
 	if (!redirs)
 		return ;
 	x = -1;
-	ft_printf("inside setup io\n");
 	while (redirs[++x])
 	{
 		if (redirs[x]->type[0] == '>' && redirs[x]->type[1] == '>')
