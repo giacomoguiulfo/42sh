@@ -98,7 +98,8 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	restore_io(shell);
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 		recursive_execute(shell, node->left, path);
-	else if (node->left && node->type && node->type[0] == '|' && node->type[1] == '|' && node->ret > 0)
+	else if (node->left && node->type && node->type[0] == '|'
+		&& node->type[1] == '|' && node->ret > 0)
 		recursive_execute(shell, node->left, path);
 	if (node->right && node->right->this)
 		recursive_execute(shell, node->right, path);

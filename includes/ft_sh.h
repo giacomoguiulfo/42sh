@@ -75,7 +75,7 @@ typedef struct			s_helper
 	char				*prompt;
 	int					ret;
 	t_tokelist			*tokenized;
-	t_astree			*palm;	
+	t_astree			*palm;
 }						t_helper;
 
 int						sh_init();

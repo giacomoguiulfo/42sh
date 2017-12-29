@@ -94,7 +94,7 @@ void					move_word(t_input *data, bool direction);
 
 bool					str_protection(t_input *d, size_t f, size_t s);
 void					clear_insert(t_input *data);
-void 					clear_highlights(t_input *data, bool opt);
+void					clear_highlights(t_input *data, bool opt);
 void					gather_position_data(t_input *data);
 void					get_terminal_meta(t_input *data);
 void					print_end_col_pad(size_t cursor_col);
