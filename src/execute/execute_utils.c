@@ -22,12 +22,12 @@
 
 bool	try_pwd(char *binary)
 {
-	char		cwd_path[MAX_PATH_BIN_SIZE];
+	char		cwd_path[MAX_PATH];
 	char		*ptr;
 	struct stat sb;
 
 	ptr = cwd_path;
-	getcwd(ptr, MAX_PATH_BIN_SIZE);
+	getcwd(ptr, MAX_PATH);
 	ft_strcat(cwd_path, "/");
 	ft_strcat(cwd_path, binary);
 	if ((lstat(cwd_path, &sb)) == -1)

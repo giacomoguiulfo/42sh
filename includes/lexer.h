@@ -18,7 +18,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-# define MAX_PATH_BIN_SIZE 8192
+# define MAX_PATH 8192
 
 typedef struct			s_toke
 {

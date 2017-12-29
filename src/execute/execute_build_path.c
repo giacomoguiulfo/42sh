@@ -36,12 +36,12 @@ bool	check_reg_file(mode_t st_mode)
 
 char	*check_pwd(char *binary)
 {
-	char		cwd_path[MAX_PATH_BIN_SIZE];
+	char		cwd_path[MAX_PATH];
 	char		*ptr;
 	struct stat sb;
 
 	ptr = cwd_path;
-	getcwd(ptr, MAX_PATH_BIN_SIZE);
+	getcwd(ptr, MAX_PATH);
 	ft_strcat(cwd_path, "/");
 	ft_strcat(cwd_path, binary);
 	if ((lstat(cwd_path, &sb)) == -1)
@@ -53,20 +53,25 @@ char	*check_pwd(char *binary)
 	return (ft_hstrdup(cwd_path));
 }
 
+void	build_buffer(char buff[MAX_PATH], char *binary, char *start, char *end)
+{
+	ft_bzero((void*)buff, MAX_PATH);
+	ft_strncpy(buff, start, end - start);
+	ft_strcat(buff, "/");
+	ft_strcat(buff, binary);
+}
+
 char	*build_bin_path(char *path, char *binary)
 {
 	char		*start;
 	char		*end;
-	char		buff[MAX_PATH_BIN_SIZE];
+	char		buff[MAX_PATH];
 	struct stat sb;
 
 	start = path;
 	while (start && ((end = ft_strchr(start, ':')) != NULL))
 	{
-		ft_bzero((void*)buff, MAX_PATH_BIN_SIZE);
-		ft_strncpy(buff, start, end - start);
-		ft_strcat(buff, "/");
-		ft_strcat(buff, binary);
+		build_buffer(buff, binary, start, end);
 		if ((lstat(buff, &sb)) != -1)
 		{
 			if (!check_access(binary, buff))
