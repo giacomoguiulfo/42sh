@@ -69,9 +69,11 @@ t_astree	*make_tree(t_asttoken **raw)
 	{
 		tmp->this = raw[x];
 		tmp->type = raw[x]->chain->type;
-		if (raw[x]->chain && raw[x]->chain->type[0] == '&' && raw[x]->chain->type[1] == '&')
+		if (raw[x]->chain && raw[x]->chain->type[0] == '&' &&
+			raw[x]->chain->type[1] == '&')
 			tmp = make_left_branch(tmp, raw[x]);
-		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' && raw[x]->chain->type[1] == '|')
+		else if (raw[x]->chain && raw[x]->chain->type[0] == '|' &&
+			raw[x]->chain->type[1] == '|')
 			tmp = make_left_branch(tmp, raw[x]);
 		else if (raw[x]->chain && raw[x]->chain->type[0] == '|')
 			tmp = make_right_branch_pipe(tmp, raw[x]);
