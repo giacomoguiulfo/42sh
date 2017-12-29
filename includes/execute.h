@@ -18,6 +18,7 @@
 
 void	check_pipes(t_astree *node);
 void	execute_ast_cmds(t_astree *head);
+void	restore_io(t_shell *shell);
 void	setup_io(t_shell *shell, t_tokelist **redirs);
 
 char	*build_bin_path(char *path, char *binary);

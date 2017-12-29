@@ -78,20 +78,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 	return (status);
 }
 
-void	restore_io(t_shell *shell)
-{
-	dup2(shell->stdout_backup, 1);
-	close(shell->stdout_backup);
-	shell->stdout_backup = dup(1);
-	dup2(shell->stderr_backup, 2);
-	close(shell->stderr_backup);
-	shell->stderr_backup = dup(2);
-	dup2(shell->stdin_backup, 0);
-	close(shell->stdin_backup);
-	shell->stdin_backup = dup(0);
-}
-
-void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
+void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
@@ -110,12 +97,12 @@ void	execute_specific_ast_cmds(t_shell *shell, t_astree *node, char *path)
 	}
 	restore_io(shell);
 	if (node->left && node->left->type && node->left->type[0] == '&' && node->ret < 1)
-		execute_specific_ast_cmds(shell, node->left, path);
+		recursive_execute(shell, node->left, path);
 	else if (node->left && node->left->type && node->left->type[0] == '|' &&
 		node->left->type[1] == '|' && node->ret > 0)
-		execute_specific_ast_cmds(shell, node->left, path);
+		recursive_execute(shell, node->left, path);
 	if (node->right && node->right->this)
-		execute_specific_ast_cmds(shell, node->right, path);
+		recursive_execute(shell, node->right, path);
 }
 
 void	execute_ast_cmds(t_astree *head)
@@ -130,5 +117,5 @@ void	execute_ast_cmds(t_astree *head)
 		return ;
 	}
 	tmp = head;
-	execute_specific_ast_cmds(shell, tmp, shell->path);
+	recursive_execute(shell, tmp, shell->path);
 }

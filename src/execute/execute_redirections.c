@@ -60,7 +60,6 @@ void	redirect_input(t_tokelist *this)
 
 	file = NULL;
 	suffix_fd = -2;
-
 	if (this->redir_suffix_file)
 		file = this->redir_suffix_file;
 	if (this->redir_suffix_file)
@@ -90,4 +89,17 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 		else if (redirs[x]->type[0] == '<')
 			redirect_input(redirs[x]);
 	}
+}
+
+void	restore_io(t_shell *shell)
+{
+	dup2(shell->stdout_backup, 1);
+	close(shell->stdout_backup);
+	shell->stdout_backup = dup(1);
+	dup2(shell->stderr_backup, 2);
+	close(shell->stderr_backup);
+	shell->stderr_backup = dup(2);
+	dup2(shell->stdin_backup, 0);
+	close(shell->stdin_backup);
+	shell->stdin_backup = dup(0);
 }
