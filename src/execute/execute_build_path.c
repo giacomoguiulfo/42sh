@@ -79,5 +79,6 @@ char	*build_bin_path(char *path, char *binary)
 	}
 	if ((end = check_pwd(binary)))
 		return (end);
+	ft_printf("Kash: command not found: %s\n", binary);
 	return (NULL);
 }
