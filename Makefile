@@ -47,6 +47,7 @@ core/sh_init\
 core/sh_singleton\
 execute/execute_build_path\
 execute/execute_builtins\
+execute/execute_heredoc\
 execute/execute_cmds\
 execute/execute_pipes\
 execute/execute_redirections\

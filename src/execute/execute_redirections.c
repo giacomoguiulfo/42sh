@@ -12,6 +12,8 @@
 
 #include "execute.h"
 #include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 bool	close_fds(t_tokelist *this)
 {
@@ -84,6 +86,8 @@ void	setup_io(t_shell *shell, t_tokelist **redirs)
 			redirect_output(shell, redirs[x], 1);
 		else if (redirs[x]->type[0] == '>')
 			redirect_output(shell, redirs[x], 0);
+		else if (redirs[x]->type[0] == '<' && redirs[x]->type[1] == '<')
+			redirect_heredoc(redirs[x]);
 		else if (redirs[x]->type[0] == '<')
 			redirect_input(redirs[x]);
 	}

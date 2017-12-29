@@ -16,15 +16,25 @@
 # include "ft_sh.h"
 # include "lexer.h"
 
-void	check_pipes(t_astree *node);
-void	execute_ast_cmds(t_astree *head);
-void	restore_io(t_shell *shell);
-void	setup_io(t_shell *shell, t_tokelist **redirs);
+typedef struct	s_here
+{
+	char		*new_instr;
+	char		*prompt;
+	char		*safe_word;
+	char		buff[4092];
+	int			ret;
+}				t_here;
 
-char	*build_bin_path(char *path, char *binary);
+void			check_pipes(t_astree *node);
+void			execute_ast_cmds(t_astree *head);
+void			redirect_heredoc(t_tokelist *redir);
+void			restore_io(t_shell *shell);
+void			setup_io(t_shell *shell, t_tokelist **redirs);
 
-bool	check_access(char *binary, char *path);
-bool	check_builtin(char *binary);
-bool	check_reg_file(mode_t st_mode);
+char			*build_bin_path(char *path, char *binary);
+
+bool			check_access(char *binary, char *path);
+bool			check_builtin(char *binary);
+bool			check_reg_file(mode_t st_mode);
 
 #endif

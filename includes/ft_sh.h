@@ -61,6 +61,7 @@ typedef struct			s_tokelist
 	int					len;
 	int					redir_prefix_fd;
 	int					redir_suffix_fd;
+	int					heredoc[2];
 	char				*redir_suffix_file;
 	bool				redir_turn_off;
 	struct s_tokelist	*next;
