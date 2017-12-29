@@ -24,14 +24,17 @@ typedef struct			s_asttoken
 	struct s_tokelist	*chain;
 }						t_asttoken;
 
-t_asttoken	**synthesize_tokens(t_tokelist *tokens);
-t_astree	*make_tree(t_asttoken **raw_materials);
-void		execute_ast_cmds(t_astree *head);
+t_asttoken				**synthesize_tokens(t_tokelist *tokens);
+t_astree				*make_tree(t_asttoken **raw_materials);
+void					execute_ast_cmds(t_astree *head);
+t_asttoken				**start_asttoken(void);
+t_asttoken				**add_asttoken(t_asttoken **array);
+void					add_astarg(t_asttoken *this, t_tokelist *tokens);
+void					add_astredir(t_asttoken *this, t_tokelist *redir);
 
-t_asttoken	**start_asttoken(void);
-t_asttoken	**add_asttoken(t_asttoken **array);
-void		add_astarg(t_asttoken *this, t_tokelist *tokens);
-void		add_astredir(t_asttoken *this, t_tokelist *redir);
-int			msh_run_builtins(t_asttoken *this);
+void					add_args(t_asttoken *build, t_tokelist *binary);
+void					add_binary(t_asttoken *build, t_tokelist *binary);
+void					add_chain(t_asttoken *build, t_tokelist *binary);
+void					add_redir(t_asttoken *build, t_tokelist *binary);
 
 #endif

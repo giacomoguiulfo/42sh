@@ -12,7 +12,7 @@
 
 #include "lexer.h"
 
-void	extract_quotes(char *instr, t_toke *help, t_tokelist *head)
+void	tokenize_quotes(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 

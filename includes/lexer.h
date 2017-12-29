@@ -25,47 +25,42 @@ typedef struct			s_toke
 	char				*start;
 	char				*end;
 	char				quote_type;
-	int					x;
+	int					ret;
 	int					state;
 	int					size;
+	int					x;
 }						t_toke;
 
-//tokenize
-t_tokelist		*tokenize(char	*instructions);
+typedef	struct			s_test
+{
+	int					type;
+	void				(*tokenizer)(char *, t_toke *, t_tokelist *);
+}						t_test;
 
-void			extract_chain(char *instr, t_toke *help, t_tokelist *head);
-void			extract_redirections(char *instr, t_toke *help, t_tokelist *head);
-void			extract_words(char *instr, t_toke *help, t_tokelist *head);
-void			extract_quotes(char *instr, t_toke *help, t_tokelist *head);
+t_tokelist				*tokenize(char	*instructions);
 
-//helpers
-int				ft_iscompletechain(char *str);
-int				ft_isfilename(char c);
+void					tokenize_chain(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_redirs(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_words(char *ins, t_toke *help, t_tokelist *h);
+void					tokenize_quotes(char *ins, t_toke *help, t_tokelist *h);
 
-//utils
-t_tokelist 		*add_toke(t_tokelist *head);
-t_tokelist 		*start_toking(void);
+bool					ft_isredirection(char c);
+int						ft_iscompletechain(char *str);
+int						ft_isdepchain(char *c);
+int						ft_isfilename(char c);
 
+t_tokelist				*add_toke(t_tokelist *head);
+t_tokelist				*start_toking(void);
 
-//validate
-bool			validate_chain_bins(char *instr);
-bool			validate_quotes(char *inst);
-bool			validate_redirections(char *instr);
-int				validate_chains(char *inst);
-int				validate_quotes_chains(char **instr);
+bool					validate_quotes(char *inst);
+int						validate_chains(char *inst);
 
-//utils
-bool			check_access(char *binary, char *path);
-bool			check_binary(char *binary, char *path, int *x);
-bool			check_reg_file(mode_t st_mode);
-
-//helpers
-bool			get_close_chain(char *inst, int index);
-bool			try_pwd(char *binary);
-char			*get_path(void);
-int				ft_ischain(char *c);
-int				ft_isquote(char c);
-void			skip_quote(char *inst, int *x, char quote_type);
-void			quote_prompt(char **instr, char *prompt);
+bool					get_close_chain(char *inst, int index);
+bool					get_file(char *instr, t_toke *help, t_tokelist *node);
+bool					try_pwd(char *binary);
+int						ft_ischain(char *c);
+int						ft_isquote(char c);
+void					skip_quote(char *inst, int *x, char quote_type);
+void					quote_prompt(char **instr, char *prompt);
 
 #endif

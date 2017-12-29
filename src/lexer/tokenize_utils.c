@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                          :+:      :+:    :+:   */
+/*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,7 +14,7 @@
 
 int		ft_iscompletechain(char *str)
 {
-	if (ft_ischain(str))
+	if (ft_isdepchain(str))
 		return (1);
 	else if (str[0] == ';')
 		return (1);
@@ -28,5 +28,12 @@ int		ft_isfilename(char c)
 	else if (c == '_' || c == '.' || c == ',' || c == '-' || c == '=' ||
 		c == '+' || c == '%' || c == '#' || c == '@' || c == '^')
 		return (1);
-	return  (0);
+	return (0);
+}
+
+bool	ft_isredirection(char c)
+{
+	if (c == '<' || c == '>')
+		return (true);
+	return (false);
 }

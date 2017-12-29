@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_quotes_chains.c                           :+:      :+:    :+:   */
+/*   tokenize_extract_chains.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,22 +11,35 @@
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "ft_sh.h"
 
-int		validate_quotes_chains(char **instr)
+static void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
 {
-	int valid;
+	if (instr[help->x] == '&' && instr[help->x + 1] == '&')
+	{
+		node->type[0] = '&';
+		node->type[1] = '&';
+		help->x++;
+	}
+	else if (instr[help->x] == '|' && instr[help->x + 1] == '|')
+	{
+		node->type[0] = '|';
+		node->type[1] = '|';
+		help->x++;
+	}
+	else if (instr[help->x] == '|')
+		node->type[0] = '|';
+	else if (instr[help->x] == ';')
+		node->type[0] = ';';
+}
 
-	valid = 0;
-	if (!validate_quotes(*instr))
-	{
-		quote_prompt(instr, "quotes> ");
-		return (valid);
-	}
-	else if ((valid = validate_chains(*instr)) == 0)
-	{
-		quote_prompt(instr, "chain> ");
-		return (valid);
-	}
-	return (valid);
+void		tokenize_chain(char *instr, t_toke *help, t_tokelist *head)
+{
+	t_tokelist *tmp;
+
+	if (!head->type[0])
+		tmp = head;
+	else
+		tmp = add_toke(head);
+	tmp->content = instr + help->x;
+	get_chain_type(instr, help, tmp);
 }

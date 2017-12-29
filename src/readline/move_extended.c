@@ -40,27 +40,28 @@ static void	change_pos(t_input *data, size_t new_pos)
 static void	find_next_word_left(t_input *data)
 {
 	size_t	next;
-	bool	found_space;
-	bool	found_char;
+	bool	space;
+	bool	chr;
 
 	next = data->cursor_pos;
-	found_space = false;
-	found_char = false;
+	space = false;
+	chr = false;
 	while (next > 0)
 	{
 		if (data->line_buff[next] == ' ')
-			found_space = true;
-		if (found_space == true && ft_isalnum(data->line_buff[next]))
-			found_char = true;
-		if (found_space == true && found_char == true && data->line_buff[next] == ' ')
+			space = true;
+		if (space == true && ft_isalnum(data->line_buff[next]))
+			chr = true;
+		if (space == true && chr == true
+			&& data->line_buff[next] == ' ')
 			break ;
 		next--;
 	}
 	if (ft_isalnum(data->line_buff[next]))
-		found_char = true;
-	if (found_space == true && found_char == true && data->line_buff[next] == ' ')
+		chr = true;
+	if (space == true && chr == true && data->line_buff[next] == ' ')
 		change_pos(data, ++next);
-	else if (found_space == true && found_char == true)
+	else if (space == true && chr == true)
 		change_pos(data, next);
 	return ;
 }
@@ -76,7 +77,7 @@ static void	find_next_word_right(t_input *data)
 	{
 		if (data->line_buff[next] == ' ')
 			found_space = true;
-		if (found_space == true && ft_isalnum(data->line_buff[next])) // change this to be any non-whitespace char
+		if (found_space == true && ft_isalnum(data->line_buff[next]))
 			return (change_pos(data, next));
 		next++;
 	}

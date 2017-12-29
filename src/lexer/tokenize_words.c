@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_extract_chains.c                          :+:      :+:    :+:   */
+/*   tokenize_words.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,33 +12,41 @@
 
 #include "lexer.h"
 
-static void	get_chain_type(char *instr, t_toke *help, t_tokelist *node)
+bool	check_redirs(char *instr, t_toke *help)
 {
-	if (instr[help->x] == '&' && instr[help->x + 1] == '&')
+	int x;
+
+	x = -1;
+	while (ft_isdigit(instr[help->x + (++x)]))
+		;
+	if (instr[help->x + x] == '>' || instr[help->x + x] == '<')
 	{
-		node->type[0] = '&';
-		node->type[1] = '&';
-		help->x++;
+		help->x += x;
+		return (true);
 	}
-	else if (instr[help->x] == '|' && instr[help->x + 1] == '|')
-	{
-		node->type[0] = '|';
-		node->type[1] = '|';
-		help->x++;
-	}
-	else if (instr[help->x] == '|')
-		node->type[0] = '|';
-	else if (instr[help->x] == ';')
-		node->type[0] = ';';
+	return (false);
 }
 
-void	extract_chain(char *instr, t_toke *help, t_tokelist *head)
+void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 {
 	t_tokelist *tmp;
 
+	if (instr[help->x] == '&' || ft_isdigit(instr[help->x]))
+	{
+		if (check_redirs(instr, help))
+			tokenize_redirs(instr, help, head);
+		return ;
+	}
 	if (!head->type[0])
 		tmp = head;
 	else
 		tmp = add_toke(head);
-	get_chain_type(instr, help, tmp);
+	tmp->type[0] = 'w';
+	help->start = instr + help->x;
+	while (instr[help->x++] != '\0' && ft_isfilename(instr[help->x]))
+		;
+	help->end = instr + help->x;
+	tmp->len = help->end - help->start;
+	tmp->content = help->start;
+	help->x--;
 }

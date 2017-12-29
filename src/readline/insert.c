@@ -15,7 +15,7 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 
-void	clear_insert(t_input *data)
+void		clear_insert(t_input *data)
 {
 	size_t top;
 
