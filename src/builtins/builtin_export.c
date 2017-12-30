@@ -28,6 +28,7 @@ static int	export_variables(char **av)
 	int		ret;
 	char	*value;
 
+	ret = 0;
 	while (*av)
 	{
 		value = ft_strchr(*av, '=');
