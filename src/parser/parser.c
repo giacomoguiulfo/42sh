@@ -34,12 +34,12 @@ typedef struct	s_sub
 	int			x;
 }				t_sub;
 
-void		check_for_sub(char *find)
+void		check_for_sub(char *find, char this)
 {
 	t_sub	help;
 
 	help.env = (sh_singleton())->env;
-	if ((help.find_start = ft_strchr(find, '$')))
+	if ((help.find_start = ft_strchr(find, this)))
 	{
 		help.find_start++;
 		help.x = -1;
@@ -74,7 +74,7 @@ void		substitution_requests(t_asttoken **pre_ast)
 			y = -1;
 			while (pre_ast[x]->args[++y])
 			{
-				check_for_sub(pre_ast[x]->args[y]); // don't forget to check the binary of the struct too
+				check_for_sub(pre_ast[x]->args[y], '$'); // don't forget to check the binary of the struct too
 			}
 		}
 	}
