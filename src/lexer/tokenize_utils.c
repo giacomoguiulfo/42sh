@@ -26,7 +26,7 @@ int		ft_isfilename(char c)
 	if (ft_isalnum(c))
 		return (1);
 	else if (c == '_' || c == '.' || c == ',' || c == '-' || c == '=' ||
-		c == '+' || c == '%' || c == '#' || c == '@' || c == '^')
+		c == '+' || c == '%' || c == '#' || c == '@' || c == '^' || c == '$')
 		return (1);
 	return (0);
 }
