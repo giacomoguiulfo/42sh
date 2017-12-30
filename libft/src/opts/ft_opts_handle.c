@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 00:11:15 by giacomo           #+#    #+#             */
-/*   Updated: 2017/12/23 21:23:54 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/12/25 20:37:27 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,25 @@ static inline void	load_flag(void *data, t_opt *opt)
 
 int					ft_opts_short(char ***av, t_optsdata *optsdata, void *data)
 {
-	t_opt	*opt;
-	char	*opt_name;
-	char	*opt_arg;
-	int		i;
+	t_ohelp	h;
 
-	opt_name = **av + 1;
-	i = -1;
-	while (opt_name[++i])
+	h.opt_name = **av + 1;
+	h.i = -1;
+	while (h.opt_name[++h.i])
 	{
-		opt_arg = NULL;
-		opt = ft_opts_getshort(optsdata->opt_map, opt_name[i]);
-		if (!opt)
-			return (ft_opts_usage(optsdata, opt, NULL, opt_name[i]));
-		load_flag(data, opt);
-		if (opt->getarg)
+		h.opt_arg = NULL;
+		h.opt = ft_opts_getshort(optsdata->opt_map, h.opt_name[h.i]);
+		if (!h.opt)
+			return (ft_opts_usage(optsdata, h.opt, NULL, h.opt_name[h.i]));
+		load_flag(data, h.opt);
+		if (h.opt->getarg)
 		{
-			if (opt->arg_required && !(opt_arg = get_optarg(av, opt_name + i))
-				&& !opt->def_val)
-				return (invalid_optarg(optsdata, opt, false));
-			if (opt->getarg(opt->def_val, opt_arg, data))
-				return (invalid_optarg(optsdata, opt, false));
-			if (opt->arg_required)
+			if (h.opt->arg_required && !(h.opt_arg =
+				get_optarg(av, h.opt_name + h.i)) && !h.opt->def_val)
+				return (invalid_optarg(optsdata, h.opt, false));
+			if (h.opt->getarg(h.opt->def_val, h.opt_arg, data))
+				return (invalid_optarg(optsdata, h.opt, false));
+			if (h.opt->arg_required)
 				break ;
 		}
 	}
@@ -75,7 +72,7 @@ int					ft_opts_short(char ***av, t_optsdata *optsdata, void *data)
 	return (0);
 }
 
-int				ft_opts_long(char ***av, t_optsdata *optsdata, void *data)
+int					ft_opts_long(char ***av, t_optsdata *optsdata, void *data)
 {
 	t_opt	*opt;
 	char	*opt_name;

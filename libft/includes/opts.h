@@ -49,6 +49,14 @@ typedef struct	s_optparse
 	char		**argv;
 }				t_optparser;
 
+typedef struct	s_ohelp
+{
+	t_opt		*opt;
+	char		*opt_name;
+	char		*opt_arg;
+	int			i;
+}				t_ohelp;
+
 t_opt			*ft_opts_getlong(t_opt opt_map[], char *name);
 t_opt			*ft_opts_getshort(t_opt opt_map[], char c);
 int				ft_opts_long(char ***av, t_optsdata *opts, void *data);

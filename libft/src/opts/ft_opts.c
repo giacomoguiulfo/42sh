@@ -34,6 +34,21 @@ static int	validate_required(t_optsdata *optsdata, void *data)
 	return (0);
 }
 
+bool		opts_norm(char **av, t_optsdata *optsdata, void *data)
+{
+	if ((*av)[0] == '-' && (*av)[1] == '-')
+	{
+		if (ft_opts_long(&av, optsdata, data))
+			return (1);
+	}
+	else if ((*av)[0] == '-')
+	{
+		if (ft_opts_short(&av, optsdata, data))
+			return (1);
+	}
+	return (0);
+}
+
 int			ft_opts(char **av, t_optsdata *optsdata, void *data, bool parse)
 {
 	if (!av)
@@ -45,16 +60,8 @@ int			ft_opts(char **av, t_optsdata *optsdata, void *data, bool parse)
 	{
 		if (!ft_strcmp(*av, "-") || (!ft_strcmp(*av, "--") && av++))
 			break ;
-		if ((*av)[0] == '-' && (*av)[1] == '-')
-		{
-			if (ft_opts_long(&av, optsdata, data))
-				return (1);
-		}
-		else if ((*av)[0] == '-')
-		{
-			if (ft_opts_short(&av, optsdata, data))
-				return (1);
-		}
+		if (opts_norm(av, optsdata, data))
+			return (1);
 		else
 			break ;
 	}

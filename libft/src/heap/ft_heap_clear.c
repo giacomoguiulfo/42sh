@@ -31,6 +31,5 @@ int		ft_heap_clear(void)
 	}
 	heap_man->first = NULL;
 	heap_man->last = NULL;
-	// free(heap_man); TODO: Why remove this?
 	return (0);
 }

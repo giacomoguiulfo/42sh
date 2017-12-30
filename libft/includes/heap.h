@@ -56,8 +56,6 @@ t_heap_man		*ft_heap_singleton(void);
 ** HSTR functions
 */
 
-
-
 char			*ft_hstrdup(char *hstr);
 char			*ft_hstrndup(char *hstr, size_t size);
 

@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-int ft_opts_usage(t_optsdata *optsdata, t_opt *opt, char *name, char c)
+int	ft_opts_usage(t_optsdata *optsdata, t_opt *opt, char *name, char c)
 {
 	if (!optsdata->usage)
 		return (1);

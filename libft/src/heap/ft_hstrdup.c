@@ -14,11 +14,11 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char *ft_hstrdup(char *hstr)
+char	*ft_hstrdup(char *hstr)
 {
-    char    *ret;
-	size_t     size;
-	size_t	    i;
+	char	*ret;
+	size_t	size;
+	size_t	i;
 
 	if (!hstr)
 		return (NULL);

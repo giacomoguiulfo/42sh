@@ -13,7 +13,7 @@
 #include "heap.h"
 #include <stddef.h>
 
-char		*ft_hstrndup(char	*hstr, size_t size)
+char		*ft_hstrndup(char *hstr, size_t size)
 {
 	char	*ret;
 	size_t	i;
