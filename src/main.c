@@ -78,16 +78,6 @@ static int	sh_instruction(t_shell *shell)
 	return (0);
 }
 
-/*static void		handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		(void)sig;
-		sh_init_termios();
-		ft_printf("Kash: Resuming...\n");
-	}
-}*/
-
 int			main(int ac, char **av)
 {
 	t_shell			*shell;
@@ -97,9 +87,6 @@ int			main(int ac, char **av)
 	if (sh_init(ac, av, &history))
 		return (0);
 	shell = sh_singleton();
-	//if ((signal(SIGINT, handle_sigint)) == SIG_ERR)
-	//	ft_printf("Opps, signal problem\n");
-	//signal(SIGINT, &handle_sigint);
 	while (42)
 	{
 		sh_instruction(shell);

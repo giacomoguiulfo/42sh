@@ -40,7 +40,6 @@ void		sh_init_termios(void)
 
 	tcgetattr(STDIN, &term);
 	term.c_lflag &= ~(ICANON | ECHO | ISIG);
-	//term.c_cc[VINTR] = 1;
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	term.c_cc[0] = 0;
