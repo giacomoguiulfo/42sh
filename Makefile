@@ -74,6 +74,8 @@ parser/parser_make_tree\
 parser/parser_vectors\
 parser/parser_synthesizer\
 parser/parser_synthesizer_utils\
+parser/parser_substitution\
+parser/parser_substitution_utils\
 readline/readline\
 readline/key_filters_core\
 readline/key_filters_logistics\

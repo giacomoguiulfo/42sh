@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_substitution_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,14 +13,28 @@
 #include "parser.h"
 #include "lexer.h"
 #include "ft_sh.h"
+#include <stdlib.h>
 
-t_astree	*parser(t_tokelist *tokens)
+bool		ft_issub(char c)
 {
-	t_asttoken	**pre_ast;
-	t_astree	*mana;
+	if (ft_isalpha(c))
+		return (true);
+	else if (c == '_')
+		return (true);
+	return (false);
+}
 
-	pre_ast = synthesize_tokens(tokens);
-	mana = make_tree(pre_ast);
-	substitution_requests(pre_ast);
-	return (mana);
+char		*get_home(void)
+{
+	t_shell	*shell;
+	int		x;
+
+	shell = sh_singleton();
+	x = -1;
+	while (shell->env[++x])
+	{
+		if (ft_strncmp(shell->env[x], "HOME=", 5) == 0)
+			return (shell->env[x]);
+	}
+	return (NULL);
 }
