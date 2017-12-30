@@ -23,32 +23,38 @@ bool		ft_issub(char c)
 	return (false);
 }
 
+typedef struct	s_sub
+{
+	char		**env;
+	char		*env_start;
+	char		*env_end;
+	char		*find_start;
+	char		*find_end;
+	int			y;
+	int			x;
+}				t_sub;
+
 void		check_for_sub(char *find)
 {
-	char	**env;
-	char	*check;
-	char	*equal_sign;
-	int 	x;
-	int		y;
+	t_sub	help;
 
-	env = (sh_singleton())->env;
-	if ((check = ft_strchr(find, '$')))
+	help.env = (sh_singleton())->env;
+	if ((help.find_start = ft_strchr(find, '$')))
 	{
-		check++;
-		x = -1;
-		while (ft_issub(check[++x]))
+		help.find_start++;
+		help.x = -1;
+		while (ft_issub(help.find_start[++help.x]))
 			;
-		ft_printf("$$$\n");
-		ft_printf("-->%d: %s\n", x, check);
-		ft_dprintf(2, "len: %d\n", x);
-		y = -1;
-		while (env[++y])
+		ft_printf("-->%d: %s\n", help.x, help.find_start);
+		ft_dprintf(2, "len: %d\n", help.x);
+		help.y = -1;
+		while (help.env[++help.y])
 		{
-			if ((equal_sign = ft_strchr(env[y], '=')))
+			if ((help.env_end = ft_strchr(help.env[help.y], '=')))
 			{
-				equal_sign++;
-				if ((ft_strncmp(env[y], check, x)) == 0)
-					ft_printf("~~Match is complete!!!!!!!\n");
+				help.env_end++;
+				if ((ft_strncmp(help.env[help.y], help.find_start, help.x)) == 0)
+					ft_printf("~~Match is complete: %s\n", help.env[help.y]);
 			}
 		}
 	}
@@ -62,14 +68,12 @@ void		substitution_requests(t_asttoken **pre_ast)
 	x = -1;
 	while (pre_ast[++x])
 	{
-		ft_printf("x: %d\n", x);
 		if (pre_ast[x]->args[0])
 		{
 			check_for_sub(pre_ast[x]->binary);
 			y = -1;
 			while (pre_ast[x]->args[++y])
 			{
-				ft_printf("Args found: %s\n", pre_ast[x]->args[y]);
 				check_for_sub(pre_ast[x]->args[y]); // don't forget to check the binary of the struct too
 			}
 		}
