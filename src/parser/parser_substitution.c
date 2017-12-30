@@ -15,7 +15,7 @@
 #include "ft_sh.h"
 #include <stdlib.h>
 
-bool		get_find_info(t_sub	*this, char *find, char letter)
+bool		get_find_info(t_sub *this, char *find, char letter)
 {
 	if (!(this->start = ft_strchr(find, letter)))
 		return (false);
