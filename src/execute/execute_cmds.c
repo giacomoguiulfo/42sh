@@ -34,13 +34,16 @@ t_strfmap	g_builtins[] =
 	{"history", &builtin_history},
 	{"local", &builtin_setenv},
 	{"setenv", &builtin_setenv},
+	{"export", &builtin_setenv},
 	{"unset", &builtin_unsetenv},
 	{"unsetenv", &builtin_unsetenv},
 	{"exit", &builtin_exit},
 	{NULL, NULL}
 };
 
-int		msh_run_builtins(t_asttoken *this, t_shell *shell)
+typedef int						(t_builtin)(const char *av[]);
+
+t_builtin	*msh_run_builtins(t_asttoken *this)
 {
 	int i;
 
@@ -48,10 +51,10 @@ int		msh_run_builtins(t_asttoken *this, t_shell *shell)
 	while (g_builtins[i].name)
 	{
 		if (ft_strcmp(g_builtins[i].name, this->binary) == 0)
-			return (g_builtins[i].f(this->args, shell->env));
+			return (g_builtins[i].f);
 		i++;
 	}
-	return (-1);
+	return (NULL);
 }
 
 int		msh_run_prog(char *executable, char **args, char **newenvp)
@@ -81,14 +84,16 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
+	t_builtin	*foo;
 
 	this_path = NULL;
 	setup_io(shell, node->this->redirs);
 	check_pipes(node);
 	if (node->this->binary)
 	{
-		if (check_builtin(node->this->binary))
-			node->ret = msh_run_builtins(node->this, shell);
+		foo = msh_run_builtins(node->this);
+		if (foo)
+			node->ret = foo((const char **)node->this->args);
 		else
 		{
 			if ((this_path = build_bin_path(path, node->this->binary)))
