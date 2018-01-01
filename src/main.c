@@ -16,13 +16,12 @@
 #include "lexer.h"
 #include "parser.h"
 #include "execute.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
-void	history_add();
-
-static bool check_quit(t_shell *shell, char *cmds)
+static bool	check_quit(t_shell *shell, char *cmds)
 {
 	if (shell->quit == true)
 	{
@@ -33,37 +32,55 @@ static bool check_quit(t_shell *shell, char *cmds)
 	return (false);
 }
 
+static int	pre_processor(t_helper *assist, t_shell *shell)
+{
+	free(assist->prompt);
+	if (check_quit(shell, assist->cmds))
+		return (-1);
+	else if (!assist->cmds)
+		return (0);
+	history_add(assist->cmds);
+	return (1);
+}
+
+static int	processor(t_helper *assist)
+{
+	if ((assist->tokenized = lexer(&assist->cmds)))
+	{
+		assist->palm = parser(assist->tokenized);
+		if (!assist->palm)
+		{
+			free(assist->cmds);
+			return (0);
+		}
+		execute_ast_cmds(assist->palm);
+	}
+	free(assist->cmds);
+	return (1);
+}
+
 static int	sh_instruction(t_shell *shell)
 {
-	char			*cmds;
-	char			*prompt;
-	t_tokelist		*abstract;
-	t_astree		*palm;
+	t_helper	assist;
 
 	while (42)
 	{
-		prompt = msh_put_arrow();
-		cmds = readline(prompt);
-		free(prompt);
-		if (check_quit(shell, cmds))
+		assist.prompt = msh_put_arrow();
+		assist.cmds = readline(assist.prompt);
+		if ((assist.ret = pre_processor(&assist, shell)) == -1)
 			break ;
-		else if (!cmds)
+		else if (assist.ret == 0)
 			continue ;
-		history_add(cmds);
-		abstract = lexer(&cmds);
-		if (abstract)
-		{
-			palm = parser(abstract);
-			execute_ast_cmds(palm);
-		}
-		free(cmds);
+		if (!(assist.ret = processor(&assist)))
+			continue ;
+		break ;
 	}
 	return (0);
 }
 
 int			main(int ac, char **av)
 {
-	t_shell 		*shell;
+	t_shell			*shell;
 	static t_cmds	history;
 
 	g_argv = av;
@@ -73,6 +90,7 @@ int			main(int ac, char **av)
 	while (42)
 	{
 		sh_instruction(shell);
+		ft_heap_clear();
 		if (shell->quit == true)
 			break ;
 	}

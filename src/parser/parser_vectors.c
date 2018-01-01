@@ -12,33 +12,21 @@
 
 #include "parser.h"
 #include "lexer.h"
-#include "libft.h"
 #include "ft_sh.h"
 
 t_asttoken	**start_asttoken(void)
 {
-	t_asttoken **new;
+	t_asttoken	**new;
 
-	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (1 + 1));
-	new[1] = 0;
-	new[0] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
-	new[0]->binary = NULL;
-	new[0]->args = NULL;
-	new[0]->redirs = NULL;
-	new[0]->chain = NULL;
+	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (1));
+	new[0] = NULL;
 	return (new);
 }
 
-t_asttoken	**add_asttoken(t_asttoken **array)
+static void	init(t_asttoken **new, t_asttoken **old, int size)
 {
-	int			size;
 	int			x;
-	t_asttoken	**new;
 
-	size = -1;
-	while (array[++size])
-		;
-	new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
 	new[size + 1] = 0;
 	new[size] = (t_asttoken*)ft_hmalloc(sizeof(t_asttoken));
 	new[size]->binary = NULL;
@@ -47,12 +35,32 @@ t_asttoken	**add_asttoken(t_asttoken **array)
 	new[size]->chain = NULL;
 	x = -1;
 	while (++x < size)
-		new[x] = array[x];
-	array = new;
+		new[x] = old[x];
+	old = new;
+}
+
+t_asttoken	**add_asttoken(t_asttoken **array)
+{
+	int			size;
+	t_asttoken	**new;
+
+	if (!array)
+	{
+		size = 0;
+		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
+	}
+	else
+	{
+		size = -1;
+		while (array[++size])
+			;
+		new = (t_asttoken**)ft_hmalloc(sizeof(t_asttoken*) * (size + 1 + 1));
+	}
+	init(new, array, size);
 	return (new);
 }
 
-void	add_astredir(t_asttoken *this, t_tokelist *redir)
+void		add_astredir(t_asttoken *this, t_tokelist *redir)
 {
 	t_tokelist	**new;
 	int			size;
@@ -77,7 +85,7 @@ void	add_astredir(t_asttoken *this, t_tokelist *redir)
 	this->redirs = new;
 }
 
-void	add_astarg(t_asttoken *this, t_tokelist *tmp)
+void		add_astarg(t_asttoken *this, t_tokelist *tmp)
 {
 	char	**new;
 	int		size;
@@ -85,7 +93,7 @@ void	add_astarg(t_asttoken *this, t_tokelist *tmp)
 
 	if (!this->args)
 	{
-		this->args = (char**)ft_hmalloc(sizeof(char*) + 1 + 1);
+		this->args = (char**)ft_hmalloc(sizeof(char*) * (1 + 1));
 		this->args[0] = this->binary;
 		this->args[1] = 0;
 		return ;

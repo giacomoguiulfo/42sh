@@ -13,7 +13,11 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-static void assign_var(char **av, char ***env)
+#define SENV_ERR_1 "setenv: Too many arguments."
+#define SENV_ERR_2 "setenv: Variable name must begin with a letter."
+#define SENV_ERR_3 "setenv: Variable name must contain alphanumeric characters."
+
+static void	assign_var(char **av, char ***env)
 {
 	char	*str;
 	int		i;
@@ -23,7 +27,7 @@ static void assign_var(char **av, char ***env)
 	while ((*env) && (*env)[i])
 	{
 		if (ft_strcmp((*env)[i], av[1]) == '=' &&
-			ft_strlen(av[1]) == ft_strlenchr((*env)[i], '=')) // TODO: word_is_var()
+			ft_strlen(av[1]) == ft_strlenchr((*env)[i], '='))
 		{
 			ft_strdel(&(*env)[i]);
 			(*env)[i] = str;
@@ -35,16 +39,23 @@ static void assign_var(char **av, char ***env)
 	ft_strdel(&str);
 }
 
-int builtin_setenv(char **av)
+int			builtin_setenv(char **av)
 {
 	char ***env;
 
 	if (!av || !av[0])
 		return (1);
-	env = (!ft_strcmp(av[0], "local")) ? &sh_singleton()->localenv : &sh_singleton()->env;
+	env = (!ft_strcmp(av[0], "local")) ?
+		&sh_singleton()->localenv : &sh_singleton()->env;
 	if (!av[1])
 		ft_sstrputs(*env);
-	else // TODO: Check that is a proper assignemnt - validations
+	else if (av[1] && av[2] && av[3])
+		return (SH_ERR_R1(SENV_ERR_1));
+	else if (!ft_isalpha(av[1][0]) && av[1][0] != '_')
+		return (SH_ERR_R1(SENV_ERR_2));
+	else if (!ft_unixcase(av[1]))
+		return (SH_ERR_R1(SENV_ERR_3));
+	else
 		assign_var(av, env);
 	return (0);
 }

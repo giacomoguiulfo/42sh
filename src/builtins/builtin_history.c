@@ -13,7 +13,7 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-int builtin_history()
+int	builtin_history(void)
 {
 	t_shell *shell;
 	t_cmds	*hist;

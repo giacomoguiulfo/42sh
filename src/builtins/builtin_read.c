@@ -43,8 +43,10 @@ static t_optsdata g_readopts =
 static int	read_loop(t_read *data)
 {
 	int		ret;
+	int		esc;
 	char	buf[2];
 
+	esc = 0;
 	while (42)
 	{
 		if ((ret = read(data->fd, buf, 5) <= 0))
@@ -59,8 +61,10 @@ static int	read_loop(t_read *data)
 			ft_dstr_append(&data->input, (char *)buf);
 			ft_putchar(*buf);
 		}
-		if (buf[0] == data->delim)
+		if (!esc && buf[0] == data->delim)
 			break ;
+		if (!READ_HAS_OPT_LR(data->optparser.flags))
+			esc = esc ? 0 : (*buf == '\\');
 	}
 	return (0);
 }

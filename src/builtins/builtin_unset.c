@@ -29,7 +29,7 @@ static t_optsdata g_unsetopts =
 int	builtin_unset(char **av)
 {
 	t_optparser data;
-	char	*tmp;
+	char		*tmp;
 
 	data.flags = 0;
 	if (ft_opts(av, &g_unsetopts, &data, true))
@@ -41,8 +41,8 @@ int	builtin_unset(char **av)
 	}
 	tmp = av[0];
 	av[0] = "local";
-	builtin_unsetenv(av, NULL);
+	builtin_unsetenv(av);
 	av[0] = tmp;
-	builtin_unsetenv(av, NULL);
+	builtin_unsetenv(av);
 	return (0);
 }

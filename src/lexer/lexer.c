@@ -11,14 +11,32 @@
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "history.h"
 #include "ft_sh.h"
 #include "libft.h"
-#include "history.h"
 #include <stdlib.h>
+
+int			validate_quotes_chains(char **instr)
+{
+	int valid;
+
+	valid = 0;
+	if (!validate_quotes(*instr))
+	{
+		quote_prompt(instr, "quotes> ");
+		return (valid);
+	}
+	else if ((valid = validate_chains(*instr)) == 0)
+	{
+		quote_prompt(instr, "chain> ");
+		return (valid);
+	}
+	return (valid);
+}
 
 bool		validate(char **instr)
 {
-	int		valid;
+	int	valid;
 
 	valid = 0;
 	while (!valid)
@@ -27,22 +45,15 @@ bool		validate(char **instr)
 		if (valid == -1)
 			return (false);
 	}
-	if (!validate_chain_bins(*instr))
-		return (false);
-	if (!validate_redirections(*instr))
-		return (false);
 	return (true);
 }
-			
+
 t_tokelist	*lexer(char **instr)
 {
-	t_tokelist *abstract;
+	t_tokelist *tokenized;
 
 	if (!validate(instr))
-	{
-		ft_printf("Lexer: Not a valid command: %s\n", *instr);
 		return (NULL);
-	}
-	abstract = tokenize(*instr);
-	return (abstract);
+	tokenized = tokenize(*instr);
+	return (tokenized);
 }

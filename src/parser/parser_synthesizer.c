@@ -14,55 +14,79 @@
 #include "lexer.h"
 #include "ft_sh.h"
 
-void		add_binary(t_asttoken *build, t_tokelist *binary)
+bool		ft_isword(char c)
 {
-	build->binary = ft_hstrndup(binary->content, binary->len);
-	add_astarg(build, NULL);
+	if (c == 'w')
+	{
+		return (true);
+	}
+	else if (ft_isquote(c))
+	{
+		return (true);
+	}
+	return (false);
 }
 
-void		add_args(t_asttoken *build, t_tokelist *arg)
+void		build_argv(t_tokelist *start, t_asttoken *build)
 {
-	add_astarg(build, arg);
+	if (start->type[0] == 'w' && !build->binary)
+		add_binary(build, start);
+	else if (start->type[0] == 'w')
+		add_astarg(build, start);
+	else if (ft_isquote(start->type[0]))
+		add_astarg(build, start);
 }
 
-void		add_chain(t_asttoken *build, t_tokelist *arg)
+t_asttoken	**get_toke(t_tokelist *s, t_tokelist *e, t_asttoken **b, int c)
 {
-	build->chain = arg;
-}
-
-void		add_redir(t_asttoken *build, t_tokelist *arg)
-{
-	add_astredir(build, arg);
+	if (!b)
+		b = add_asttoken(b);
+	while (s && s != e)
+	{
+		if (!b[c])
+			b = add_asttoken(b);
+		if (ft_isword(s->type[0]))
+			build_argv(s, b[c]);
+		else if (ft_isredirection(s->type[0]))
+			add_redir(b[c], s);
+		else if (ft_iscompletechain(s->type))
+			add_chain(b[c], s);
+		s = s->next;
+	}
+	if (s && s == e)
+	{
+		if (!b[c])
+			b = add_asttoken(b);
+		add_chain(b[c], s);
+	}
+	return (b);
 }
 
 t_asttoken	**synthesize_tokens(t_tokelist *tokens)
 {
-	t_tokelist	*tmp;
 	t_asttoken	**build;
+	t_tokelist	*start;
+	t_tokelist	*end;
 	int			count;
 
-	tmp = tokens;
-	build = start_asttoken();
-	count = 0;
-	while (tmp)
+	build = NULL;
+	start = tokens;
+	end = tokens;
+	count = -1;
+	while (end)
 	{
-		if (tmp->type[0] == 'w' || ft_isquote(tmp->type[0]))
+		if (ft_iscompletechain(end->type))
 		{
-			if (!build[count])
-				build = add_asttoken(build);
-			if (!build[count]->binary)
-				add_binary(build[count], tmp);
-			else
-				add_args(build[count], tmp);
-		}
-		else if (tmp->type[0] == '>' || tmp->type[0] == '<')
-			add_astredir(build[count], tmp);
-		else if (ft_iscompletechain(tmp->type))
-		{
-			add_chain(build[count], tmp);
 			count++;
+			build = get_toke(start, end, build, count);
+			start = end->next;
 		}
-		tmp = tmp->next;
+		end = end->next;
+	}
+	if (start)
+	{
+		count++;
+		build = get_toke(start, end, build, count);
 	}
 	return (build);
 }

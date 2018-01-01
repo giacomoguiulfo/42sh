@@ -13,13 +13,14 @@
 #include "ft_sh.h"
 #include "libft.h"
 
-int builtin_unsetenv(char **av)
+int	builtin_unsetenv(char **av)
 {
 	char	***env;
 	int		i;
 	int		j;
 
-	env = (!ft_strcmp(av[0], "local")) ? &sh_singleton()->localenv : &sh_singleton()->env;
+	env = (!ft_strcmp(av[0], "local")) ?
+		&sh_singleton()->localenv : &sh_singleton()->env;
 	i = 0;
 	while (av[i])
 	{
@@ -28,7 +29,7 @@ int builtin_unsetenv(char **av)
 		{
 			if (ft_strcmp((*env)[j], av[i]) == '=' &&
 				ft_strlen(av[i]) == ft_strlenchr((*env)[j], '='))
-				ft_sstrdel(*env, j);
+				ft_sstrdelone(*env, j);
 			else
 				j++;
 		}

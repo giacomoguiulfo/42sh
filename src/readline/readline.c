@@ -41,13 +41,13 @@ bool		exit_status(t_input *data, int ret)
 	if (data->char_buff[0] == 4)
 	{
 		shell = sh_singleton();
-		ft_putstr("\nReadline: Found EOF call\n");
+		ft_putstr("\nKash: Found EOF call\n");
 		return ((shell->quit = true));
 	}
 	else if (ret < 0)
 	{
 		ft_printf("return is %d\n", ret);
-		ft_putstr("\nReadline: Read error\n");
+		ft_putstr("\nKash: Read error\n");
 		return ((shell->quit = true));
 	}
 	return (false);

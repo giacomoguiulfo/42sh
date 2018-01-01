@@ -24,7 +24,7 @@ static void	output(char *buff)
 	tputs(tgetstr("rc", NULL), 1, ft_putchar);
 }
 
-void	trim(t_input *data)
+void		trim(t_input *data)
 {
 	char	buff[LINE_BUFF_SIZE];
 	char	*tmp;

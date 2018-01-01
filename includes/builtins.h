@@ -13,15 +13,17 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-int builtin_cd();
-int builtin_echo();
-int builtin_env();
-int builtin_exit();
-int builtin_export();
-int builtin_read();
-int builtin_setenv();
-int builtin_unset();
-int builtin_unsetenv();
+typedef int	(t_builtin)(const char *av[]);
+
+int builtin_cd(char *argv[]);
+int builtin_echo(char *argv[]);
+int builtin_env(char *argv[]);
+int builtin_exit(void);
+int builtin_export(char *argv[]);
+int builtin_read(char *argv[]);
+int builtin_setenv(char *argv[]);
+int builtin_unset(char *argv[]);
+int builtin_unsetenv(char *argv[]);
 int builtin_history();
 
 #endif

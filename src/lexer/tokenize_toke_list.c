@@ -12,46 +12,50 @@
 
 #include "lexer.h"
 
-t_tokelist *add_toke(t_tokelist *head)
+static void	init(t_tokelist *node)
+{
+	node->content = NULL;
+	node->next = NULL;
+	node->len = 0;
+	node->type[0] = '\0';
+	node->type[1] = '\0';
+	node->type[2] = '\0';
+	node->redir_prefix_fd = -2;
+	node->redir_suffix_fd = -2;
+	node->redir_suffix_file = NULL;
+	node->heredoc[0] = -2;
+	node->heredoc[1] = -2;
+}
+
+t_tokelist	*add_toke(t_tokelist *head)
 {
 	t_tokelist *tmp;
 
 	if (!head)
 		return (NULL);
-	tmp = head;
-	while (tmp->next)
+	if (!head->last)
+	{
+		head->last = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
+		head->next = head->last;
+		tmp = head->last;
+	}
+	else
+	{
+		tmp = head->last;
+		tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
 		tmp = tmp->next;
-	tmp->next = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
-	tmp = tmp->next;
-	tmp->content = NULL;
-	tmp->next = NULL;
-	tmp->len = 0;
-	tmp->type[0] = '\0';
-	tmp->type[1] = '\0';
-	tmp->type[2] = '\0';
-	tmp->redir_turn_off = false;
-	tmp->redir_prefix_fd = -2;
-	tmp->redir_suffix_fd = -2;
-	tmp->redir_suffix_file = NULL;
-	tmp->redir_suffix_len = -2;
+	}
+	head->last = tmp;
+	init(tmp);
 	return (tmp);
 }
 
-t_tokelist *start_toking(void)
+t_tokelist	*start_toking(void)
 {
 	t_tokelist *head;
 
 	head = (t_tokelist*)ft_hmalloc(sizeof(t_tokelist));
-	head->content = NULL;
-	head->next = NULL;
-	head->len = 0;
-	head->type[0] = '\0';
-	head->type[1] = '\0';
-	head->type[2] = '\0';
-	head->redir_turn_off = false;
-	head->redir_prefix_fd = -2;
-	head->redir_suffix_fd = -2;
-	head->redir_suffix_file = NULL;
-	head->redir_suffix_len = -1;
+	head->last = NULL;
+	init(head);
 	return (head);
 }

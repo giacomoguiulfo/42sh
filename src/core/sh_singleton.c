@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stddef.h>
 
-t_shell *sh_singleton(void)
+t_shell	*sh_singleton(void)
 {
 	static t_shell *shell = NULL;
 

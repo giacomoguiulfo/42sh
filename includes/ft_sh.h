@@ -41,41 +41,52 @@ typedef struct			s_cmds
 	struct s_cmds		*prev;
 }						t_cmds;
 
-typedef struct  		s_shell
+typedef struct			s_shell
 {
 	bool				quit;
+	char				**argv;
 	char				**env;
 	char				**localenv;
+	char				*path;
 	char				*term_name;
 	int					argc;
 	int					stdout_backup;
 	int					stdin_backup;
 	int					stderr_backup;
-	char				**argv;
 	struct s_cmds		*history;
 }						t_shell;
 
 typedef struct			s_tokelist
 {
-	bool				redir_turn_off;
 	char				type[3];
-	char				*redir_suffix_file;
+	int					len;
 	int					redir_prefix_fd;
-	int					redir_suffix_len;
 	int					redir_suffix_fd;
-	size_t				len;
+	int					heredoc[2];
+	char				*redir_suffix_file;
+	bool				redir_turn_off;
 	struct s_tokelist	*next;
+	struct s_tokelist	*last;
 	void				*content;
 }						t_tokelist;
 
-int     	sh_init();
-t_shell 	*sh_singleton();
-void		sh_shutdown();
-char		*readline(char *prompt);
-t_tokelist	*lexer(char **cmds);
-char		*msh_put_arrow(void);
-char		**msh_strsplit(char *line);
+typedef struct			s_helper
+{
+	char				*cmds;
+	char				*prompt;
+	int					ret;
+	t_tokelist			*tokenized;
+	t_astree			*palm;
+}						t_helper;
 
-t_astree	*parser(t_tokelist *abstract);
+int						sh_init();
+void					sh_init_termios();
+t_shell					*sh_singleton();
+void					sh_shutdown();
+char					*readline(char *prompt);
+t_tokelist				*lexer(char **cmds);
+t_astree				*parser(t_tokelist *abstract);
+char					*msh_put_arrow(void);
+char					**msh_strsplit(char *line);
 
 #endif
