@@ -19,8 +19,8 @@ int	builtin_unsetenv(char **av)
 	int		i;
 	int		j;
 
-	env = (!ft_strcmp(av[0], "local")) ? &sh_singleton()->localenv :
-		&sh_singleton()->env;
+	env = (!ft_strcmp(av[0], "local")) ?
+		&sh_singleton()->localenv : &sh_singleton()->env;
 	i = 0;
 	while (av[i])
 	{

@@ -37,5 +37,6 @@ char			*build_bin_path(char *path, char *binary);
 bool			check_access(char *binary, char *path);
 bool			check_builtin(char *binary);
 bool			check_reg_file(mode_t st_mode);
+t_builtin		*msh_run_builtin(t_asttoken *this);
 
 #endif

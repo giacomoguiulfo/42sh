@@ -26,37 +26,6 @@
 #include <error.h>
 #include <stdlib.h>
 
-t_strfmap	g_builtins[] =
-{
-	{"echo", &builtin_echo},
-	{"cd", &builtin_cd},
-	{"env", &builtin_env},
-	{"history", &builtin_history},
-	{"local", &builtin_setenv},
-	{"setenv", &builtin_setenv},
-	{"export", &builtin_setenv},
-	{"unset", &builtin_unsetenv},
-	{"unsetenv", &builtin_unsetenv},
-	{"exit", &builtin_exit},
-	{NULL, NULL}
-};
-
-typedef int						(t_builtin)(const char *av[]);
-
-t_builtin	*msh_run_builtins(t_asttoken *this)
-{
-	int i;
-
-	i = 0;
-	while (g_builtins[i].name)
-	{
-		if (ft_strcmp(g_builtins[i].name, this->binary) == 0)
-			return (g_builtins[i].f);
-		i++;
-	}
-	return (NULL);
-}
-
 int		msh_run_prog(char *executable, char **args, char **newenvp)
 {
 	pid_t	pid;
@@ -92,7 +61,7 @@ void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
 	t_builtin	*foo;
 
-	if ((foo = msh_run_builtins(node->this)))
+	if ((foo = msh_run_builtin(node->this)))
 		node->ret = foo((const char **)node->this->args);
 	else
 	{

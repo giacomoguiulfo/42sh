@@ -213,7 +213,8 @@ ft_strsub 					\
 ft_strtrim
 SYS :=						\
 ft_getenv					\
-ft_isdir
+ft_isdir					\
+ft_unixcase
 
 SRC_BASE	:=												\
 $(addprefix arr/, $(ARR))									\

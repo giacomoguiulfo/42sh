@@ -22,5 +22,6 @@
 
 char	*ft_getenv(char **env, char *key);
 int		ft_isdir(const char *path);
+int		ft_unixcase(const char *str);
 
 #endif

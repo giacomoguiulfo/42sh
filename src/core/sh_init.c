@@ -53,7 +53,7 @@ static void	init_shlvl(char **env)
 
 	shlvl = ft_getenv(env, "SHLVL");
 	newlvl = (shlvl) ? ft_itoa(ft_atoi(shlvl) + 1) : ft_strdup("1");
-	builtin_setenv((char*[]){"setenv", "SHLVL", newlvl, NULL}, NULL);
+	builtin_setenv((char*[]){"setenv", "SHLVL", newlvl, NULL});
 	ft_strdel(&newlvl);
 }
 
