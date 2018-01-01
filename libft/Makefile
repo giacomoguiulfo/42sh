@@ -167,7 +167,9 @@ ft_pow 						\
 ft_sqrtf
 SSTR :=						\
 ft_sstrdel					\
+ft_sstrdelone				\
 ft_sstrdup					\
+ft_sstrlen					\
 ft_sstrpush					\
 ft_sstrputs
 STR :=						\

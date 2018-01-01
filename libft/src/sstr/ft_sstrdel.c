@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sstrdel.c                                       :+:      :+:    :+:   */
+/*   ft_sstrdelone.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "str.h"
+#include <stdlib.h>
 
-void	ft_sstrdel(char **sstr, int index)
+void	ft_sstrdel(char ***sstr)
 {
-	int i;
+	size_t i;
 
-	ft_strdel(&sstr[index]);
-	i = index;
-	while (sstr[i] || i == index)
+	if (!sstr)
+		return ;
+	i = 0;
+	while ((*sstr)[i])
 	{
-		sstr[i] = sstr[i + 1];
+		ft_strdel((*sstr) + i);
 		i++;
 	}
+	ft_strdel((*sstr) + i);
+	free(*sstr);
+	*sstr = NULL;
 }

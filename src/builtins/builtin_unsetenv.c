@@ -29,7 +29,7 @@ int	builtin_unsetenv(char **av)
 		{
 			if (ft_strcmp((*env)[j], av[i]) == '=' &&
 				ft_strlen(av[i]) == ft_strlenchr((*env)[j], '='))
-				ft_sstrdel(*env, j);
+				ft_sstrdelone(*env, j);
 			else
 				j++;
 		}

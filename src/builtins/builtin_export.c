@@ -46,12 +46,20 @@ static int	export_variables(char **av)
 	return ((ret) ? 1 : 0);
 }
 
+static int	export_cmp(const void *a, const void *b)
+{
+	return (ft_strcmp((char *)a, (char *)b));
+}
+
 static int	export_print(void)
 {
+	char	**tmp;
 	char	**env;
 	char	*set;
 
-	env = sh_singleton()->env;
+	env = ft_sstrdup(sh_singleton()->env);
+	tmp = env;
+	ft_qsort((void **)env, 0, ft_sstrlen(env) - 1, export_cmp);
 	while (*env)
 	{
 		set = ft_strchr(*env, '=');
@@ -61,6 +69,7 @@ static int	export_print(void)
 			ft_printf("export %s\n", *env);
 		env++;
 	}
+	ft_sstrdel(&tmp);
 	return (0);
 }
 

@@ -43,7 +43,6 @@ int			builtin_setenv(char **av)
 {
 	char ***env;
 
-	DBG("%s", av[1]);
 	if (!av || !av[0])
 		return (1);
 	env = (!ft_strcmp(av[0], "local")) ?
