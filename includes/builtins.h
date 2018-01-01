@@ -15,15 +15,15 @@
 
 typedef int	(t_builtin)(const char *av[]);
 
-int builtin_cd(char *argv[]);
-int builtin_echo(char *argv[]);
-int builtin_env(char *argv[]);
+int builtin_cd(char *av[]);
+int builtin_echo(char *av[]);
+int builtin_env(char *av[]);
 int builtin_exit(void);
-int builtin_export(char *argv[]);
-int builtin_read(char *argv[]);
-int builtin_setenv(char *argv[]);
-int builtin_unset(char *argv[]);
-int builtin_unsetenv(char *argv[]);
+int builtin_export(char *av[]);
+int builtin_read(char *av[]);
+int builtin_setenv(char *av[]);
+int builtin_unset(char *av[]);
+int builtin_unsetenv(char *av[]);
 int builtin_history();
 
 #endif

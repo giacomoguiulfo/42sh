@@ -20,9 +20,9 @@
 typedef struct	s_read
 {
 	t_optparser optparser;
-	char		delim;
-	int			fd;
 	t_dstr		input;
+	int			fd;
+	char		delim;
 }				t_read;
 
 static int read_get_fd(char *u __attribute((unused)), char *fd, t_read *data)
@@ -39,6 +39,11 @@ static t_optsdata g_readopts =
 		{0, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0}
 	}
 };
+
+static int	read_assign(t_read *data)
+{
+
+}
 
 static int	read_loop(t_read *data)
 {
@@ -69,17 +74,22 @@ static int	read_loop(t_read *data)
 	return (0);
 }
 
-int	builtin_read(char *const av[])
+int	builtin_read(char *av[])
 {
-	t_read data;
+	t_read	data;
+	int		ret;
 
-	data.fd = 0;
-	data.delim = '\n';
+	ret = 0;
 	data.optparser.flags = 0;
-	ft_dstr_new(&data.input, 24);
 	if (ft_opts((char **)av, &g_readopts, &data, true))
 		return (1);
-	read_loop(&data);
+	data.fd = 0;
+	data.delim = '\n';
+	ft_dstr_new(&data.input, 24);
+	ret = read_loop(&data);
 	DBG("%s", ((t_dstr)data.input).data);
-	return (0);
+	if (!ret)
+		ret = read_assign(&data);
+	ft_dstr_free(&data.input);
+	return (ret);
 }
