@@ -32,7 +32,7 @@ bool	try_pwd(char *binary)
 	ft_strcat(cwd_path, binary);
 	if ((lstat(cwd_path, &sb)) == -1)
 		return (false);
-	else if (!check_access(binary, cwd_path))
+	else if (!check_access(cwd_path))
 		return (false);
 	else if (!check_reg_file(sb.st_mode))
 		return (false);

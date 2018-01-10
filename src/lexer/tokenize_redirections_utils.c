@@ -17,15 +17,11 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 	int len;
 
 	len = 0;
-	ft_printf("start: %s\n", instr);
 	node->redir_suffix_file = instr + help->x;
-	ft_printf("before: %s\n", instr + help->x);
 	while (ft_isfilename(instr[len + help->x]) && instr[len + help->x + 1])
 		len++;
 	node->redir_suffix_file = ft_hstrndup(instr + help->x, len + 1);
-	ft_printf("%d~~~%s\n", len, node->redir_suffix_file);
 	help->x += len;
-	ft_printf("now: %s\n", instr + help->x);
 }
 
 static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
