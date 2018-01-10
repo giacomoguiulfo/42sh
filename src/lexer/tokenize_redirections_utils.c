@@ -18,10 +18,12 @@ static void	get_suffix_word(char *instr, t_toke *help, t_tokelist *node)
 
 	len = 0;
 	node->redir_suffix_file = instr + help->x;
-	while (ft_isfilename(instr[len + help->x]) && instr[len + help->x + 1])
+	while (ft_isfilename(instr[len + help->x]))
 		len++;
 	node->redir_suffix_file = ft_hstrndup(instr + help->x, len);
 	help->x += len;
+	if (instr[help->x] == '\0')
+		help->x--;
 }
 
 static void	get_suffix_quote(char *instr, t_toke *help, t_tokelist *node)
