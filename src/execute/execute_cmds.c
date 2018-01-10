@@ -94,11 +94,6 @@ void	execute_ast_cmds(t_astree *head)
 	t_shell		*shell;
 
 	shell = sh_singleton();
-	if (!shell->path)
-	{
-		ft_printf("Kash: path is unset\n");
-		return ;
-	}
 	tmp = head;
 	recursive_execute(shell, tmp, shell->path);
 	restore_io(shell);

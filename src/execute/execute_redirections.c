@@ -44,14 +44,16 @@ void	redirect_output(t_shell *shell, t_tokelist *this, int opt)
 	if (this->redir_suffix_file)
 		file = this->redir_suffix_file;
 	if (file)
+	{
 		suffix_fd = open(file, O_WRONLY | O_CREAT | ((opt) ? O_APPEND :
 			O_TRUNC), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	}
 	else if (this->redir_suffix_fd)
 		suffix_fd = this->redir_suffix_fd;
 	prefix_fd = 1;
 	if (this->redir_prefix_fd > 0)
 		prefix_fd = this->redir_prefix_fd;
-	dup2(suffix_fd, prefix_fd);
+	dup2(suffix_fd, 1);
 	close(suffix_fd);
 }
 
