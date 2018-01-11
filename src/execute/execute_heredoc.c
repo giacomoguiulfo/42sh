@@ -64,7 +64,7 @@ static bool	check_heredoc_delim(t_tokelist *redir)
 	ft_dprintf(2, "Trash: please enter a delimiter character or phrase\n");
 	ft_dprintf(2, "Or, alternatively, you could just press enter and\n");
 	ft_dprintf(2, "we'll forget all about this heredoc business.\n");
-	doc.new_instr = readline("delimter> ");
+	doc.new_instr = readline("delimiter> ");
 	if (!doc.new_instr)
 		return (false);
 	redir->redir_suffix_file = ft_hstrdup(doc.new_instr);
