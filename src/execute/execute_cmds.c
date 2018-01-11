@@ -60,9 +60,14 @@ void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
 	t_builtin	*foo;
+	int x = -1;
 
 	if ((foo = msh_run_builtin(node->this)))
+	{
+		while (node->this->args[++x])
+			ft_dprintf(2, "-->%s\n", node->this->args[x]);
 		node->ret = foo((const char **)node->this->args);
+	}
 	else
 	{
 		if (try_without_path(node->this->binary))

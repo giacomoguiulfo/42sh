@@ -88,10 +88,6 @@ int		validate_chains(char *inst)
 	if (state == -1)
 		ft_dprintf(2, "Trash: parse error near %c\n", inst[x]);
 	if ((state == 0 && delim == ';') || (state == 0 && delim == 0))
-	{
-		ft_dprintf(2, "State: %d | delim: %s\n", state, ft_itoa(delim));
-		ft_dprintf(2, "Returned true here\n");
 		return (true);
-	}
 	return (state);
 }
