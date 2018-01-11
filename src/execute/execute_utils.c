@@ -57,3 +57,18 @@ char	*get_path(void)
 	}
 	return (NULL);
 }
+
+bool	try_without_path(char *test)
+{
+	struct stat sb;
+
+	if ((lstat(test, &sb)) == -1)
+		return (false);
+	else if (!check_access(test))
+		return (false);
+	else if (!(sb.st_mode & S_IXUSR))
+	{
+		return (false);
+	}
+	return (true);
+}

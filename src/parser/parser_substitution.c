@@ -103,7 +103,3 @@ void		substitution_requests(t_asttoken **pre_ast)
 		}
 	}
 }
-
-
-
-

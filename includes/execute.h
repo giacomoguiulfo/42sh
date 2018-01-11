@@ -32,6 +32,7 @@ void			redirect_heredoc(t_tokelist *redir);
 void			restore_io(t_shell *shell);
 void			setup_io(t_shell *shell, t_tokelist **redirs);
 
+bool			try_without_path(char *test);
 char			*build_bin_path(char *path, char *binary);
 
 bool			check_access(char *path);
