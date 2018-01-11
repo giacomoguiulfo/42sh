@@ -42,7 +42,6 @@ void	check_quotes(char *inst, int *x, int *state)
 
 void	check_chain(char *inst, int *x, int *state)
 {
-	ft_dprintf(2, "%d\n", state);
 	if (*state == 0)
 	{
 		*state = -1;
@@ -88,7 +87,7 @@ int		validate_chains(char *inst)
 	}
 	if (state == -1)
 		ft_printf("Trash: parse error near %c\n", inst[x]);
-	if (state == 0 && delim == ';')
+	if ((state == 0 && delim == ';') || (state == 0 && delim == 0))
 		return (true);
 	return (state);
 }
