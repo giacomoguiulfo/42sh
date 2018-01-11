@@ -31,19 +31,18 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 	pid_t	pid;
 	int		status;
 
-	ft_dprintf(2, "arg: %s\n", args[2]);
 	pid = fork();
 	if (pid == 0)
 	{
 		if (execve(executable, args, newenvp) == -1)
 		{
-			ft_dprintf(2, "msh: permission denied: %s\n", executable);
+			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-		ft_dprintf(2, "msh: unable to fork process: %d\n", pid);
+		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
 		exit(EXIT_FAILURE);
 	}
 	wait(&status);
