@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtins.h"
 #include <signal.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -27,8 +28,22 @@ static void	signal_handler(int signo)
 	}
 }
 
+void		kill_handler(int signo)
+{
+	int status;
+
+	status = 0;
+	if (signo == SIGQUIT)
+	{
+		write(1, "\n", 1);
+		waitpid(-1, &status, 0);
+		builtin_exit();
+	}
+}
+
 void		sh_init_signals(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGWINCH, signal_handler);
+	signal(SIGQUIT, kill_handler);
 }

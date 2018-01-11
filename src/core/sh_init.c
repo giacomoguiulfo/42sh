@@ -75,9 +75,9 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
 		shell->term_name = "dumb";
 	if ((ret = tgetent(NULL, shell->term_name)) < 0)
-		return (SH_ERR_R1("Unable to access termcap database"));
+		return (SH_ERR_R1("Trash: Unable to access termcap database\n"));
 	else if (ret == 0)
-		return (SH_ERR_R1("Terminal type is not defined"));
+		return (SH_ERR_R1("Trash: Terminal type is not defined\n"));
 	init_shlvl(shell->env);
 	sh_init_signals();
 	return (0);
