@@ -42,7 +42,6 @@ void	check_quotes(char *inst, int *x, int *state)
 
 void	check_chain(char *inst, int *x, int *state)
 {
-	ft_dprintf(2, "%d\n", state);
 	if (*state == 0)
 	{
 		*state = -1;
