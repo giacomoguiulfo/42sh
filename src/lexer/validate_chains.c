@@ -18,7 +18,7 @@ bool	manage_chain(char *inst, int *x)
 {
 	bool chain_on;
 
-	chain_on = true;
+	chain_on = false;
 	if (inst[*x] == '|' && inst[*x + 1] == '|')
 	{
 		*x = *x + 1;
@@ -54,28 +54,40 @@ void	check_chain(char *inst, int *x, int *state)
 	}
 }
 
+void	check_valid(char *inst, int *x, int *state, char *delim)
+{
+	if (ft_isalnum(inst[*x]))
+		*state = 1;
+	else if (ft_isquote(inst[*x]))
+		check_quotes(inst, x, state);
+	else if (ft_isdepchain(inst + *x))
+	{
+		delim = &inst[*x];
+		check_chain(inst, x, state);
+		if (*state < 1)
+			return ;
+		*state = 0;
+	}
+	else if (inst[*x] == ';')
+		*delim = inst[*x];
+}
+
 int		validate_chains(char *inst)
 {
 	int		state;
 	int		x;
+	char	delim;
 
 	x = -1;
 	state = 0;
+	delim = 0;
 	while (inst[++x])
 	{
-		if (ft_isalnum(inst[x]))
-			state = 1;
-		else if (ft_isquote(inst[x]))
-			check_quotes(inst, &x, &state);
-		else if (ft_isdepchain(inst + x))
-		{
-			check_chain(inst, &x, &state);
-			if (state < 1)
-				break ;
-			state = 0;
-		}
+		check_valid(inst, &x, &state, &delim);
 	}
 	if (state == -1)
-		ft_printf("Lexer: parse error near %c\n", inst[x]);
+		ft_printf("Trash: parse error near %c\n", inst[x]);
+	if ((state == 0 && delim == ';') || (state == 0 && delim == 0))
+		return (true);
 	return (state);
 }

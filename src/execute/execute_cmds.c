@@ -36,13 +36,13 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 	{
 		if (execve(executable, args, newenvp) == -1)
 		{
-			ft_dprintf(2, "msh: permission denied: %s\n", executable);
+			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-		ft_dprintf(2, "msh: unable to fork process: %d\n", pid);
+		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
 		exit(EXIT_FAILURE);
 	}
 	wait(&status);
@@ -94,11 +94,6 @@ void	execute_ast_cmds(t_astree *head)
 	t_shell		*shell;
 
 	shell = sh_singleton();
-	if (!shell->path)
-	{
-		ft_printf("Kash: path is unset\n");
-		return ;
-	}
 	tmp = head;
 	recursive_execute(shell, tmp, shell->path);
 	restore_io(shell);

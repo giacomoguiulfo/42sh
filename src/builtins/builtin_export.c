@@ -73,12 +73,12 @@ static int	export_print(void)
 	return (0);
 }
 
-int			builtin_export(char **avº)
+int			builtin_export(char **av)
 {
 	t_optparser data;
 
 	data.flags = 0;
-	if (ft_opts(avº, &g_expopts, &data, true))
+	if (ft_opts(av, &g_expopts, &data, true))
 		return (1);
 	if (EXP_HAS_OPT_LP(data.flags))
 		return (export_print());

@@ -68,6 +68,7 @@ void		check_for_home(char **find, char this)
 
 	if (!(tilde_found = ft_strchr(*find, this)))
 		return ;
+	else if (tilde_found && !(tilde_found + 1))
 	path = get_home();
 	path = ft_strchr(path, '=');
 	path++;
@@ -86,7 +87,7 @@ void		substitution_requests(t_asttoken **pre_ast)
 	x = -1;
 	while (pre_ast[++x])
 	{
-		if (pre_ast[x]->args[0])
+		if (pre_ast[x]->binary && pre_ast[x]->args[0])
 		{
 			check_for_env(&pre_ast[x]->binary, '$');
 			check_for_home(&pre_ast[x]->binary, '~');

@@ -52,7 +52,6 @@ static void	get_fd(char *instr, t_toke *help, t_tokelist *node)
 
 static void	get_suffix(char *instr, t_toke *help, t_tokelist *node)
 {
-	ft_printf("suffix: %s\n", instr + help->x);
 	if (instr[help->x + 1] == '&' && (ft_isdigit(instr[help->x + 2]) ||
 		(instr[help->x + 1] == '&' && instr[help->x + 2] == '-')))
 	{

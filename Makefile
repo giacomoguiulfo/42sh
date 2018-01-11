@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		:= kash
+NAME		:= trash
 
 # DEBUG		:= 0
 DEBUG		:= 1
@@ -37,6 +37,7 @@ endif
 SRC_BASE :=\
 main\
 utils\
+signals\
 builtins/builtin_cd\
 builtins/builtin_echo\
 builtins/builtin_env\

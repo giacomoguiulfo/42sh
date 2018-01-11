@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unixcase.c                                      :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/22 21:33:34 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/07 13:33:15 by gguiulfo         ###   ########.fr       */
+/*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
+/*   Updated: 2017/12/16 18:54:41 by giacomo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "chr.h"
-#include <stddef.h>
+#include "builtins.h"
+#include <signal.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-int	ft_unixcase(const char *str)
+static void	signal_handler(int signo)
 {
-	size_t i;
+	int status;
 
-	if (!str || !str[0] || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (0);
-	i = 1;
-	while (str[i])
+	status = 0;
+	if (signo == SIGINT)
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
+		write(1, "\n", 1);
+		waitpid(-1, &status, 0);
 	}
-	return (1);
+}
+
+void		sh_init_signals(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGWINCH, signal_handler);
+	signal(SIGQUIT, signal_handler);
 }

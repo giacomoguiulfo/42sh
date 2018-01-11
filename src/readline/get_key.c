@@ -101,6 +101,6 @@ void	get_key(t_input *data, t_keychain *find)
 	else
 	{
 		find->found_key = false;
-		ft_putstr("\nKash: Unknown key\n");
+		ft_putstr("\nTrash: Unknown key\n");
 	}
 }

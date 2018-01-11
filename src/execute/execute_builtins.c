@@ -44,6 +44,8 @@ t_builtin	*msh_run_builtin(t_asttoken *this)
 {
 	int i;
 
+	if (!this->binary)
+		return (NULL);
 	i = 0;
 	while (g_builtins[i].name)
 	{

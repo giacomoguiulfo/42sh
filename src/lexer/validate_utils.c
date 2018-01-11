@@ -26,7 +26,11 @@ int		ft_isquote(char c)
 
 int		ft_isdepchain(char *c)
 {
-	if (c[0] == '|' || (c[0] == '&' && c[1] == '&'))
+	if (!c)
+		return (0);
+	if (c[0] == '|')
+		return (1);
+	else if (c[0] == '&' && c[1] == '&')
 		return (1);
 	return (0);
 }

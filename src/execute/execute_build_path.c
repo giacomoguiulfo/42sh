@@ -15,11 +15,10 @@
 #include "execute.h"
 #include <sys/stat.h>
 
-bool	check_access(char *binary, char *path)
+bool	check_access(char *path)
 {
 	if (!((access(path, X_OK)) == 0))
 	{
-		ft_printf("Lexer: permission denied: %s\n", binary);
 		return (false);
 	}
 	return (true);
@@ -46,7 +45,7 @@ char	*check_pwd(char *binary)
 	ft_strcat(cwd_path, binary);
 	if ((lstat(cwd_path, &sb)) == -1)
 		return (NULL);
-	else if (!check_access(binary, cwd_path))
+	else if (!check_access(cwd_path))
 		return (NULL);
 	else if (!check_reg_file(sb.st_mode))
 		return (NULL);
@@ -74,7 +73,7 @@ char	*build_bin_path(char *path, char *binary)
 		build_buffer(buff, binary, start, end);
 		if ((lstat(buff, &sb)) != -1)
 		{
-			if (!check_access(binary, buff))
+			if (!check_access(buff))
 				return (NULL);
 			else if (!check_reg_file(sb.st_mode))
 				return (NULL);
@@ -84,6 +83,6 @@ char	*build_bin_path(char *path, char *binary)
 	}
 	if ((end = check_pwd(binary)))
 		return (end);
-	ft_printf("Kash: command not found: %s\n", binary);
+	ft_printf("Trash: command not found: %s\n", binary);
 	return (NULL);
 }
