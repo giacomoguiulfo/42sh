@@ -53,7 +53,7 @@ void	redirect_output(t_shell *shell, t_tokelist *this, int opt)
 	prefix_fd = 1;
 	if (this->redir_prefix_fd > 0)
 		prefix_fd = this->redir_prefix_fd;
-	dup2(suffix_fd, 1);
+	dup2(suffix_fd, prefix_fd);
 	close(suffix_fd);
 }
 
