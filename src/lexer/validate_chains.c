@@ -62,7 +62,7 @@ void	check_valid(char *inst, int *x, int *state, char *delim)
 		check_quotes(inst, x, state);
 	else if (ft_isdepchain(inst + *x))
 	{
-		delim = &inst[*x];
+		*delim = inst[*x];
 		check_chain(inst, x, state);
 		if (*state < 1)
 			return ;
@@ -86,8 +86,12 @@ int		validate_chains(char *inst)
 		check_valid(inst, &x, &state, &delim);
 	}
 	if (state == -1)
-		ft_printf("Trash: parse error near %c\n", inst[x]);
+		ft_dprintf(2, "Trash: parse error near %c\n", inst[x]);
 	if ((state == 0 && delim == ';') || (state == 0 && delim == 0))
+	{
+		ft_dprintf(2, "State: %d | delim: %s\n", state, ft_itoa(delim));
+		ft_dprintf(2, "Returned true here\n");
 		return (true);
+	}
 	return (state);
 }

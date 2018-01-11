@@ -41,8 +41,8 @@ bool		str_protection(t_input *data, size_t first, size_t second)
 	overflow = first + second;
 	if (overflow > LINE_BUFF_SIZE - 1)
 	{
-		ft_printf("\nError: buffer length %zu exceeded", LINE_BUFF_SIZE);
-		ft_printf(" by %zu characters\n", overflow - LINE_BUFF_SIZE);
+		ft_dprintf(2, "\nError: buffer length %zu exceeded", LINE_BUFF_SIZE);
+		ft_dprintf(2, " by %zu characters\n", overflow - LINE_BUFF_SIZE);
 		data->clipboard.copy_on = false;
 		return (false);
 	}

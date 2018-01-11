@@ -32,10 +32,6 @@ char		*make_sub(char *find, t_sub *help, t_sub *more)
 	char	buff[4092];
 
 	ft_bzero((void*)buff, 4092);
-	ft_dprintf(2, "find: %s\n", find);
-	ft_dprintf(2, "start: %s\n", help->start);
-	ft_dprintf(2, "end: %s\n", more->end);
-	ft_dprintf(2, "compare: %s %s\n", help->start, find);
 	ft_strncpy(buff, find - 1, help->start - find);
 	ft_strcat(buff, more->end + 1);
 	ft_strcat(buff, help->end);
@@ -53,8 +49,6 @@ void		check_for_env(char **find, char this)
 		return ;
 	env = (sh_singleton())->env;
 	x = -1;
-	ft_printf("1Here\n");
-	ft_printf("->startloop\n");
 	while (env[++x])
 	{
 		if (!(more.end = ft_strchr(env[x], '=')))
@@ -62,13 +56,8 @@ void		check_for_env(char **find, char this)
 		more.start = env[x];
 		if ((ft_strncmp(more.start, help.start, help.x)) != 0)
 			continue ;
-		ft_printf("MOre\n");
-		ft_printf("%s\n", more.start);
 		*find = make_sub(*find, &help, &more);
-		ft_printf("Compelted\n");
 	}
-	ft_printf("->endloop\n");
-	ft_printf("Not here\n");
 }
 
 void		check_for_home(char **find, char this)
