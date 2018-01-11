@@ -86,7 +86,7 @@ void		substitution_requests(t_asttoken **pre_ast)
 	x = -1;
 	while (pre_ast[++x])
 	{
-		if (pre_ast[x]->args[0])
+		if (pre_ast[x]->binary && pre_ast[x]->args[0])
 		{
 			check_for_env(&pre_ast[x]->binary, '$');
 			check_for_home(&pre_ast[x]->binary, '~');
