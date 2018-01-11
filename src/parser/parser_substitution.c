@@ -21,7 +21,7 @@ bool		get_find_info(t_sub *this, char *find, char letter)
 		return (false);
 	this->start++;
 	this->x = -1;
-	while (ft_issub(this->start[++this->x]))
+	while (ft_isfilename(this->start[++this->x]))
 		;
 	this->end = this->start + this->x;
 	return (true);
@@ -32,6 +32,10 @@ char		*make_sub(char *find, t_sub *help, t_sub *more)
 	char	buff[4092];
 
 	ft_bzero((void*)buff, 4092);
+	ft_dprintf(2, "find: %s\n", find);
+	ft_dprintf(2, "start: %s\n", help->start);
+	ft_dprintf(2, "end: %s\n", more->end);
+	ft_dprintf(2, "compare: %s %s\n", help->start, find);
 	ft_strncpy(buff, find - 1, help->start - find);
 	ft_strcat(buff, more->end + 1);
 	ft_strcat(buff, help->end);
@@ -49,6 +53,8 @@ void		check_for_env(char **find, char this)
 		return ;
 	env = (sh_singleton())->env;
 	x = -1;
+	ft_printf("1Here\n");
+	ft_printf("->startloop\n");
 	while (env[++x])
 	{
 		if (!(more.end = ft_strchr(env[x], '=')))
@@ -56,26 +62,32 @@ void		check_for_env(char **find, char this)
 		more.start = env[x];
 		if ((ft_strncmp(more.start, help.start, help.x)) != 0)
 			continue ;
+		ft_printf("MOre\n");
+		ft_printf("%s\n", more.start);
 		*find = make_sub(*find, &help, &more);
+		ft_printf("Compelted\n");
 	}
+	ft_printf("->endloop\n");
+	ft_printf("Not here\n");
 }
 
 void		check_for_home(char **find, char this)
 {
-	char	*tilde_found;
+	char	*found;
 	char	*path;
 	char	buff[4092];
 
-	if (!(tilde_found = ft_strchr(*find, this)))
+	if (!(found = ft_strchr(*find, this)))
 		return ;
-	else if (tilde_found && !(tilde_found + 1))
+	else if (!(found + 1))
+		return ;
 	path = get_home();
 	path = ft_strchr(path, '=');
 	path++;
 	ft_bzero((void*)buff, 4092);
-	ft_strncpy(buff, *find, tilde_found - *find);
+	ft_strncpy(buff, *find, found - *find);
 	ft_strcat(buff, path);
-	ft_strcat(buff, tilde_found + 1);
+	ft_strcat(buff, found + 1);
 	*find = ft_hstrdup(buff);
 }
 
@@ -100,3 +112,7 @@ void		substitution_requests(t_asttoken **pre_ast)
 		}
 	}
 }
+
+
+
+

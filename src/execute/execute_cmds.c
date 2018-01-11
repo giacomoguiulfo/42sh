@@ -66,7 +66,9 @@ bool	try_without_path(char *test)
 	else if (!check_access(test))
 		return (false);
 	else if (!(sb.st_mode & S_IXUSR))
+	{
 		return (false);
+	}
 	return (true);
 }
 
@@ -82,8 +84,10 @@ void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 			node->ret = msh_run_prog(node->this->binary,
 				node->this->args, shell->env);
 		else if ((this_path = build_bin_path(path, node->this->binary)))
+		{
 			node->ret = msh_run_prog(this_path,
 				node->this->args, shell->env);
+		}
 	}
 }
 
