@@ -68,6 +68,7 @@ void		check_for_home(char **find, char this)
 
 	if (!(tilde_found = ft_strchr(*find, this)))
 		return ;
+	else if (tilde_found && !(tilde_found + 1))
 	path = get_home();
 	path = ft_strchr(path, '=');
 	path++;

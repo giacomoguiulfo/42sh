@@ -28,23 +28,9 @@ static void	signal_handler(int signo)
 	}
 }
 
-void		kill_handler(int signo)
-{
-	int status;
-
-	status = 0;
-	if (signo == SIGQUIT)
-	{
-		write(1, "\n", 1);
-		waitpid(-1, &status, 0);
-	}
-}
-
-
 void		sh_init_signals(void)
 {
 	signal(SIGINT, signal_handler);
 	signal(SIGWINCH, signal_handler);
-	signal(SIGQUIT, kill_handler);
-	//signal(SIGABRT, abrt_handler);
+	signal(SIGQUIT, signal_handler);
 }

@@ -31,6 +31,8 @@ char		*get_home(void)
 
 	shell = sh_singleton();
 	x = -1;
+	if (!shell->env)
+		return (NULL);
 	while (shell->env[++x])
 	{
 		if (ft_strncmp(shell->env[x], "HOME=", 5) == 0)
