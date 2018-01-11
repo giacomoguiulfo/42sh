@@ -39,7 +39,7 @@ void		sh_init_termios(void)
 	struct termios term;
 
 	tcgetattr(STDIN, &term);
-	term.c_lflag &= ~(ICANON | ECHO | ISIG);
+	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	term.c_cc[0] = 0;
@@ -79,6 +79,7 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	else if (ret == 0)
 		return (SH_ERR_R1("Terminal type is not defined"));
 	init_shlvl(shell->env);
+	sh_init_signals();
 	return (0);
 }
 

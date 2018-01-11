@@ -81,6 +81,8 @@ typedef struct			s_helper
 
 int						sh_init();
 void					sh_init_termios();
+void					sh_init_signals();
+void					instantiate_signals(int sigo);
 t_shell					*sh_singleton();
 void					sh_shutdown();
 char					*readline(char *prompt);

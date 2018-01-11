@@ -31,6 +31,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 	pid_t	pid;
 	int		status;
 
+	ft_dprintf(2, "arg: %s\n", args[2]);
 	pid = fork();
 	if (pid == 0)
 	{
