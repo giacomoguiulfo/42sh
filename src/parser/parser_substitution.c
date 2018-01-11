@@ -24,6 +24,8 @@ bool		get_find_info(t_sub *this, char *find, char letter)
 	while (ft_isfilename(this->start[++this->x]))
 		;
 	this->end = this->start + this->x;
+	if (this->x == 0)
+		return (false);
 	return (true);
 }
 
