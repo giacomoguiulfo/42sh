@@ -19,7 +19,7 @@
 
 static void	signal_handler(int signo)
 {
-	int 	status;
+	int		status;
 	t_shell	*shell;
 
 	status = 0;
