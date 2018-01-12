@@ -60,9 +60,9 @@ void	enter_key(struct s_keychain *master)
 	return ;
 }
 
-bool	movement_keys(t_input *data, t_keychain *find)
+bool	additional_keys(t_input *data, t_keychain *find)
 {
-	bool test;
+	bool	test;
 
 	test = false;
 	if (data->char_buff[2] == g_key[3].id && (test = true))
@@ -81,20 +81,10 @@ bool	movement_keys(t_input *data, t_keychain *find)
 		find->this = &g_key[7];
 	else if (data->char_buff[2] == g_key[8].id && (test = true))
 		find->this = &g_key[8];
-	return (test);
-}
-
-bool	additional_keys(t_input *data, t_keychain *find)
-{
-	bool	test;
-
-	test = false;
-	if (data->char_buff[0] < 0 && (test = true))
+	else if (data->char_buff[0] < 0 && (test = true))
 		find->this = &g_key[10];
 	else if (data->char_buff[0] == g_key[11].id && (test = true))
 		find->this = &g_key[11];
-	else if (data->char_buff[0] == g_key[12].id && (test = true))
-		find->this = &g_key[12];
 	return (test);
 }
 
@@ -107,8 +97,6 @@ void	get_key(t_input *data, t_keychain *find)
 		find->this = &g_key[0];
 	else if (data->char_buff[0] == KEY_DELETE)
 		find->this = &g_key[9];
-	else if (movement_keys(data, find))
-		return ;
 	else if (additional_keys(data, find))
 		return ;
 	else

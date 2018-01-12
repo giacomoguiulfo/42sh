@@ -21,6 +21,10 @@
 
 static void	input_constructor(t_input *data, char *prompt)
 {
+	t_shell	*shell;
+
+	shell = sh_singleton();
+	shell->prompt = prompt;
 	data->prompt = prompt;
 	data->prompt_size = ft_strlen(data->prompt);
 	ft_bzero(data->char_buff, CHAR_BUFF_SIZE);
