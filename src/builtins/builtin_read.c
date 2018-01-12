@@ -6,11 +6,12 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 18:55:46 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/26 11:20:42 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 11:46:35 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh.h"
+#include <termios.h>
 
 #define READ_OPT_LR (1 << 0)
 #define READ_OPT_LU (1 << 0)
@@ -42,7 +43,8 @@ static t_optsdata g_readopts =
 
 static int	read_assign(t_read *data)
 {
-
+	(void)data;
+	return (0);
 }
 
 static int	read_loop(t_read *data)
@@ -56,12 +58,15 @@ static int	read_loop(t_read *data)
 	{
 		if ((ret = read(data->fd, buf, 5) <= 0))
 			return (ret);
+		if (*buf == '\b')
+			DBG("It's a backspace");
+		DBG("%d", *buf);
 		if (ret > 1)
 			continue ;
 		buf[1] = '\0';
 		if (buf[0] == 4)
 			break ;
-		if (ft_isprint(*buf) || ft_isspace(*buf))
+		if (ft_isprint(*buf) || ft_isspace(*buf) || *buf == '\b')
 		{
 			ft_dstr_append(&data->input, (char *)buf);
 			ft_putchar(*buf);
@@ -72,6 +77,19 @@ static int	read_loop(t_read *data)
 			esc = esc ? 0 : (*buf == '\\');
 	}
 	return (0);
+}
+
+void	read_settings(t_read *read)
+{
+	(void)read;
+	struct termios term;
+
+	tcgetattr(STDIN, &term);
+	term.c_lflag |= (ICANON | ECHO);
+	term.c_cc[VMIN] = 1;
+	term.c_cc[VTIME] = 0;
+	term.c_cc[0] = 0;
+	tcsetattr(STDIN, TCSANOW, &term);
 }
 
 int	builtin_read(char *av[])
@@ -86,6 +104,7 @@ int	builtin_read(char *av[])
 	data.fd = 0;
 	data.delim = '\n';
 	ft_dstr_new(&data.input, 24);
+	read_settings(&data);
 	ret = read_loop(&data);
 	DBG("%s", ((t_dstr)data.input).data);
 	if (!ret)
