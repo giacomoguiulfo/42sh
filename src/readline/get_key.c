@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 07:12:23 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/11 17:31:27 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,29 @@ void	enter_key(struct s_keychain *master)
 
 bool	additional_keys(t_input *data, t_keychain *find)
 {
-	bool	test;
-
-	test = false;
-	if (data->char_buff[2] == g_key[3].id && (test = true))
-		find->this = &g_key[3];
-	else if (data->char_buff[2] == g_key[4].id && (test = true))
-		find->this = &g_key[4];
-	else if (data->char_buff[2] == g_key[2].id && (test = true))
-		find->this = &g_key[2];
-	else if (data->char_buff[2] == g_key[5].id && (test = true))
-		find->this = &g_key[5];
-	else if (data->char_buff[2] == g_key[6].id && (test = true))
-		find->this = &g_key[6];
-	else if (data->char_buff[0] == g_key[1].id && (test = true))
-		find->this = &g_key[1];
-	else if (data->char_buff[2] == g_key[7].id && (test = true))
-		find->this = &g_key[7];
-	else if (data->char_buff[2] == g_key[8].id && (test = true))
-		find->this = &g_key[8];
-	else if (data->char_buff[0] < 0 && (test = true))
-		find->this = &g_key[10];
-	else if (data->char_buff[0] == g_key[11].id && (test = true))
-		find->this = &g_key[11];
-	else if (data->char_buff[0] == g_key[12].id && (test = true))
-		find->this = &g_key[12];
-	return (test);
+	if (data->char_buff[2] == g_key[3].id)
+		return (find->this = &g_key[3]);
+	else if (data->char_buff[2] == g_key[4].id)
+		return (find->this = &g_key[4]);
+	else if (data->char_buff[2] == g_key[2].id)
+		return (find->this = &g_key[2]);
+	else if (data->char_buff[2] == g_key[5].id)
+		return (find->this = &g_key[5]);
+	else if (data->char_buff[2] == g_key[6].id)
+		return (find->this = &g_key[6]);
+	else if (data->char_buff[0] == g_key[1].id)
+		return (find->this = &g_key[1]);
+	else if (data->char_buff[2] == g_key[7].id)
+		return (find->this = &g_key[7]);
+	else if (data->char_buff[2] == g_key[8].id)
+		return (find->this = &g_key[8]);
+	else if (data->char_buff[0] < 0)
+		return (find->this = &g_key[10]);
+	else if (data->char_buff[0] == g_key[11].id)
+		return (find->this = &g_key[11]);
+	else if (data->char_buff[0] == g_key[12].id)
+		return (find->this = &g_key[12]);
+	return (false);
 }
 
 void	get_key(t_input *data, t_keychain *find)
