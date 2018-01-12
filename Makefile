@@ -6,29 +6,25 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/12/25 20:20:19 by gguiulfo         ###   ########.fr        #
+#    Updated: 2018/01/12 14:16:06 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		:= trash
+NAME		:= 21sh
 
-# DEBUG		:= 0
-DEBUG		:= 1
+DEBUG		:= 0
 
 CC			?= gcc
 CFLAGS		+= -std=c99
 CFLAGS		+= -Wall -Wextra -Werror
 CFLAGS		+= -DDEBUG=${DEBUG}
-# CLAFGS		+=  -Wfloat-equal -Wundef
-# CFLAGS		+= -Wpointer-arith -Wunreachable-code -Winit-self
-# CFLAGS		+= -O3 -march=native -pipe -flto
+CFLAGS		+= -O3 -march=native -pipe -flto
 
 LIBS		:= -ltermcap
 
-# DEBUG		:= 0
-# ifeq ($(DEBUG),1)
-# CFLAGS	+= -g -fsanitize=address
-# endif
+ifeq ($(DEBUG),1)
+CFLAGS	+= -g -fsanitize=address
+endif
 
 ifndef VERBOSE
 MAKEFLAGS += --no-print-directory
@@ -97,15 +93,15 @@ LIBFT_DIR	:= libft/
 LIBFT_INC	:= $(LIBFT_DIR)includes/
 LIBFT_LIB	:= $(LIBFT_DIR)libft.a
 LIBFT_LNK	:= -L libft/ -lft
-SRC				:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_BASE)))
-OBJ				:= $(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
+SRC			:= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_BASE)))
+OBJ			:= $(patsubst $(SRC_DIR)%, $(OBJ_DIR)%, $(SRC:.c=.o))
 HEADERS		:= $(wildcard $(INC_DIR)*.h)
-SHELL			:= /bin/bash
-BASENAME  := `basename -s .a $(NAME)`
+SHELL		:= /bin/bash
+BASENAME  	:= `basename -s .a $(NAME)`
 LEN_NAME	= `printf "%s" $(NAME) | wc -c`
-DELTA			= $$(echo "$$(tput cols)-31-$(LEN_NAME)" | bc)
-NB				= $(words $(SRC_BASE))
-INDEX			= 0
+DELTA		= $$(echo "$$(tput cols)-31-$(LEN_NAME)" | bc)
+NB			= $(words $(SRC_BASE))
+INDEX		= 0
 
 all:
 	@$(MAKE) -C $(LIBFT_DIR)
