@@ -43,3 +43,15 @@ void	end_key(struct s_keychain *master)
 		return ;
 	move_end(master->data);
 }
+
+void	tab_key(struct s_keychain *master)
+{
+	if (master->data->clipboard.copy_on == true)
+		return ;
+	master->data->char_buff[0] = ' ';
+	insert(master->data);
+	insert(master->data);
+	insert(master->data);
+	insert(master->data);
+	return ;
+}

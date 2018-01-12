@@ -33,6 +33,7 @@
 # define KEY_RIGHT		67
 # define KEY_UP			65
 # define KEY_CTRL_C		3
+# define KEY_TAB		9
 
 typedef struct			s_text
 {
@@ -109,5 +110,6 @@ void					home_key(struct s_keychain *master);
 void					move_key(struct s_keychain *master);
 void					opt_move_key(struct s_keychain *master);
 void					print_key(struct s_keychain *master);
+void					tab_key(struct s_keychain *master);
 
 #endif
