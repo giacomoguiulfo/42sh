@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/12/24 17:00:08 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/12/25 20:20:19 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ builtins/builtin_env\
 builtins/builtin_exit\
 builtins/builtin_export\
 builtins/builtin_history\
+builtins/builtin_read\
 builtins/builtin_setenv\
 builtins/builtin_unset\
 builtins/builtin_unsetenv\

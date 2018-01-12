@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 00:24:57 by giacomo           #+#    #+#             */
-/*   Updated: 2017/11/28 05:57:15 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/11 15:59:16 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,12 @@ static void	terminal_reset(void)
 int			builtin_exit(void)
 {
 	t_shell *shell;
-	int		x;
 
-	x = -1;
 	shell = sh_singleton();
 	history_cleanup(shell->history);
-	while (shell->argv[++x] != 0)
-		free(shell->argv[x]);
-	free(shell->argv[x]);
-	x = -1;
-	while (shell->env[++x] != 0)
-		free(shell->env[x]);
-	free(shell->env[x]);
-	free(shell->argv);
-	free(shell->env);
+	ft_sstrdel(&shell->argv);
+	ft_sstrdel(&shell->env);
+	ft_sstrdel(&shell->localenv);
 	free(shell);
 	terminal_reset();
 	exit(EXIT_SUCCESS);
