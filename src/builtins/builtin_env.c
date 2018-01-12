@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:31:19 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 16:17:51 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:54:29 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ int			builtin_env(char **av)
 	char		**exec_env;
 
 	data.flags = 0;
-	DBG("%s", *av);
-	DBG("%s", av[1]);
-	DBG("%s", av[2]);
 	if (ft_opts(av, &g_envopts, &data, true))
 		return (1);
 	exec_env = ENV_HAS_OPT_LI(data.flags) ? 0 : ft_sstrdup(sh_singleton()->env);

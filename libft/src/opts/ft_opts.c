@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 00:09:18 by giacomo           #+#    #+#             */
-/*   Updated: 2017/12/23 13:27:34 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:54:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,26 @@ static int	validate_required(t_optsdata *optsdata, void *data)
 	return (0);
 }
 
-bool		opts_norm(char **av, t_optsdata *optsdata, void *data)
-{
-	if ((*av)[0] == '-' && (*av)[1] == '-')
-	{
-		if (ft_opts_long(&av, optsdata, data))
-			return (1);
-	}
-	else if ((*av)[0] == '-')
-	{
-		if (ft_opts_short(&av, optsdata, data))
-			return (1);
-	}
-	return (0);
-}
-
 int			ft_opts(char **av, t_optsdata *optsdata, void *data, bool parse)
 {
 	if (!av)
 		return (1);
-	if (!optsdata->prog)
+	if (av++ && !optsdata->prog)
 		optsdata->prog = *av;
-	av++;
 	while (av && *av)
 	{
 		if (!ft_strcmp(*av, "-") || (!ft_strcmp(*av, "--") && av++))
 			break ;
-		if (opts_norm(av, optsdata, data))
-			return (1);
+		if ((*av)[0] == '-' && (*av)[1] == '-')
+		{
+			if (ft_opts_long(&av, optsdata, data))
+				return (1);
+		}
+		else if ((*av)[0] == '-')
+		{
+			if (ft_opts_short(&av, optsdata, data))
+				return (1);
+		}
 		else
 			break ;
 	}
