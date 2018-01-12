@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/11 17:09:28 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:12:36 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ void	execute_ast_cmds(t_astree *head)
 
 	shell = sh_singleton();
 	tmp = head;
-	recursive_execute(shell, tmp, shell->path);
+	recursive_execute(shell, tmp, ft_getenv(shell->env, "PATH"));
 }
