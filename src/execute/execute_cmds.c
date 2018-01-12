@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/25 20:19:25 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:57:54 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 
 void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
-	t_builtin	*foo;
+	t_builtin	*builtin;
 
-	if ((foo = msh_run_builtin(node->this)))
-		node->ret = foo((const char **)node->this->args);
+	if ((builtin = msh_run_builtin(node->this)))
+		node->ret = builtin((const char **)node->this->args);
 	else
 	{
 		if (try_without_path(node->this->binary))
