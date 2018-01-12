@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:31:19 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 17:19:28 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 17:43:41 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ static t_optsdata g_envopts =
 	}
 };
 
-static int	env_exec(char **av, char **env)
+static int	env_exec(char **av, char **env, t_flag flags)
 {
 	pid_t		pid;
 	int			status;
 	t_builtin	*builtin;
 
+	if (!ft_strcmp("env", *av) && ENV_HAS_OPT_LI(flags))
+		return (0);
 	if ((builtin = msh_run_builtin(*av)))
 		return (builtin((const char **)av));
 	if (IS_CHILD(pid = fork()))
@@ -74,5 +76,5 @@ int			builtin_env(char **av)
 		ft_sstrputs(exec_env);
 		return (0);
 	}
-	return (env_exec(data.argv, exec_env));
+	return (env_exec(data.argv, exec_env, data.flags));
 }
