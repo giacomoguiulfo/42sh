@@ -35,6 +35,7 @@ static bool	check_quit(t_shell *shell, char *cmds)
 static int	pre_processor(t_helper *assist, t_shell *shell)
 {
 	free(assist->prompt);
+	history_reset(shell->history);
 	if (check_quit(shell, assist->cmds))
 		return (-1);
 	else if (!assist->cmds)

@@ -48,6 +48,7 @@ builtins/builtin_read\
 builtins/builtin_setenv\
 builtins/builtin_unset\
 builtins/builtin_unsetenv\
+builtins/read_opts\
 core/sh_init\
 core/sh_singleton\
 execute/execute_build_path\
