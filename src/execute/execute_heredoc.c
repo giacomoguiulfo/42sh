@@ -30,7 +30,7 @@ static void	startup(t_tokelist *redir, t_here *doc)
 {
 	if (!redir->redir_suffix_file)
 	{
-		ft_printf("Trash: parse error near %s\n", redir->content);
+		ft_dprintf(2, "Trash: parse error near %s\n", redir->content);
 		return ;
 	}
 	doc->prompt = ft_hstrdup("heredoc> ");
@@ -46,7 +46,7 @@ static bool	check_heredoc_exit(t_here *doc, char *redir_suffix_file)
 	}
 	else if (ft_strstr(doc->new_instr, doc->safe_word))
 	{
-		ft_printf("Trash: You just used your safeword\n");
+		ft_dprintf(2, "Trash: You just used your safeword\n");
 		return (true);
 	}
 	return (false);
@@ -61,10 +61,10 @@ static bool	check_heredoc_delim(t_tokelist *redir)
 		ft_printf("Suffix file: %s\n");
 		return (true);
 	}
-	ft_printf("Trash: please enter a delimiter character or phrase\n");
-	ft_printf("Or, alternatively, you could just press enter and\n");
-	ft_printf("we'll forget all about this heredoc business.\n");
-	doc.new_instr = readline("delimter> ");
+	ft_dprintf(2, "Trash: please enter a delimiter character or phrase\n");
+	ft_dprintf(2, "Or, alternatively, you could just press enter and\n");
+	ft_dprintf(2, "we'll forget all about this heredoc business.\n");
+	doc.new_instr = readline("delimiter> ");
 	if (!doc.new_instr)
 		return (false);
 	redir->redir_suffix_file = ft_hstrdup(doc.new_instr);

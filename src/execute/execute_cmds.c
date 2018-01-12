@@ -57,19 +57,6 @@ void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 	*set = NULL;
 }
 
-bool	try_without_path(char *test)
-{
-	struct stat sb;
-
-	if ((lstat(test, &sb)) == -1)
-		return (false);
-	else if (!check_access(test))
-		return (false);
-	else if (!(sb.st_mode & S_IXUSR))
-		return (false);
-	return (true);
-}
-
 void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
 	t_builtin	*foo;
@@ -79,11 +66,15 @@ void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 	else
 	{
 		if (try_without_path(node->this->binary))
+		{
 			node->ret = msh_run_prog(node->this->binary,
 				node->this->args, shell->env);
+		}
 		else if ((this_path = build_bin_path(path, node->this->binary)))
+		{
 			node->ret = msh_run_prog(this_path,
 				node->this->args, shell->env);
+		}
 	}
 }
 

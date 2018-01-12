@@ -83,6 +83,6 @@ char	*build_bin_path(char *path, char *binary)
 	}
 	if ((end = check_pwd(binary)))
 		return (end);
-	ft_printf("Trash: command not found: %s\n", binary);
+	ft_dprintf(2, "Trash: command not found: %s\n", binary);
 	return (NULL);
 }

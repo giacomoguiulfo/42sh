@@ -21,9 +21,11 @@ bool		get_find_info(t_sub *this, char *find, char letter)
 		return (false);
 	this->start++;
 	this->x = -1;
-	while (ft_issub(this->start[++this->x]))
+	while (ft_isfilename(this->start[++this->x]))
 		;
 	this->end = this->start + this->x;
+	if (this->x == 0)
+		return (false);
 	return (true);
 }
 
@@ -62,20 +64,21 @@ void		check_for_env(char **find, char this)
 
 void		check_for_home(char **find, char this)
 {
-	char	*tilde_found;
+	char	*found;
 	char	*path;
 	char	buff[4092];
 
-	if (!(tilde_found = ft_strchr(*find, this)))
+	if (!(found = ft_strchr(*find, this)))
 		return ;
-	else if (tilde_found && !(tilde_found + 1))
+	else if (!(found + 1))
+		return ;
 	path = get_home();
 	path = ft_strchr(path, '=');
 	path++;
 	ft_bzero((void*)buff, 4092);
-	ft_strncpy(buff, *find, tilde_found - *find);
+	ft_strncpy(buff, *find, found - *find);
 	ft_strcat(buff, path);
-	ft_strcat(buff, tilde_found + 1);
+	ft_strcat(buff, found + 1);
 	*find = ft_hstrdup(buff);
 }
 

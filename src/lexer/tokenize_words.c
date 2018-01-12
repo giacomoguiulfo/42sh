@@ -34,8 +34,10 @@ void	tokenize_words(char *instr, t_toke *help, t_tokelist *head)
 	if (instr[help->x] == '&' || ft_isdigit(instr[help->x]))
 	{
 		if (check_redirs(instr, help))
+		{
 			tokenize_redirs(instr, help, head);
-		return ;
+			return ;
+		}
 	}
 	if (!head->type[0])
 		tmp = head;

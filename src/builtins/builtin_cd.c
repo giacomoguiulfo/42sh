@@ -77,6 +77,7 @@ static int	cd_routine(char *operand, int flags)
 {
 	struct stat sb;
 
+	ft_dprintf(2, "%s\n", operand);
 	if (access(operand, F_OK))
 		return (SH_ERR(CD_ENOENT, operand));
 	if (!ft_isdir(operand))
@@ -112,7 +113,9 @@ int			builtin_cd(char **av)
 	data.flags = 0;
 	if (ft_opts(av, &g_cdopts, &data, true))
 		return (1);
+	ft_dprintf(2, "arg: %s\n", data.argv[0]);
 	operand = cd_operand(data.argv[0]);
+	ft_dprintf(2, "operand: %s\n", operand);
 	oldpwd = getcwd(NULL, 0);
 	ret = 0;
 	if (!operand)
