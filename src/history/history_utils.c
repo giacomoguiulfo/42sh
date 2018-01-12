@@ -43,6 +43,12 @@ void	history_cleanup(t_cmds *head)
 	}
 }
 
+void	history_reset(t_cmds *head)
+{
+	head->current = NULL;
+	head->hit_end = false;
+}
+
 void	history_add(char *cmd)
 {
 	t_cmds	*head;
