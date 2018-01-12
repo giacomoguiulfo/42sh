@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execyte_utils.c                                    :+:      :+:    :+:   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/20 09:12:47 by rschramm         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:38:12 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,24 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+bool	check_access(char *path)
+{
+	if (!((access(path, X_OK)) == 0))
+	{
+		return (false);
+	}
+	return (true);
+}
+
+bool	check_reg_file(mode_t st_mode)
+{
+	if (S_ISLNK(st_mode))
+		return (true);
+	if (S_ISREG(st_mode))
+		return (true);
+	return (false);
+}
 
 bool	try_pwd(char *binary)
 {
