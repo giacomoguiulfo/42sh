@@ -51,6 +51,7 @@ typedef struct			s_shell
 	char				**env;
 	char				**localenv;
 	char				*path;
+	char				*prompt;
 	char				*term_name;
 	int					argc;
 	int					stdout_backup;

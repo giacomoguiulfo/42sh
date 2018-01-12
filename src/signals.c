@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "ft_sh.h"
 #include <signal.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -18,13 +19,16 @@
 
 static void	signal_handler(int signo)
 {
-	int status;
+	int		status;
+	t_shell	*shell;
 
 	status = 0;
+	shell = sh_singleton();
 	if (signo == SIGINT)
 	{
 		write(1, "\n", 1);
 		waitpid(-1, &status, 0);
+		ft_printf("%s", shell->prompt);
 	}
 }
 
