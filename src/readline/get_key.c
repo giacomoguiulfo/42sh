@@ -85,6 +85,8 @@ bool	additional_keys(t_input *data, t_keychain *find)
 		find->this = &g_key[10];
 	else if (data->char_buff[0] == g_key[11].id && (test = true))
 		find->this = &g_key[11];
+	else if (data->char_buff[0] == g_key[12].id && (test = true))
+		find->this = &g_key[12];
 	return (test);
 }
 
