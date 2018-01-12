@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:31:19 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/25 18:08:44 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:17:51 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static int	env_exec(char **av, char **env)
 	if (IS_CHILD(pid = fork()))
 	{
 		if (access(*av, F_OK) != 0)
-			exit(SH_ERR_R1(ENV_EACCES, *av));
+			exit(SH_ERR2_R1(ENV_EACCES, *av));
 		if (ft_isdir(*av) || access(*av, X_OK) != 0)
-			exit(SH_ERR_R1(ENV_EACCES, *av));
+			exit(SH_ERR2_R1(ENV_EACCES, *av));
 		execve(*av, av, env);
 	}
 	waitpid(pid, &status, 0);
@@ -61,6 +61,9 @@ int			builtin_env(char **av)
 	char		**exec_env;
 
 	data.flags = 0;
+	DBG("%s", *av);
+	DBG("%s", av[1]);
+	DBG("%s", av[2]);
 	if (ft_opts(av, &g_envopts, &data, true))
 		return (1);
 	exec_env = ENV_HAS_OPT_LI(data.flags) ? 0 : ft_sstrdup(sh_singleton()->env);

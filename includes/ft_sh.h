@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/24 13:22:08 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:14:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 # include "libft.h"
 
 # define SH_MSG(s, ...)     "%{bred}%s: " s "%{eoc}\n", g_argv[0], ##__VA_ARGS__
+# define SH_MSG2(s, ...)    "%{bred}" s "%{eoc}\n", ##__VA_ARGS__
 # define SH_ERR(s, ...)     ft_dprintf(STDERR, SH_MSG(s, ##__VA_ARGS__))
+# define SH_ERR2(s, ...)    ft_dprintf(STDERR, SH_MSG2(s, ##__VA_ARGS__))
 # define SH_ERR_R1(s, ...)  ((SH_ERR(s, ##__VA_ARGS__)) ? 1 : 1)
+# define SH_ERR2_R1(s, ...)  ((SH_ERR2(s, ##__VA_ARGS__)) ? 1 : 1)
 
 typedef struct			s_astree
 {

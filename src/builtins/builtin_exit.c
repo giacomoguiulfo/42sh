@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 00:24:57 by giacomo           #+#    #+#             */
-/*   Updated: 2018/01/11 15:59:16 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 16:22:37 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ int			builtin_exit(void)
 	shell = sh_singleton();
 	history_cleanup(shell->history);
 	ft_sstrdel(&shell->argv);
-	ft_sstrdel(&shell->env);
-	ft_sstrdel(&shell->localenv);
+	if (shell->env)
+		ft_sstrdel(&shell->env);
+	if (shell->localenv)
+		ft_sstrdel(&shell->localenv);
 	free(shell);
 	terminal_reset();
 	exit(EXIT_SUCCESS);
-	ft_printf("Goodbye :]\n");
 	return (0);
 }
