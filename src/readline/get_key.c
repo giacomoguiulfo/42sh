@@ -25,7 +25,8 @@ t_key		g_key[] = {
 	{"move end", KEY_END, &end_key},
 	{"delete", KEY_DELETE, &delete_key},
 	{"edit text", 0, &edit_key},
-	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key}
+	{"ctrl-c", KEY_CTRL_C, &ctrl_c_key},
+	{"tab", KEY_TAB, &tab_key}
 };
 
 void	new_quote_prompt(t_keychain *master, char *prompt)
@@ -59,9 +60,9 @@ void	enter_key(struct s_keychain *master)
 	return ;
 }
 
-bool	additional_keys(t_input *data, t_keychain *find)
+bool	movement_keys(t_input *data, t_keychain *find)
 {
-	bool	test;
+	bool test;
 
 	test = false;
 	if (data->char_buff[2] == g_key[3].id && (test = true))
@@ -80,10 +81,20 @@ bool	additional_keys(t_input *data, t_keychain *find)
 		find->this = &g_key[7];
 	else if (data->char_buff[2] == g_key[8].id && (test = true))
 		find->this = &g_key[8];
-	else if (data->char_buff[0] < 0 && (test = true))
+	return (test);
+}
+
+bool	additional_keys(t_input *data, t_keychain *find)
+{
+	bool	test;
+
+	test = false;
+	if (data->char_buff[0] < 0 && (test = true))
 		find->this = &g_key[10];
 	else if (data->char_buff[0] == g_key[11].id && (test = true))
 		find->this = &g_key[11];
+	else if (data->char_buff[0] == g_key[12].id && (test = true))
+		find->this = &g_key[12];
 	return (test);
 }
 
@@ -96,6 +107,8 @@ void	get_key(t_input *data, t_keychain *find)
 		find->this = &g_key[0];
 	else if (data->char_buff[0] == KEY_DELETE)
 		find->this = &g_key[9];
+	else if (movement_keys(data, find))
+		return ;
 	else if (additional_keys(data, find))
 		return ;
 	else
