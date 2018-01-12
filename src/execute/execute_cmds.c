@@ -103,5 +103,4 @@ void	execute_ast_cmds(t_astree *head)
 	shell = sh_singleton();
 	tmp = head;
 	recursive_execute(shell, tmp, shell->path);
-	restore_io(shell);
 }
