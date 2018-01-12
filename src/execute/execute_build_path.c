@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/12 15:38:14 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:40:05 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char	*build_bin_path(char *path, char *binary)
 	char		*end;
 	char		buff[MAX_PATH];
 
+	if (!path)
+		return (NULL);
 	start = path;
 	while (start && ((end = ft_strchr(start, ':')) != NULL))
 	{
