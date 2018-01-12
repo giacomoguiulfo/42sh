@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/16 20:31:37 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/11 17:12:15 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ int			aget_binary_size(char *bin)
 	return (x);
 }
 
-t_builtin	*msh_run_builtin(t_asttoken *this)
+t_builtin	*msh_run_builtin(char *name)
 {
 	int i;
 
-	if (!this->binary)
+	if (!name)
 		return (NULL);
 	i = 0;
 	while (g_builtins[i].name)
 	{
-		if (ft_strcmp(g_builtins[i].name, this->binary) == 0)
+		if (ft_strcmp(g_builtins[i].name, name) == 0)
 			return (g_builtins[i].f);
 		i++;
 	}

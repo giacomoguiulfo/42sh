@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 21:04:59 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/13 12:17:23 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/11 17:12:08 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ char			*build_bin_path(char *path, char *binary);
 bool			check_access(char *path);
 bool			check_builtin(char *binary);
 bool			check_reg_file(mode_t st_mode);
-t_builtin		*msh_run_builtin(t_asttoken *this);
+t_builtin		*msh_run_builtin(char *name);
 
 #endif

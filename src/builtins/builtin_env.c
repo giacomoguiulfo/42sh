@@ -6,11 +6,12 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:31:19 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 16:54:29 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/11 17:19:28 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh.h"
+#include "execute.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,9 +32,12 @@ static t_optsdata g_envopts =
 
 static int	env_exec(char **av, char **env)
 {
-	pid_t	pid;
-	int		status;
+	pid_t		pid;
+	int			status;
+	t_builtin	*builtin;
 
+	if ((builtin = msh_run_builtin(*av)))
+		return (builtin((const char **)av));
 	if (IS_CHILD(pid = fork()))
 	{
 		if (access(*av, F_OK) != 0)
