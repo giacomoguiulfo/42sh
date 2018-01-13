@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/12 15:40:05 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:47:07 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,24 @@ char	*build_bin_path(char *path, char *binary)
 	char		*end;
 	char		buff[MAX_PATH];
 
-	if (!path)
-		return (NULL);
-	start = path;
-	while (start && ((end = ft_strchr(start, ':')) != NULL))
+	if (path)
 	{
+		start = path;
+		while (start && ((end = ft_strchr(start, ':')) != NULL))
+		{
+			if (check_again(&start, &end, buff, binary))
+				return (ft_hstrdup(buff));
+		}
+		end = start + ft_strlen(start);
 		if (check_again(&start, &end, buff, binary))
+		{
 			return (ft_hstrdup(buff));
+		}
 	}
-	end = start + ft_strlen(start);
-	if (check_again(&start, &end, buff, binary))
-		return (ft_hstrdup(buff));
 	if ((end = check_pwd(binary)))
+	{
 		return (end);
+	}
 	ft_dprintf(2, "Trash: command not found: %s\n", binary);
 	return (NULL);
 }

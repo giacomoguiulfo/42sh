@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/11/28 07:12:23 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/12 16:00:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,10 @@ void	ctrl_c_key(struct s_keychain *master)
 	if (master->data->clipboard.copy_on == true)
 		start_stop_highlight(master->data, &master->data->clipboard);
 	ft_bzero((void*)master->data->line_buff, LINE_BUFF_SIZE);
-	ft_putchar('\n');
-	ft_putstr(master->data->prompt);
 	master->data->cursor_pos = 0;
 	master->data->line_size = 0;
 	master->data->clipboard.copy_on = false;
+	master->data->continue_loop = false;
 }
 
 void	edit_key(struct s_keychain *master)
