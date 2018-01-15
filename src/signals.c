@@ -26,8 +26,9 @@ static void	signal_handler(int signo)
 	shell = sh_singleton();
 	if (signo == SIGINT)
 	{
+		shell->continue_loop = false;
 		write(1, "\n", 1);
-		waitpid(-1, &status, 0);
+		waitpid(-1, &status, WNOHANG);
 	}
 }
 

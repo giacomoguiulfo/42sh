@@ -50,7 +50,7 @@ void	ctrl_c_key(struct s_keychain *master)
 	master->data->cursor_pos = 0;
 	master->data->line_size = 0;
 	master->data->clipboard.copy_on = false;
-	master->data->continue_loop = false;
+	sh_singleton()->continue_loop = false;
 }
 
 void	edit_key(struct s_keychain *master)

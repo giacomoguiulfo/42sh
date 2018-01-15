@@ -56,7 +56,7 @@ void	enter_key(struct s_keychain *master)
 			new_quote_prompt(master, "> ");
 		}
 	}
-	master->data->continue_loop = false;
+	sh_singleton()->continue_loop = false;
 	return ;
 }
 
