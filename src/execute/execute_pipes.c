@@ -18,8 +18,8 @@ void	manage_pipes(t_astree *node)
 	if (node->this->chain && node->this->chain->type[0] == '|')
 	{
 		pipe(node->right->pipe_fd);
-		dup2(node->right->pipe_fd[1], 1);
 		close(node->right->pipe_fd[1]);
+		dup2(node->right->pipe_fd[0], 0);
 	}
 	if (node->pipe_fd[0] > -1)
 	{
