@@ -64,7 +64,7 @@ void	quote_prompt(char **instr, char *prompt)
 	new_instr = readline(prompt);
 	if (!new_instr)
 		return ;
-	ft_asprintf(&tmp, "%s%s", *instr, new_instr);
+	ft_asprintf(&tmp, "%s\n%s", *instr, new_instr);
 	free((*instr));
 	free(new_instr);
 	*instr = ft_strdup(tmp);
