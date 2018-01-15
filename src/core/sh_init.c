@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2017/12/24 13:21:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:08:39 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,6 @@
 #include "libft.h"
 #include <term.h>
 #include <termios.h>
-
-static char	*get_path(t_shell *shell)
-{
-	char	*path;
-	int		x;
-
-	path = NULL;
-	x = -1;
-	while (shell->env[++x])
-	{
-		if (ft_strncmp(shell->env[x], "PATH=", 5) == 0)
-		{
-			path = shell->env[x];
-			break ;
-		}
-	}
-	return (path);
-}
 
 void		sh_init_termios(void)
 {
@@ -67,17 +49,18 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	shell->argv = ft_sstrdup(av);
 	shell->env = ft_sstrdup(environ);
 	shell->localenv = NULL;
-	shell->path = get_path(shell);
 	shell->stdin_backup = dup(0);
 	shell->stdout_backup = dup(1);
 	shell->stderr_backup = dup(2);
 	history_constructor(shell, history);
 	if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
 		shell->term_name = "dumb";
+	if (ft_strequ(shell->term_name, "dumb"))
+		exit(SH_ERR_R1("Don't be dumb!"));
 	if ((ret = tgetent(NULL, shell->term_name)) < 0)
-		return (SH_ERR_R1("Trash: Unable to access termcap database\n"));
+		return (SH_ERR_R1("Unable to access termcap database\n"));
 	else if (ret == 0)
-		return (SH_ERR_R1("Trash: Terminal type is not defined\n"));
+		return (SH_ERR_R1("Terminal type is not defined\n"));
 	init_shlvl(shell->env);
 	sh_init_signals();
 	return (0);
