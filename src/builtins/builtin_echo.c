@@ -22,12 +22,13 @@
 
 int	builtin_echo(char **av)
 {
-	av++;
-	while (*av)
+	int x;
+
+	x = 0;
+	while (av[++x])
 	{
-		ft_putstr(*av);
-		(av + 1) ? ft_putchar(' ') : 0;
-		av++;
+		ft_putstr(av[x]);
+		x++;
 	}
 	ft_putchar('\n');
 	return (0);
