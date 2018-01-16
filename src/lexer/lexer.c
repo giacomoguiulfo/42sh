@@ -36,15 +36,17 @@ int			validate_quotes_chains(char **instr)
 
 bool		validate(char **instr)
 {
-	int	valid;
+	int		valid;
 
 	valid = 0;
-	while (!valid)
+	while (!valid && sh_singleton()->quit == false)
 	{
 		valid = validate_quotes_chains(instr);
 		if (valid == -1)
 			return (false);
 	}
+	if (sh_singleton()->quit == true)
+		return ((sh_singleton()->quit = false));
 	return (true);
 }
 

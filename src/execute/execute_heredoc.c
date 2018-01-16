@@ -40,7 +40,7 @@ static void	startup(t_tokelist *redir, t_here *doc)
 
 static bool	check_heredoc_exit(t_here *doc, char *redir_suffix_file)
 {
-	if (ft_strstr(doc->new_instr, redir_suffix_file))
+	if (ft_strcmp(doc->new_instr, redir_suffix_file))
 	{
 		return (true);
 	}
@@ -81,8 +81,11 @@ void		redirect_heredoc(t_tokelist *redir)
 	startup(redir, &doc);
 	while (42)
 	{
-		if (!(doc.new_instr = readline(doc.prompt)))
+		doc.new_instr = readline(doc.prompt);
+		if (!doc.new_instr && sh_singleton()->quit == false)
 			continue ;
+		else if (!doc.new_instr)
+			break ;
 		else if (check_heredoc_exit(&doc, redir->redir_suffix_file))
 			break ;
 		ft_strcat(doc.buff, doc.new_instr);
@@ -93,4 +96,5 @@ void		redirect_heredoc(t_tokelist *redir)
 		free(doc.new_instr);
 	if (doc.buff[0] != 0)
 		cleanup(redir, doc.buff);
+	sh_singleton()->quit = false;
 }
