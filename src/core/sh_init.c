@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2018/01/11 17:44:33 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 13:50:55 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	history_constructor(shell, history);
 	if (!(shell->term_name = ft_getenv(shell->env, "TERM")))
 		shell->term_name = "dumb";
+	if (ft_strequ(shell->term_name, "dumb"))
+		return (SH_ERR_R1("Don't be dumb!"));
 	if ((ret = tgetent(NULL, shell->term_name)) < 0)
 		return (SH_ERR_R1("Trash: Unable to access termcap database\n"));
 	else if (ret == 0)
