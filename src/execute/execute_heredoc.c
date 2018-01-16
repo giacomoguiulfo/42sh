@@ -45,10 +45,11 @@ static bool	check_heredoc_exit(t_here *doc, char *redir_suffix_file)
 {
 	if (sh_singleton()->quit == true)
 	{
+		sh_singleton()->quit = false;
 		ft_dprintf(2, "Quit request found\n");
 		return (true);
 	}
-	if (ft_strstr(doc->new_instr, redir_suffix_file))
+	if ((ft_strcmp(doc->new_instr, redir_suffix_file)) == 0)
 	{
 		return (true);
 	}
@@ -89,13 +90,12 @@ void		redirect_heredoc(t_tokelist *redir)
 	while (42)
 	{
 		doc.new_instr = readline(doc.prompt);
-		ft_dprintf(2, "'%s'\n", doc.new_instr);
-		if (sh_singleton()->quit == true && (sh_singleton()->quit = true))
+		if (sh_singleton()->quit == true)
+			break ;
+		else if (check_heredoc_exit(&doc, redir->redir_suffix_file))
 			break ;
 		else if (!doc.new_instr)
 			continue ;
-		else if (check_heredoc_exit(&doc, redir->redir_suffix_file))
-			break ;
 		ft_strcat(doc.buff, doc.new_instr);
 		ft_strcat(doc.buff, "\n");
 		free(doc.new_instr);
