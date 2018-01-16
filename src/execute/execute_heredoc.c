@@ -18,7 +18,8 @@
 
 static void	cleanup(t_tokelist *redir, char buff[4092])
 {
-	history_add(buff);
+	if (buff[0] != '\0')
+		history_add(buff);
 	if (redir->redir_suffix_file)
 	{
 		pipe(redir->heredoc);
@@ -45,10 +46,11 @@ static bool	check_heredoc_exit(t_here *doc, char *redir_suffix_file)
 {
 	if (sh_singleton()->quit == true)
 	{
+		sh_singleton()->quit = false;
 		ft_dprintf(2, "Quit request found\n");
 		return (true);
 	}
-	if (ft_strstr(doc->new_instr, redir_suffix_file))
+	if ((ft_strcmp(doc->new_instr, redir_suffix_file)) == 0)
 	{
 		return (true);
 	}
@@ -89,11 +91,10 @@ void		redirect_heredoc(t_tokelist *redir)
 	while (42)
 	{
 		doc.new_instr = readline(doc.prompt);
-		ft_dprintf(2, "'%s'\n", doc.new_instr);
-		if (sh_singleton()->quit == true && (sh_singleton()->quit = true))
-			break ;
-		else if (!doc.new_instr)
+		if (!doc.new_instr && sh_singleton()->quit == false)
 			continue ;
+		else if (!doc.new_instr)
+			break ;
 		else if (check_heredoc_exit(&doc, redir->redir_suffix_file))
 			break ;
 		ft_strcat(doc.buff, doc.new_instr);
@@ -102,6 +103,7 @@ void		redirect_heredoc(t_tokelist *redir)
 	}
 	if (doc.new_instr)
 		free(doc.new_instr);
-	if (doc.buff[0] != 0)
+	if (doc.buff[0] != 0 || redir->redir_suffix_file)
 		cleanup(redir, doc.buff);
+	sh_singleton()->quit = false;
 }

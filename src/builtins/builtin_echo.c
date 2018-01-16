@@ -28,7 +28,8 @@ int	builtin_echo(char **av)
 	while (av[++x])
 	{
 		ft_putstr(av[x]);
-		x++;
+		if (av[x + 1])
+			ft_putchar(' ');
 	}
 	ft_putchar('\n');
 	return (0);
