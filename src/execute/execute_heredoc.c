@@ -105,4 +105,5 @@ void		redirect_heredoc(t_tokelist *redir)
 		free(doc.new_instr);
 	if (doc.buff[0] != 0 || redir->redir_suffix_file)
 		cleanup(redir, doc.buff);
+	sh_singleton()->quit = false;
 }
