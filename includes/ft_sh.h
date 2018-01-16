@@ -47,6 +47,7 @@ typedef struct			s_cmds
 typedef struct			s_shell
 {
 	bool				quit;
+	bool				continue_loop;
 	char				**argv;
 	char				**env;
 	char				**localenv;

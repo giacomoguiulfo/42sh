@@ -19,11 +19,14 @@
 static void	cleanup(t_tokelist *redir, char buff[4092])
 {
 	history_add(buff);
-	pipe(redir->heredoc);
-	ft_dprintf(redir->heredoc[1], "%s", buff);
-	close(redir->heredoc[1]);
-	dup2(redir->heredoc[0], 0);
-	close(redir->heredoc[0]);
+	if (redir->redir_suffix_file)
+	{
+		pipe(redir->heredoc);
+		ft_dprintf(redir->heredoc[1], "%s", buff);
+		close(redir->heredoc[1]);
+		dup2(redir->heredoc[0], 0);
+		close(redir->heredoc[0]);
+	}
 }
 
 static void	startup(t_tokelist *redir, t_here *doc)
@@ -40,7 +43,13 @@ static void	startup(t_tokelist *redir, t_here *doc)
 
 static bool	check_heredoc_exit(t_here *doc, char *redir_suffix_file)
 {
-	if (ft_strcmp(doc->new_instr, redir_suffix_file))
+	if (sh_singleton()->quit == true)
+	{
+		sh_singleton()->quit = false;
+		ft_dprintf(2, "Quit request found\n");
+		return (true);
+	}
+	if ((ft_strcmp(doc->new_instr, redir_suffix_file)) == 0)
 	{
 		return (true);
 	}
@@ -58,7 +67,6 @@ static bool	check_heredoc_delim(t_tokelist *redir)
 
 	if (redir->redir_suffix_file)
 	{
-		ft_printf("Suffix file: %s\n");
 		return (true);
 	}
 	ft_dprintf(2, "Trash: please enter a delimiter character or phrase\n");

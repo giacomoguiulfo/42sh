@@ -36,6 +36,13 @@ t_tokelist	*tokenize_constructor(t_toke *help, char *instr)
 	return (head);
 }
 
+static int	ft_checktab(char *c)
+{
+	if (c[0] == '\\' && c[1] == 't')
+		return (1);
+	return (0);
+}
+
 static int	check_type(char *instructions, t_toke *help)
 {
 	int type;
@@ -49,6 +56,8 @@ static int	check_type(char *instructions, t_toke *help)
 		type = 2;
 	else if (ft_iscompletechain(instructions + help->x))
 		type = 3;
+	else if (ft_checktab(instructions + help->x))
+		help->x++;
 	return (type);
 }
 

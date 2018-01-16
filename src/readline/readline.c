@@ -25,6 +25,7 @@ static void	input_constructor(t_input *data, char *prompt)
 
 	shell = sh_singleton();
 	shell->prompt = prompt;
+	shell->continue_loop = true;
 	data->prompt = prompt;
 	data->prompt_size = ft_strlen(data->prompt);
 	ft_bzero(data->char_buff, CHAR_BUFF_SIZE);
@@ -39,21 +40,20 @@ static void	input_constructor(t_input *data, char *prompt)
 
 bool		exit_status(t_input *data, int ret)
 {
-	t_shell *shell;
-
-	shell = NULL;
 	if (data->char_buff[0] == 4)
 	{
-		shell = sh_singleton();
-		shell->quit = true;
 		ft_putstr("\nTrash: Found EOF call\n");
-		return (shell->quit);
+		return ((sh_singleton()->quit = true));
+	}
+	else if (sh_singleton()->continue_loop == false)
+	{
+		return (true);
 	}
 	else if (ret < 0)
 	{
 		ft_printf("return is %d\n", ret);
 		ft_putstr("\nTrash: Read error\n");
-		return ((shell->quit = true));
+		return ((sh_singleton()->quit = true));
 	}
 	return (false);
 }
@@ -65,7 +65,7 @@ char		*readline(char *prompt)
 
 	input_constructor(&data, prompt);
 	ft_putstr(prompt);
-	while (data.continue_loop == true)
+	while (sh_singleton()->continue_loop == true)
 	{
 		data.ret = read(0, &data.char_buff, 5);
 		if (exit_status(&data, data.ret))
