@@ -91,12 +91,12 @@ void		redirect_heredoc(t_tokelist *redir)
 	while (42)
 	{
 		doc.new_instr = readline(doc.prompt);
-		if (sh_singleton()->quit == true)
+		if (!doc.new_instr && sh_singleton()->quit == false)
+			continue ;
+		else if (!doc.new_instr)
 			break ;
 		else if (check_heredoc_exit(&doc, redir->redir_suffix_file))
 			break ;
-		else if (!doc.new_instr)
-			continue ;
 		ft_strcat(doc.buff, doc.new_instr);
 		ft_strcat(doc.buff, "\n");
 		free(doc.new_instr);
