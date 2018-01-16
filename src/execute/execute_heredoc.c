@@ -18,7 +18,8 @@
 
 static void	cleanup(t_tokelist *redir, char buff[4092])
 {
-	history_add(buff);
+	if (buff[0] != '\0')
+		history_add(buff);
 	if (redir->redir_suffix_file)
 	{
 		pipe(redir->heredoc);
@@ -102,6 +103,6 @@ void		redirect_heredoc(t_tokelist *redir)
 	}
 	if (doc.new_instr)
 		free(doc.new_instr);
-	if (doc.buff[0] != 0)
+	if (doc.buff[0] != 0 || redir->redir_suffix_file)
 		cleanup(redir, doc.buff);
 }

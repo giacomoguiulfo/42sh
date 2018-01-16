@@ -43,7 +43,9 @@ bool		exit_status(t_input *data, int ret)
 	if (data->char_buff[0] == 4)
 	{
 		ft_putstr("\nTrash: Found EOF call\n");
-		return ((sh_singleton()->quit = true));
+		sh_singleton()->continue_loop = false;
+		sh_singleton()->quit = true;
+		return (true);
 	}
 	else if (sh_singleton()->continue_loop == false)
 	{
