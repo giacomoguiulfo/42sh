@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 16:14:00 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 15:11:44 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ typedef struct			s_cmds
 typedef struct			s_shell
 {
 	bool				quit;
+	bool				continue_loop;
 	char				**argv;
 	char				**env;
 	char				**localenv;
-	char				*path;
 	char				*prompt;
 	char				*term_name;
 	int					argc;

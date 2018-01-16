@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/16 18:54:41 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/12 15:58:59 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	signal_handler(int signo)
 	shell = sh_singleton();
 	if (signo == SIGINT)
 	{
+		shell->continue_loop = false;
 		write(1, "\n", 1);
-		waitpid(-1, &status, 0);
-		ft_printf("%s", shell->prompt);
+		waitpid(-1, &status, WNOHANG);
 	}
 }
 

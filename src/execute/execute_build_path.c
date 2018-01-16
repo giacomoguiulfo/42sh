@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/16 20:31:37 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/12 15:47:07 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 
 #include "execute.h"
 #include <sys/stat.h>
-
-bool	check_access(char *path)
-{
-	if (!((access(path, X_OK)) == 0))
-	{
-		return (false);
-	}
-	return (true);
-}
-
-bool	check_reg_file(mode_t st_mode)
-{
-	if (S_ISLNK(st_mode))
-		return (true);
-	if (S_ISREG(st_mode))
-		return (true);
-	return (false);
-}
 
 char	*check_pwd(char *binary)
 {
@@ -60,29 +42,47 @@ void	build_buffer(char buff[MAX_PATH], char *binary, char *start, char *end)
 	ft_strcat(buff, binary);
 }
 
+bool	check_again(char **start, char **end, char buff[MAX_PATH], char *binary)
+{
+	struct stat sb;
+
+	build_buffer(buff, binary, *start, *end);
+	if ((lstat(buff, &sb)) != -1)
+	{
+		if (!check_access(buff))
+			return (false);
+		else if (!check_reg_file(sb.st_mode))
+			return (false);
+		return (true);
+	}
+	*start = *end + 1;
+	return (false);
+}
+
 char	*build_bin_path(char *path, char *binary)
 {
 	char		*start;
 	char		*end;
 	char		buff[MAX_PATH];
-	struct stat sb;
 
-	start = path;
-	while (start && ((end = ft_strchr(start, ':')) != NULL))
+	if (path)
 	{
-		build_buffer(buff, binary, start, end);
-		if ((lstat(buff, &sb)) != -1)
+		start = path;
+		while (start && ((end = ft_strchr(start, ':')) != NULL))
 		{
-			if (!check_access(buff))
-				return (NULL);
-			else if (!check_reg_file(sb.st_mode))
-				return (NULL);
+			if (check_again(&start, &end, buff, binary))
+				return (ft_hstrdup(buff));
+		}
+		end = start + ft_strlen(start);
+		if (check_again(&start, &end, buff, binary))
+		{
 			return (ft_hstrdup(buff));
 		}
-		start = end + 1;
 	}
 	if ((end = check_pwd(binary)))
+	{
 		return (end);
+	}
 	ft_dprintf(2, "Trash: command not found: %s\n", binary);
 	return (NULL);
 }

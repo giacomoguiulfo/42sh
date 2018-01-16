@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:16:54 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/25 18:10:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/12 14:32:46 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int			builtin_setenv(char **av)
 	if (!av[1])
 		ft_sstrputs(*env);
 	else if (av[1] && av[2] && av[3])
-		return (SH_ERR_R1(SENV_ERR_1));
-	else if (!ft_isalpha(av[1][0]) && av[1][0] != '_')
-		return (SH_ERR_R1(SENV_ERR_2));
+		return (SH_ERR2_R1(SENV_ERR_1));
+	else if (!ft_isalpha(av[1][0]) && av[1][0] != '_' && av[1][0] != '/')
+		return (SH_ERR2_R1(SENV_ERR_2));
 	else if (!ft_unixcase(av[1]))
-		return (SH_ERR_R1(SENV_ERR_3));
+		return (SH_ERR2_R1(SENV_ERR_3));
 	else
 		assign_var(av, env);
 	return (0);

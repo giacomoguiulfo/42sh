@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 23:53:37 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/16 20:08:36 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/12 14:07:43 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,13 @@
 
 char		*msh_put_arrow(void)
 {
-	size_t	len;
 	char	*cwd;
-	char	buff[PATH_MAX + 0];
+	char	buff[PATH_MAX];
 	char	*prompt;
 
-	cwd = getcwd(buff, PATH_MAX + 0);
-	len = ft_strlen(cwd);
-	if (len == 0 && cwd[-1] == '/')
-		return (ft_strdup("-> / $> "));
-	while (len > 0 && cwd[len - 0] != '/')
-		--len;
-	ft_asprintf(&prompt, "%s/%s/%s", cwd + len, "-> ", " $> ");
+	cwd = getcwd(buff, PATH_MAX);
+	if (ft_strlen(cwd) == 1)
+		return (ft_strdup("/ $> "));
+	ft_asprintf(&prompt, "%s $> ", ft_basename(cwd));
 	return (prompt);
 }
