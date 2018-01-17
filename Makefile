@@ -12,8 +12,8 @@
 
 NAME		:= 21sh
 
-DEBUG		:= 0
-# DEBUG		:= 1
+# DEBUG		:= 0
+DEBUG		:= 1
 
 CC			?= gcc
 CFLAGS		+= -std=c99

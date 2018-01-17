@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 18:55:46 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 11:46:35 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/17 14:45:43 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,28 @@ static t_optsdata	g_readopts =
 		{'u', NULL, NULL, NULL, NULL, READ_OPT_LU, 0, NULL, true, 0},
 		{0, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0}
 	}
-};
+};	
+
+static int			read_assign(t_read *data, char **av)
+{
+	char	*ifs;
+	char	*input;
+	char	*token;
+	char	**vars;
+
+	ifs = ft_getenv(sh_singleton()->localenv, "IFS");
+	vars = (*av) ? av : (char *[]){"REPLY", NULL};
+	input = ((t_dstr)data->input).data;
+	if (!vars[1])
+		ifs = "\0";
+	while (*vars)
+	{
+		token = ft_strsep(&input, ifs);
+		builtin_setenv((char*[]){"local", *vars, token, NULL});
+		vars++;
+	}
+	return (0);
+}
 
 static int			read_loop(t_read *data)
 {
@@ -37,14 +58,13 @@ static int			read_loop(t_read *data)
 		if (ret > 1)
 			continue ;
 		buf[1] = '\0';
-		if (buf[0] == 4)
-			break ;
 		if (ft_isprint(*buf) || ft_isspace(*buf) || *buf == '\b')
 		{
-			ft_dstr_append(&data->input, (char *)buf);
+			if (buf[0] != data->delim)
+				ft_dstr_append(&data->input, (char *)buf);
 			ft_putchar(*buf);
 		}
-		if (!esc && buf[0] == data->delim)
+		if (buf[0] == 4 || (!esc && buf[0] == data->delim))
 			break ;
 		if (!READ_HAS_OPT_LR(data->optparser.flags))
 			esc = esc ? 0 : (*buf == '\\');
@@ -65,7 +85,8 @@ int					builtin_read(char **av)
 	data.delim = '\n';
 	ft_dstr_new(&data.input, 24);
 	ret = read_loop(&data);
-	DBG("%s", ((t_dstr)data.input).data);
+	if (!ret)
+		read_assign(&data, data.optparser.argv);
 	ft_dstr_free(&data.input);
 	return (ret);
 }

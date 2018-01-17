@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2018/01/16 11:20:28 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/16 14:56:42 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	shell->argv = ft_sstrdup(av);
 	shell->env = ft_sstrdup(environ);
 	shell->localenv = NULL;
+	builtin_setenv((char*[]){"local", "IFS", " \t\n", NULL});
 	shell->stdin_backup = dup(0);
 	shell->stdout_backup = dup(1);
 	shell->stderr_backup = dup(2);
