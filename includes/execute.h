@@ -28,11 +28,13 @@ typedef struct	s_here
 
 void			check_pipes(t_astree *node);
 void			execute_ast_cmds(t_astree *head);
+void			piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path);
 void			redirect_heredoc(t_tokelist *redir);
 void			restore_io(t_shell *shell);
 void			setup_io(t_shell *shell, t_tokelist **redirs);
 
 bool			try_without_path(char *test);
+int				msh_run_prog(char *executable, char **args, char **newenvp);
 char			*build_bin_path(char *path, char *binary);
 
 bool			check_access(char *path);

@@ -53,7 +53,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 {
 	setup_io(shell, node->this->redirs);
-	check_pipes(node);
+	//check_pipes(node);
 	*set = NULL;
 }
 
@@ -83,16 +83,21 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	pre_execution_io(shell, node, &this_path);
-	if (node->this->binary)
-		execution(shell, node, this_path, path);
-	restore_io(shell);
-	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
-		recursive_execute(shell, node->left, path);
-	else if (node->left && node->type && node->type[0] == '|'
-		&& node->type[1] == '|' && node->ret > 0)
-		recursive_execute(shell, node->left, path);
-	if (node->right && node->right->this)
-		recursive_execute(shell, node->right, path);
+	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] == '\0')
+		piped_execution(shell, node, this_path, path);
+	else
+	{
+		if (node->this->binary)
+			execution(shell, node, this_path, path);
+		restore_io(shell);
+		if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+			recursive_execute(shell, node->left, path);
+		else if (node->left && node->type && node->type[0] == '|'
+			&& node->type[1] == '|' && node->ret > 0)
+			recursive_execute(shell, node->left, path);
+		if (node->right && node->right->this && node->right->type[0] != '|')
+			recursive_execute(shell, node->right, path);
+	}
 }
 
 void	execute_ast_cmds(t_astree *head)

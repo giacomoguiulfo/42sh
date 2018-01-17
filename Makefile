@@ -53,6 +53,7 @@ execute/execute_builtins\
 execute/execute_heredoc\
 execute/execute_cmds\
 execute/execute_pipes\
+execute/execute_pipe_cmds\
 execute/execute_redirections\
 execute/execute_utils\
 lexer/lexer\
