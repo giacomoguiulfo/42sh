@@ -63,8 +63,12 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 	if (pid == 0)
 	{
 		ft_dprintf(2, "-->%s\n", executable);
+		if (node->right && node->right->type[0] == '|')
+			dup2(pipefd[1], 1);
+		if (node->prev && node->prev->type[0] == '|')
+			dup2(pipefd[0], 0);
 		close(pipefd[0]);
-		dup2(pipefd[1], 1);
+		close(pipefd[1]);
 		if (execve(executable, args, newenvp) == -1)
 		{
 			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
@@ -80,12 +84,12 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 	{
 		close(pipefd[1]);
 		dup2(pipefd[0], 0);
+		close(pipefd[0]);
 		if (node->prev && node->prev->type && node->prev->type[0] == '|' && node->prev->type[1] != '|')
 		{
-			ft_dprintf(2, "getting the next link...\n");
+			ft_dprintf(2, "getting the previous link...\n");
 			child_pipe(sh_singleton(), node->prev, test, path);
 		}
-		close(pipefd[0]);
 		wait(NULL);
 		exit(EXIT_SUCCESS);
 	}
@@ -98,24 +102,6 @@ void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path)
 	this_path = build_bin_path(path, node->this->binary);
 	if (this_path)
 		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path);
-}
-
-void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path)
-{
-	int pid;
-	int status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_dprintf(2, "child pipe\n");
-		child_pipe(shell, node, this_path, path);
-	}
-	else
-	{
-		ft_dprintf(2, "parent pipe\n");
-		waitpid(-1, &status, 0);
-	}
 }
 
 t_astree *get_end(t_astree *node)
@@ -146,7 +132,6 @@ void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path
 	if (pid == 0)
 	{
 		child_pipe(shell, end, this_path, path);
-		dup2(sh_singleton()->stdin_backup, 0);
 	}
 	else
 	{
