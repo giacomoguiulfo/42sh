@@ -82,9 +82,13 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
+	ft_dprintf(2, "Starting exec\n");
 	pre_execution_io(shell, node, &this_path);
-	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] == '\0')
+	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] != '|')
+	{
+		ft_dprintf(2, "-Starting piped exec\n");
 		piped_execution(shell, node, this_path, path);
+	}
 	else
 	{
 		if (node->this->binary)

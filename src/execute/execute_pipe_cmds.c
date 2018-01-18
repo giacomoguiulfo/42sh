@@ -47,8 +47,8 @@
 	}
 }*/
 
-/*
-int		msh_run_prog(char *executable, char **args, char **newenvp)
+
+int		msh_run_prog_a(char *executable, char **args, char **newenvp)
 {
 	pid_t	pid;
 	int		status;
@@ -56,6 +56,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 	pid = fork();
 	if (pid == 0)
 	{
+		ft_dprintf(2, "-->%s\n", executable);
 		if (execve(executable, args, newenvp) == -1)
 		{
 			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
@@ -67,31 +68,36 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
 		exit(EXIT_FAILURE);
 	}
-	wait(&status);
+	while (waitpid(pid, &status, WNOHANG))
+		;
 	sh_init_termios();
 	return (status);
-}*/
+}
 
 void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path);
 
-void	execute_child_link(t_shell *shell, t_astree *node, char *this_path, char *path, int *pipefd)
+void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int *pipefd)
 {
 	close(pipefd[0]);
 	dup2(pipefd[1], 1);
 	this_path = build_bin_path(path, node->this->binary);
 	if (this_path)
-		node->ret = msh_run_prog(this_path, node->this->args, shell->env);
+		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env);
 	close(pipefd[1]);
 }
 
-void	parent_continues(t_shell *shell, t_astree *node, char *this_path, char *path, int *pipefd)
+void	parent_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int *pipefd)
 {
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
 	if (node->right && node->right->type && node->right->type[0] == '|')
+	{
 		execute_links(shell, node->right, this_path, path);
+	}
 	else
-		execute_child_link(shell, node, this_path, path, pipefd);
+	{
+		child_pipe(shell, node, this_path, path, pipefd);
+	}
 	close(pipefd[0]);
 }
 
@@ -99,17 +105,20 @@ void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
 	int pid;
 	int pipefd[2];
+	int status;
 
 	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
 	{
-		execute_child_link(shell, node, this_path, path, pipefd);
+		child_pipe(shell, node, this_path, path, pipefd);
 	}
 	else
 	{
-		parent_continues(shell, node, this_path, path, pipefd);
+		if (node->right)
+			parent_pipe(shell, node->right, this_path, path, pipefd);
 	}
+	waitpid(0, &status, 0);
 }
 
 void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path)
@@ -117,12 +126,17 @@ void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path
 	int pid;
 	int status;
 
+	ft_dprintf(2, "-Piped_execution start\n");
 	pid = fork();
+	ft_dprintf(2, "-After fork\n");
 	if (pid == 0)
 		execute_links(shell, node, this_path, path);
 	else
-		while ((waitpid(pid, &status, WNOHANG)) == 0)
+	{
+		while ((waitpid(-1, &status, 0)) == 0)
 			;
+	}
+	ft_dprintf(2, "-Finished piped exec\n");
 }
 
 
