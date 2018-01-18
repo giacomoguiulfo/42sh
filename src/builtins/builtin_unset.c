@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/17 02:11:12 by giacomo           #+#    #+#             */
-/*   Updated: 2017/12/24 17:02:34 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:51:34 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	builtin_unset(char **av)
 		return (1);
 	if (UNSET_HAS_OPT_LF(data.flags))
 	{
-		ft_printf("unset: functions not supported yet\n");
-		return (0);
+		SH_ERR2("unset: functions are not supported");
+		return (2);
 	}
 	tmp = av[0];
 	av[0] = "local";

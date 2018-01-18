@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2018/01/17 15:42:30 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:43:18 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int			sh_data_init(t_shell *shell, int ac, char **av, t_cmds *history)
 	int			ret;
 
 	shell->quit = false;
+	shell->status = 0;
 	shell->argc = ac;
 	shell->argv = ft_sstrdup(av);
 	shell->env = ft_sstrdup(environ);

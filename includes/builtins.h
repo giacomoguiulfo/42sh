@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:55:15 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/18 10:36:26 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:49:21 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct		s_read
 int				builtin_cd(char *av[]);
 int				builtin_echo(char *av[]);
 int				builtin_env(char *av[]);
-int				builtin_exit(void);
+int				builtin_exit(char *av[]);
 int				builtin_export(char *av[]);
 int				builtin_read(char *av[]);
 int				builtin_setenv(char *av[]);

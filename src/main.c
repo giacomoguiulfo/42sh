@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 19:37:48 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/12 14:26:29 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:50:43 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int			main(int ac, char **av)
 		if (shell->quit == true)
 			break ;
 	}
-	builtin_exit();
+	builtin_exit((char*[]){"exit", NULL});
 	return (0);
 }

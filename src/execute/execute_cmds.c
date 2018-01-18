@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/12 15:12:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:44:59 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 				node->this->args, shell->env);
 		}
 	}
+	sh_singleton()->status = node->ret;
 }
 
 void	recursive_execute(t_shell *shell, t_astree *node, char *path)
