@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/12 15:38:12 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 11:05:56 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,6 @@ bool	try_pwd(char *binary)
 	else if (!check_reg_file(sb.st_mode))
 		return (false);
 	return (true);
-}
-
-char	*get_path(void)
-{
-	t_shell	*shell;
-	char	*path;
-	int		x;
-
-	shell = sh_singleton();
-	x = -1;
-	while (shell->env[++x])
-	{
-		if ((ft_strncmp(shell->env[x], "PATH=", 5)) == 0)
-		{
-			path = shell->env[x] + 5;
-			return (path);
-		}
-	}
-	return (NULL);
 }
 
 bool	try_without_path(char *test)

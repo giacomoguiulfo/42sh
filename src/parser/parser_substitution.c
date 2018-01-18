@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/25 18:23:21 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 11:15:16 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void		check_for_home(char **find, char this)
 		return ;
 	else if (!(found + 1))
 		return ;
-	path = get_home();
-	path = ft_strchr(path, '=');
-	path++;
+	path = ft_getenv(sh_singleton()->env, "HOME");
 	ft_bzero((void*)buff, 4092);
 	ft_strncpy(buff, *find, found - *find);
 	ft_strcat(buff, path);

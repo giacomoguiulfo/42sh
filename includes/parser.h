@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/16 20:23:14 by giacomo          ###   ########.fr       */
+/*   Updated: 2018/01/18 11:15:32 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ void					add_chain(t_asttoken *build, t_tokelist *binary);
 void					add_redir(t_asttoken *build, t_tokelist *binary);
 
 bool					ft_issub(char c);
-char					*get_home(void);
 
 #endif

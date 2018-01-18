@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2017/12/25 18:23:21 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 11:15:25 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,4 @@ bool		ft_issub(char c)
 	else if (c == '_')
 		return (true);
 	return (false);
-}
-
-char		*get_home(void)
-{
-	t_shell	*shell;
-	int		x;
-
-	shell = sh_singleton();
-	x = -1;
-	if (!shell->env)
-		return (NULL);
-	while (shell->env[++x])
-	{
-		if (ft_strncmp(shell->env[x], "HOME=", 5) == 0)
-			return (shell->env[x]);
-	}
-	return (NULL);
 }
