@@ -23,6 +23,7 @@ t_astree	*make_tree_node(void)
 	new->right = NULL;
 	new->this = NULL;
 	new->type = NULL;
+	new->prev = NULL;
 	new->pipe_fd[0] = -2;
 	new->pipe_fd[1] = -2;
 	return (new);
@@ -32,6 +33,7 @@ t_astree	*make_left_branch(t_astree *current, t_asttoken *toke)
 {
 	current->left = make_tree_node();
 	current->left->type = toke->chain->type;
+	current->left->prev = current;
 	current = current->left;
 	return (current);
 }
@@ -40,6 +42,7 @@ t_astree	*make_right_branch_pipe(t_astree *current, t_asttoken *toke)
 {
 	current->right = make_tree_node();
 	current->right->type = toke->chain->type;
+	current->right->prev = current;
 	current = current->right;
 	return (current);
 }

@@ -88,6 +88,7 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	{
 		ft_dprintf(2, "-Starting piped exec\n");
 		piped_execution(shell, node, this_path, path);
+		ft_dprintf(2, "-Finished piped exec\n");
 	}
 	else
 	{

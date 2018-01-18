@@ -68,8 +68,6 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp)
 		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
 		exit(EXIT_FAILURE);
 	}
-	while (waitpid(pid, &status, WNOHANG))
-		;
 	sh_init_termios();
 	return (status);
 }
@@ -90,9 +88,10 @@ void	parent_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, in
 {
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
-	if (node->right && node->right->type && node->right->type[0] == '|')
+	if (node->prev && node->prev->type && node->prev->type[0] == '|' && node->prev->type[1] != '|')
 	{
-		execute_links(shell, node->right, this_path, path);
+		ft_dprintf(2, "getting the next link...\n");
+		execute_links(shell, node->prev, this_path, path);
 	}
 	else
 	{
@@ -111,32 +110,50 @@ void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path)
 	pid = fork();
 	if (pid == 0)
 	{
+		ft_dprintf(2, "child pipe\n");
 		child_pipe(shell, node, this_path, path, pipefd);
 	}
 	else
 	{
-		if (node->right)
-			parent_pipe(shell, node->right, this_path, path, pipefd);
+		ft_dprintf(2, "parent pipe\n");
+		parent_pipe(shell, node, this_path, path, pipefd);
+		waitpid(-1, &status, 0);
+		exit(EXIT_SUCCESS);
 	}
-	waitpid(0, &status, 0);
+}
+
+t_astree *get_end(t_astree *node)
+{
+	ft_dprintf(2, "getting end: %s\n", node->type);
+	while (node->right && node->right->type && node->right->type[0] == '|')
+	{
+		ft_dprintf(2, "getting end: %s\n", node->type);
+		node = node->right;
+	}
+	node = node->right;
+	ft_dprintf(2, "getting end: %s\n", node->type);
+	return (node);
 }
 
 void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
-	int pid;
-	int status;
+	int 		pid;
+	int 		status;
+	t_astree 	*end;
 
 	ft_dprintf(2, "-Piped_execution start\n");
+
+	end = get_end(node);
+	ft_dprintf(2, "node end type: %s\n", end->type);
 	pid = fork();
-	ft_dprintf(2, "-After fork\n");
+	ft_dprintf(2, "PID: %d\n", pid);
 	if (pid == 0)
-		execute_links(shell, node, this_path, path);
+		execute_links(shell, end, this_path, path);
 	else
 	{
-		while ((waitpid(-1, &status, 0)) == 0)
+		while ((waitpid(pid, &status, WNOHANG)) == 0)
 			;
 	}
-	ft_dprintf(2, "-Finished piped exec\n");
 }
 
 

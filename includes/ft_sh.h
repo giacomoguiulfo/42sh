@@ -32,6 +32,7 @@ typedef struct			s_astree
 	struct s_asttoken	*this;
 	struct s_astree		*left;
 	struct s_astree		*right;
+	struct s_astree		*prev;
 }						t_astree;
 
 typedef struct			s_cmds
