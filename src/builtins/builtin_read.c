@@ -6,24 +6,36 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 18:55:46 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/17 14:45:43 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/17 17:29:36 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "ft_sh.h"
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <termios.h>
+
+static int	read_get_fd(char *def, char *fd, t_read *data)
+{
+	(void)def;
+	if (!data)
+		return (1);
+	data->fd = ft_atoi(fd);
+	return (0);
+}
 
 static t_optsdata	g_readopts =
 {
 	"read", NULL, NULL, NULL, 0, true, 0, {
 		{'r', NULL, NULL, NULL, NULL, READ_OPT_LR, 0, NULL, 0, 0},
-		{'u', NULL, NULL, NULL, NULL, READ_OPT_LU, 0, NULL, true, 0},
+		{'u', NULL, NULL, NULL, NULL, READ_OPT_LU, 0, &read_get_fd, true, 0},
 		{0, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0}
 	}
-};	
+};
 
-static int			read_assign(t_read *data, char **av)
+static int	read_assign(t_read *data, char **av)
 {
 	char	*ifs;
 	char	*input;
@@ -38,55 +50,72 @@ static int			read_assign(t_read *data, char **av)
 	while (*vars)
 	{
 		token = ft_strsep(&input, ifs);
-		builtin_setenv((char*[]){"local", *vars, token, NULL});
+		if (builtin_setenv((char*[]){"local", *vars, token, NULL}))
+			return (1);
 		vars++;
 	}
 	return (0);
 }
 
-static int			read_loop(t_read *data)
+static int	read_loop(t_read *data)
 {
 	int		ret;
 	int		esc;
-	char	buf[2];
+	char	buf[4];
 
 	esc = 0;
 	while (42)
 	{
-		if ((ret = read(data->fd, buf, 5) <= 0))
+		if ((ret = read(data->fd, buf, 4) <= 0))
 			return (ret);
-		if (ret > 1)
-			continue ;
 		buf[1] = '\0';
-		if (ft_isprint(*buf) || ft_isspace(*buf) || *buf == '\b')
-		{
-			if (buf[0] != data->delim)
-				ft_dstr_append(&data->input, (char *)buf);
-			ft_putchar(*buf);
-		}
-		if (buf[0] == 4 || (!esc && buf[0] == data->delim))
+		ft_putchar(*buf);
+		if (*buf == 4 || (!esc && *buf == data->delim))
 			break ;
 		if (!READ_HAS_OPT_LR(data->optparser.flags))
 			esc = esc ? 0 : (*buf == '\\');
+		ft_dstr_append(&data->input, buf);
 	}
 	return (0);
 }
 
-int					builtin_read(char **av)
+static int	read_init(t_read *data, char **av)
+{
+	struct termios term;
+
+	data->fd = STDIN;
+	data->delim = '\n';
+	data->optparser.flags = 0;
+	if (ft_dstr_new(&data->input, 24))
+		return (1);
+	if (isatty(STDIN))
+	{
+		tcgetattr(STDIN, &term);
+		term.c_lflag &= ~(ICANON | ECHO);
+		term.c_cc[VMIN] = 1;
+		term.c_cc[VTIME] = 0;
+		term.c_cc[VEOL] = data->delim;
+		if (tcsetattr(STDIN, TCSANOW, &term) == -1)
+		{
+			SH_ERR2("tcsetattr: %s", strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (ft_opts(av, &g_readopts, data, true))
+		return (1);
+	return (0);
+}
+
+int			builtin_read(char **av)
 {
 	t_read	data;
-	int		ret;
 
-	ret = 0;
-	data.optparser.flags = 0;
-	if (ft_opts((char **)av, &g_readopts, &data, true))
+	if (read_init(&data, av))
 		return (1);
-	data.fd = 0;
-	data.delim = '\n';
-	ft_dstr_new(&data.input, 24);
-	ret = read_loop(&data);
-	if (!ret)
-		read_assign(&data, data.optparser.argv);
+	if (read_loop(&data))
+		return (1);
+	if (read_assign(&data, data.optparser.argv))
+		return (1);
 	ft_dstr_free(&data.input);
-	return (ret);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: giacomo <giacomo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 03:17:38 by giacomo           #+#    #+#             */
-/*   Updated: 2018/01/16 14:56:42 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/17 15:42:30 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		sh_init_termios(void)
 	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
-	term.c_cc[0] = 0;
+	// term.c_cc[0] = 0;
 	tcsetattr(STDIN, TCSANOW, &term);
 }
 

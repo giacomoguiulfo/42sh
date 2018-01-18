@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:55:15 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/12/25 20:20:00 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/17 17:29:34 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ typedef struct	s_read
 	int			fd;
 	char		delim;
 }				t_read;
-
-int				read_get_fd(char *u, char *fd, t_read *data);
 
 int				builtin_cd(char *av[]);
 int				builtin_echo(char *av[]);

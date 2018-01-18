@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2018/01/12 14:16:06 by gguiulfo         ###   ########.fr        #
+#    Updated: 2018/01/17 17:26:56 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,6 @@ builtins/builtin_read\
 builtins/builtin_setenv\
 builtins/builtin_unset\
 builtins/builtin_unsetenv\
-builtins/read_opts\
 core/sh_init\
 core/sh_singleton\
 execute/execute_build_path\
