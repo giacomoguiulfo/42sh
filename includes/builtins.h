@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 21:55:15 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/17 17:29:34 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:36:26 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 
 typedef int		(t_builtin)(const char *av[]);
 
-typedef struct	s_read
+typedef struct		s_read
 {
-	t_optparser optparser;
-	t_dstr		input;
-	int			fd;
-	char		delim;
-}				t_read;
+	t_optparser 	optparser;
+	t_dstr			input;
+	int				fd;
+	char			delim;
+	unsigned int	interactive;
+}					t_read;
 
 int				builtin_cd(char *av[]);
 int				builtin_echo(char *av[]);

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 18:55:46 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/17 17:29:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/18 10:37:50 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,16 @@ static int	read_loop(t_read *data)
 {
 	int		ret;
 	int		esc;
-	char	buf[4];
+	char	buf[5];
 
 	esc = 0;
 	while (42)
 	{
-		if ((ret = read(data->fd, buf, 4) <= 0))
+		if ((ret = read(data->fd, buf, 4)) <= 0)
 			return (ret);
-		buf[1] = '\0';
-		ft_putchar(*buf);
+		buf[ret] = '\0';
+		if (data->interactive)
+			ft_putchar(*buf);
 		if (*buf == 4 || (!esc && *buf == data->delim))
 			break ;
 		if (!READ_HAS_OPT_LR(data->optparser.flags))
@@ -86,10 +87,12 @@ static int	read_init(t_read *data, char **av)
 	data->fd = STDIN;
 	data->delim = '\n';
 	data->optparser.flags = 0;
+	data->interactive = 0;
 	if (ft_dstr_new(&data->input, 24))
 		return (1);
 	if (isatty(STDIN))
 	{
+		data->interactive = 1;
 		tcgetattr(STDIN, &term);
 		term.c_lflag &= ~(ICANON | ECHO);
 		term.c_cc[VMIN] = 1;
