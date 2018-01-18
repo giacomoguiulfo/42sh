@@ -38,7 +38,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 		{
 			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
 		}
-		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
