@@ -26,73 +26,31 @@
 #include <error.h>
 #include <stdlib.h>
 
-/*void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
+int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out);
+
+void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out)
 {
-	t_builtin	*builtin;
-
-	if ((builtin = msh_run_builtin(node->this->binary)))
-		node->ret = builtin((const char **)node->this->args);
-	else
-	{
-		if (try_without_path(node->this->binary))
-		{
-			node->ret = msh_run_prog(node->this->binary,
-				node->this->args, shell->env);
-		}
-		else if ((this_path = build_bin_path(path, node->this->binary)))
-		{
-			node->ret = msh_run_prog(this_path,
-				node->this->args, shell->env);
-		}
-	}
-}*/
-
-void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path);
-void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out);
-
-/*
-
-void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
-{
-	t_builtin	*builtin;
-
-	if ((builtin = msh_run_builtin(node->this->binary)))
-		node->ret = builtin((const char **)node->this->args);
-	else
-	{
-		if (try_without_path(node->this->binary))
-		{
-			node->ret = msh_run_prog(node->this->binary,
-				node->this->args, shell->env);
-		}
-		else if ((this_path = build_bin_path(path, node->this->binary)))
-		{
-			node->ret = msh_run_prog(this_path,
-				node->this->args, shell->env);
-		}
-	}
+	this_path = build_bin_path(path, node->this->binary);
+	setup_io(shell, node->this->redirs);
+	if (this_path)
+		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path, in, out);
 }
-*/
 
 int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out)
 {
 	pid_t	pid;
-	int 	pipefd[2];
 	int		status;
 	char 	*test;
 	t_builtin *builtin;
 
 	test = NULL;
-	pipe(pipefd);
+	pipe(node->pipe_fd);
 	node->pid = fork();
 	if (node->pid == 0)
 	{
-		close(pipefd[0]);
 		if (node->prev)
-		{
-			ft_dprintf(2, "Spawning child: %s\n", node->prev->this->binary);
-			child_pipe(sh_singleton(), node->prev, test, path, pipefd[0], pipefd[1]);
-		}
+			child_pipe(sh_singleton(), node->prev, test, path, node->pipe_fd[0], node->pipe_fd[1]);
+		close(node->pipe_fd[0]);
 		exit(EXIT_SUCCESS);
 	}
 	else if (node->pid < 0)
@@ -103,31 +61,19 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 	else
 	{
 		while (WIFEXITED(&status));
-		ft_dprintf(2, "Parent after waitpid: %s\n", executable);
-		ft_dprintf(2, "Out: %d, In: %d\n", out, in);
 		if (out != 1)
-		{
-			ft_dprintf(2, "Using output FD: %d\n", out);
 			dup2(out, 1);
-		}
-		else
-			ft_dprintf(2, "Using output FD: 1\n");
 		if (node->prev)
-		{
-			ft_dprintf(2, "Using input FD: %d\n", pipefd[0]);
-			dup2(pipefd[0], 0);
-		}
-		ft_dprintf(2, "%d-->%s\n", pid, executable);
-		close(pipefd[0]);
-		close(pipefd[1]);
+			dup2(node->pipe_fd[0], 0);
+		if (!node->prev)
+			close(node->pipe_fd[0]);
+		close(node->pipe_fd[1]);
 		if ((builtin = msh_run_builtin(node->this->binary)))
 			node->ret = builtin((const char **)node->this->args);
 		else
 		{
 			if (execve(executable, args, newenvp) == -1)
-			{
 				ft_dprintf(2, "Trash: permission denied: %s\n", executable);
-			}
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -135,25 +81,11 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 	return (status);
 }
 
-void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out)
-{
-	this_path = build_bin_path(path, node->this->binary);
-	ft_dprintf(2, "path: %s\n", this_path);
-	setup_io(shell, node->this->redirs);
-	if (this_path)
-		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path, in, out);
-}
-
 t_astree *get_end(t_astree *node)
 {
-	ft_dprintf(2, "getting end: %s\n", node->type);
 	while (node->right && node->right->type && node->right->type[0] == '|')
-	{
-		ft_dprintf(2, "getting end: %s\n", node->type);
 		node = node->right;
-	}
 	node = node->right;
-	ft_dprintf(2, "getting end: %s\n", node->type);
 	return (node);
 }
 
@@ -163,23 +95,12 @@ t_astree *piped_execution(t_shell *shell, t_astree *node, char *this_path, char 
 	int 		status;
 	t_astree 	*end;
 
-	ft_dprintf(2, "-Piped_execution start\n");
-
 	end = get_end(node);
-	ft_dprintf(2, "node end type: %s\n", end->type);
 	pid = fork();
-	ft_dprintf(2, "PID: %d\n", pid);
 	if (pid == 0)
-	{
 		child_pipe(shell, end, this_path, path, 0, 1);
-	}
 	else
-	{
 		wait(&status);
-		ft_dprintf(2, "finished piped execution completely\n");
-		dup2(sh_singleton()->stdin_backup, 0);
-		dup2(sh_singleton()->stdout_backup, 1);
-	}
 	return (end);
 }
 
