@@ -38,7 +38,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 		{
 			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
 		}
-		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
@@ -53,7 +52,6 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 {
 	setup_io(shell, node->this->redirs);
-	check_pipes(node);
 	*set = NULL;
 }
 
@@ -84,15 +82,22 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	pre_execution_io(shell, node, &this_path);
-	if (node->this->binary)
-		execution(shell, node, this_path, path);
-	restore_io(shell);
-	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+	if (node->this->binary && node->type &&
+		node->type[0] == '|' && node->type[1] != '|')
+		node = piped_execution(node, path);
+	else
+	{
+		if (node->this->binary)
+			execution(shell, node, this_path, path);
+		restore_io(shell);
+	}
+	if (node->left && node->left->type &&
+		node->left->type[0] == '&' && node->ret < 1)
 		recursive_execute(shell, node->left, path);
-	else if (node->left && node->type && node->type[0] == '|'
-		&& node->type[1] == '|' && node->ret > 0)
+	else if (node->left && node->left->type && node->left->type[0] == '|'
+		&& node->left->type[1] == '|' && node->ret > 0)
 		recursive_execute(shell, node->left, path);
-	if (node->right && node->right->this)
+	if (node->right)
 		recursive_execute(shell, node->right, path);
 }
 

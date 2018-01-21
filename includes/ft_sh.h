@@ -27,10 +27,12 @@ typedef struct			s_astree
 {
 	char				*type;
 	int					ret;
+	int					pid;
 	int					pipe_fd[2];
 	struct s_asttoken	*this;
 	struct s_astree		*left;
 	struct s_astree		*right;
+	struct s_astree		*prev;
 }						t_astree;
 
 typedef struct			s_cmds

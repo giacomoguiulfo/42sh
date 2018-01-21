@@ -17,27 +17,46 @@
 # include "lexer.h"
 # include "parser.h"
 
-typedef struct	s_here
+typedef struct		s_here
 {
-	char		*new_instr;
-	char		*prompt;
-	char		*safe_word;
-	char		buff[4092];
-	int			ret;
-}				t_here;
+	char			*new_instr;
+	char			*prompt;
+	char			*safe_word;
+	char			buff[4092];
+	int				ret;
+}					t_here;
 
-void			check_pipes(t_astree *node);
-void			execute_ast_cmds(t_astree *head);
-void			redirect_heredoc(t_tokelist *redir);
-void			restore_io(t_shell *shell);
-void			setup_io(t_shell *shell, t_tokelist **redirs);
+typedef struct		s_pipeline
+{
+	char			*test;
+	char			*this_path;
+	char			*path;
+	int				pid;
+	int				status;
+	int				pipefd[2];
+	struct s_astree	*node;
+	struct s_shell	*shell;
+	struct s_astree	*end;
+}					t_pipeline;
 
-bool			try_without_path(char *test);
-char			*build_bin_path(char *path, char *binary);
+void				check_pipes(t_astree *node);
+void				execute_ast_cmds(t_astree *head);
+t_astree			*piped_execution(t_astree *node, char *path);
+void				redirect_heredoc(t_tokelist *redir);
+void				restore_io(t_shell *shell);
+void				setup_io(t_shell *shell, t_tokelist **redirs);
 
-bool			check_access(char *path);
-bool			check_builtin(char *binary);
-bool			check_reg_file(mode_t st_mode);
-t_builtin		*msh_run_builtin(char *name);
+bool				try_without_path(char *test);
+int					msh_run_prog(char *executable, char **args, char **newenvp);
+char				*build_bin_path(char *path, char *binary);
+
+bool				check_access(char *path);
+bool				check_builtin(char *binary);
+bool				check_reg_file(mode_t st_mode);
+t_builtin			*msh_run_builtin(char *name);
+
+t_astree			*get_end(t_astree *node);
+int					piped_fork(t_pipeline this, int in, int out);
+void				make_process(t_pipeline this, int in, int out);
 
 #endif

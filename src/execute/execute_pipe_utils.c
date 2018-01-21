@@ -13,28 +13,18 @@
 #include "execute.h"
 #include "parser.h"
 
-void	manage_pipes(t_astree *node)
+t_astree		*get_end(t_astree *node)
 {
-	if (node->pipe_fd[0] > -1)
-	{
-		dup2(node->pipe_fd[0], 0);
-		close(node->pipe_fd[0]);
-	}
-	if (node->this->chain && node->this->chain->type[0] == '|')
-	{
-		pipe(node->right->pipe_fd);
-		dup2(node->right->pipe_fd[1], 1);
-		close(node->right->pipe_fd[1]);
-	}
+	while (node->right && node->right->type && node->right->type[0] == '|')
+		node = node->right;
+	node = node->right;
+	return (node);
 }
 
-void	check_pipes(t_astree *node)
+void			make_process(t_pipeline this, int in, int out)
 {
-	char	*chain;
-
-	chain = node->this->chain->type;
-	if (chain && chain[0] == '|' && chain[1] != '|')
-		manage_pipes(node);
-	else if (node->pipe_fd[0] > -1)
-		manage_pipes(node);
+	this.this_path = build_bin_path(this.path, this.node->this->binary);
+	setup_io(this.shell, this.node->this->redirs);
+	if (this.this_path)
+		this.node->ret = piped_fork(this, in, out);
 }
