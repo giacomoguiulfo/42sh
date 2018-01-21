@@ -51,10 +51,7 @@ int		msh_run_prog(char *executable, char **args, char **newenvp)
 
 void	pre_execution_io(t_shell *shell, t_astree *node, char **set)
 {
-	ft_dprintf(2, "Inside prexec io\n");
 	setup_io(shell, node->this->redirs);
-	ft_dprintf(2, "outside prexec io\n");
-	//check_pipes(node);
 	*set = NULL;
 }
 
@@ -86,18 +83,12 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	ft_dprintf(2, "Starting exec\n");
 	pre_execution_io(shell, node, &this_path);
 	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] != '|')
-	{
-		ft_dprintf(2, "pipe if statement\n");
 		node = piped_execution(shell, node, this_path, path);
-	}
 	else
 	{
-		ft_dprintf(2, "Executing: %s\n", node->this->binary);
 		if (node->this->binary)
 			execution(shell, node, this_path, path);
-		ft_dprintf(2, "After normal execution\n");
 		restore_io(shell);
-		ft_dprintf(2, "After normal execution\n");
 	}
 	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
 		recursive_execute(shell, node->left, path);
@@ -106,7 +97,6 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 		recursive_execute(shell, node->left, path);
 	if (node->right)
 		recursive_execute(shell, node->right, path);
-	ft_dprintf(2, "No execution\n");
 }
 
 void	execute_ast_cmds(t_astree *head)

@@ -50,12 +50,37 @@
 void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path);
 void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out);
 
+/*
+
+void	execution(t_shell *shell, t_astree *node, char *this_path, char *path)
+{
+	t_builtin	*builtin;
+
+	if ((builtin = msh_run_builtin(node->this->binary)))
+		node->ret = builtin((const char **)node->this->args);
+	else
+	{
+		if (try_without_path(node->this->binary))
+		{
+			node->ret = msh_run_prog(node->this->binary,
+				node->this->args, shell->env);
+		}
+		else if ((this_path = build_bin_path(path, node->this->binary)))
+		{
+			node->ret = msh_run_prog(this_path,
+				node->this->args, shell->env);
+		}
+	}
+}
+*/
+
 int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out)
 {
 	pid_t	pid;
 	int 	pipefd[2];
 	int		status;
 	char 	*test;
+	t_builtin *builtin;
 
 	test = NULL;
 	pipe(pipefd);
@@ -95,9 +120,14 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 		ft_dprintf(2, "%d-->%s\n", pid, executable);
 		close(pipefd[0]);
 		close(pipefd[1]);
-		if (execve(executable, args, newenvp) == -1)
+		if ((builtin = msh_run_builtin(node->this->binary)))
+			node->ret = builtin((const char **)node->this->args);
+		else
 		{
-			ft_dprintf(2, "Trash: permission denied: %s\n", executable);
+			if (execve(executable, args, newenvp) == -1)
+			{
+				ft_dprintf(2, "Trash: permission denied: %s\n", executable);
+			}
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -109,6 +139,7 @@ void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int
 {
 	this_path = build_bin_path(path, node->this->binary);
 	ft_dprintf(2, "path: %s\n", this_path);
+	setup_io(shell, node->this->redirs);
 	if (this_path)
 		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path, in, out);
 }
