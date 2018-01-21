@@ -48,9 +48,9 @@
 }*/
 
 void	execute_links(t_shell *shell, t_astree *node, char *this_path, char *path);
-void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path);
+void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out);
 
-int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path)
+int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out)
 {
 	pid_t	pid;
 	int 	pipefd[2];
@@ -59,14 +59,40 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 
 	test = NULL;
 	pipe(pipefd);
-	pid = fork();
-	if (pid == 0)
+	node->pid = fork();
+	if (node->pid == 0)
 	{
-		ft_dprintf(2, "-->%s\n", executable);
-		if (node->right && node->right->type[0] == '|')
-			dup2(pipefd[1], 1);
-		if (node->prev && node->prev->type[0] == '|')
+		close(pipefd[0]);
+		if (node->prev)
+		{
+			ft_dprintf(2, "Spawning child: %s\n", node->prev->this->binary);
+			child_pipe(sh_singleton(), node->prev, test, path, pipefd[0], pipefd[1]);
+		}
+		exit(EXIT_SUCCESS);
+	}
+	else if (node->pid < 0)
+	{
+		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		while (WIFEXITED(&status));
+		ft_dprintf(2, "Parent after waitpid: %s\n", executable);
+		ft_dprintf(2, "Out: %d, In: %d\n", out, in);
+		if (out != 1)
+		{
+			ft_dprintf(2, "Using output FD: %d\n", out);
+			dup2(out, 1);
+		}
+		else
+			ft_dprintf(2, "Using output FD: 1\n");
+		if (node->prev)
+		{
+			ft_dprintf(2, "Using input FD: %d\n", pipefd[0]);
 			dup2(pipefd[0], 0);
+		}
+		ft_dprintf(2, "%d-->%s\n", pid, executable);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		if (execve(executable, args, newenvp) == -1)
@@ -75,33 +101,16 @@ int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *nod
 		}
 		exit(EXIT_FAILURE);
 	}
-	else if (pid < 0)
-	{
-		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], 0);
-		close(pipefd[0]);
-		if (node->prev && node->prev->type && node->prev->type[0] == '|' && node->prev->type[1] != '|')
-		{
-			ft_dprintf(2, "getting the previous link...\n");
-			child_pipe(sh_singleton(), node->prev, test, path);
-		}
-		wait(NULL);
-		exit(EXIT_SUCCESS);
-	}
 	sh_init_termios();
 	return (status);
 }
 
-void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path)
+void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out)
 {
 	this_path = build_bin_path(path, node->this->binary);
+	ft_dprintf(2, "path: %s\n", this_path);
 	if (this_path)
-		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path);
+		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path, in, out);
 }
 
 t_astree *get_end(t_astree *node)
@@ -131,13 +140,19 @@ void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path
 	ft_dprintf(2, "PID: %d\n", pid);
 	if (pid == 0)
 	{
-		child_pipe(shell, end, this_path, path);
+		child_pipe(shell, end, this_path, path, 0, 1);
 	}
 	else
 	{
-		waitpid(-1, &status, 0);
+		wait(&status);
+		ft_dprintf(2, "finished piped execution completely\n");
 		dup2(sh_singleton()->stdin_backup, 0);
+		dup2(sh_singleton()->stdout_backup, 1);
 	}
+	if (end->right)
+		recursive_execute(shell, node->right, path);
+	else if (end->left)
+		recursive_execute(shell, node->left, path);
 }
 
 
