@@ -26,6 +26,19 @@
 #include <error.h>
 #include <stdlib.h>
 
+typedef struct		s_pipeline
+{
+	char			*test;
+	char			*this_path;
+	char			*path;
+	int				pid;
+	int				status;
+	int				pipefd[2];
+	struct s_astree	*node;
+	struct s_shell	*shell;
+	struct s_astree	*end;	
+}					t_pipeline;
+
 int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out);
 
 void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out)
@@ -89,20 +102,27 @@ t_astree *get_end(t_astree *node)
 	return (node);
 }
 
-t_astree *piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path)
+void		pipeline_constructor(t_astree *node, t_pipeline *help, char *path)
 {
-	int 		pid;
-	int 		status;
-	t_astree 	*end;
-
-	end = get_end(node);
-	pid = fork();
-	if (pid == 0)
-		child_pipe(shell, end, this_path, path, 0, 1);
-	else
-		wait(&status);
-	return (end);
+	help->end = get_end(node);
+	help->test = NULL;
+	help->this_path = NULL;
+	help->path = path;
+	help->pipefd[0] = 0;
+	help->pipefd[1] = 1;
+	help->node = node;
+	help->shell = sh_singleton();
 }
 
+t_astree *piped_execution(t_astree *node, char *path)
+{
+	t_pipeline help;
 
-
+	pipeline_constructor(node, &help, path);
+	help.pid = fork();
+	if (help.pid == 0)
+		child_pipe(help.shell, help.end, help.this_path, help.path, 0, 1);
+	else
+		wait(&help.status);
+	return (help.end);
+}

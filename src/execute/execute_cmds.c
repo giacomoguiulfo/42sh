@@ -81,21 +81,40 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	char	*this_path;
 
 	pre_execution_io(shell, node, &this_path);
+	ft_dprintf(2, "Sup\n");
 	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] != '|')
-		node = piped_execution(shell, node, this_path, path);
+	{
+		ft_dprintf(2, "Before\n");
+		node = piped_execution(node, path);
+		ft_dprintf(2, "After\n");
+	}
 	else
 	{
+		ft_dprintf(2, "%s\n", node->this->binary);
 		if (node->this->binary)
 			execution(shell, node, this_path, path);
 		restore_io(shell);
 	}
-	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+	ft_dprintf(2, "Sup2\n");
+	if (node->left && node->left->type && node->left->type[0] == '&' && node->ret < 1)
+	{
+		ft_dprintf(2, "After sup2\n");
 		recursive_execute(shell, node->left, path);
-	else if (node->left && node->type && node->type[0] == '|'
-		&& node->type[1] == '|' && node->ret > 0)
+	}
+	else if (node->left && node->left->type && node->left->type[0] == '|'
+		&& node->left->type[1] == '|' && node->ret > 0)
+	{
+		ft_dprintf(2, "After sup3\n");
 		recursive_execute(shell, node->left, path);
+	}
 	if (node->right)
+	{
+		//if (node->right->type && node->right->type[0] == '|' && node->right->type[1] == '\0')
+		//	return ;
+		ft_dprintf(2, "Here\n");
 		recursive_execute(shell, node->right, path);
+	}
+	ft_dprintf(2, "Nothing\n");
 }
 
 void	execute_ast_cmds(t_astree *head)
