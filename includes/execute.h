@@ -26,6 +26,19 @@ typedef struct	s_here
 	int			ret;
 }				t_here;
 
+typedef struct		s_pipeline
+{
+	char			*test;
+	char			*this_path;
+	char			*path;
+	int				pid;
+	int				status;
+	int				pipefd[2];
+	struct s_astree	*node;
+	struct s_shell	*shell;
+	struct s_astree	*end;	
+}					t_pipeline;
+
 void			check_pipes(t_astree *node);
 void			execute_ast_cmds(t_astree *head);
 t_astree		*piped_execution(t_astree *node, char *path);
@@ -41,5 +54,9 @@ bool			check_access(char *path);
 bool			check_builtin(char *binary);
 bool			check_reg_file(mode_t st_mode);
 t_builtin		*msh_run_builtin(char *name);
+
+t_astree		*get_end(t_astree *node);
+int				piped_fork(t_pipeline this, int in, int out);
+void			make_process(t_pipeline this, int in, int out);
 
 #endif
