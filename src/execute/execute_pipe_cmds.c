@@ -39,59 +39,59 @@ typedef struct		s_pipeline
 	struct s_astree	*end;	
 }					t_pipeline;
 
-int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out);
+int		msh_run_prog_a(t_pipeline this, int in, int out);
 
-void	child_pipe(t_shell *shell, t_astree *node, char *this_path, char *path, int in, int out)
+void	child_pipe(t_pipeline this, int in, int out)
 {
-	this_path = build_bin_path(path, node->this->binary);
-	setup_io(shell, node->this->redirs);
-	if (this_path)
-		node->ret = msh_run_prog_a(this_path, node->this->args, shell->env, node, path, in, out);
+	this.this_path = build_bin_path(this.path, this.node->this->binary);
+	setup_io(this.shell, this.node->this->redirs);
+	if (this.this_path)
+		this.node->ret = msh_run_prog_a(this, in, out);
 }
 
-int		msh_run_prog_a(char *executable, char **args, char **newenvp, t_astree *node, char *path, int in, int out)
+int		msh_run_prog_a(t_pipeline this, int in, int out)
 {
-	pid_t	pid;
-	int		status;
-	char 	*test;
 	t_builtin *builtin;
 
-	test = NULL;
-	pipe(node->pipe_fd);
-	node->pid = fork();
-	if (node->pid == 0)
+	this.test = NULL;
+	pipe(this.node->pipe_fd);
+	this.node->pid = fork();
+	if (this.node->pid == 0)
 	{
-		if (node->prev)
-			child_pipe(sh_singleton(), node->prev, test, path, node->pipe_fd[0], node->pipe_fd[1]);
-		close(node->pipe_fd[0]);
+		if (this.node->prev)
+		{
+			this.node = this.node->prev;
+			child_pipe(this, this.pipefd[0], this.pipefd[1]);
+		}
+		close(this.node->pipe_fd[0]);
 		exit(EXIT_SUCCESS);
 	}
-	else if (node->pid < 0)
+	else if (this.node->pid < 0)
 	{
-		ft_dprintf(2, "Trash: unable to fork process: %d\n", pid);
+		ft_dprintf(2, "Trash: unable to fork process: %d\n", this.pid);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		while (WIFEXITED(&status));
+		while (WIFEXITED(&this.status));
 		if (out != 1)
 			dup2(out, 1);
-		if (node->prev)
-			dup2(node->pipe_fd[0], 0);
-		if (!node->prev)
-			close(node->pipe_fd[0]);
-		close(node->pipe_fd[1]);
-		if ((builtin = msh_run_builtin(node->this->binary)))
-			node->ret = builtin((const char **)node->this->args);
+		if (this.node->prev)
+			dup2(this.node->pipe_fd[0], 0);
+		if (!this.node->prev)
+			close(this.node->pipe_fd[0]);
+		close(this.node->pipe_fd[1]);
+		if ((builtin = msh_run_builtin(this.node->this->binary)))
+			this.node->ret = builtin((const char **)this.node->this->args);
 		else
 		{
-			if (execve(executable, args, newenvp) == -1)
-				ft_dprintf(2, "Trash: permission denied: %s\n", executable);
+			if (execve(this.this_path, this.node->this->args, this.shell->env) == -1)
+				ft_dprintf(2, "Trash: permission denied: %s\n", this.node->this->binary);
 		}
 		exit(EXIT_FAILURE);
 	}
 	sh_init_termios();
-	return (status);
+	return (this.status);
 }
 
 t_astree *get_end(t_astree *node)
@@ -121,7 +121,7 @@ t_astree *piped_execution(t_astree *node, char *path)
 	pipeline_constructor(node, &help, path);
 	help.pid = fork();
 	if (help.pid == 0)
-		child_pipe(help.shell, help.end, help.this_path, help.path, 0, 1);
+		child_pipe(help, 0, 1);
 	else
 		wait(&help.status);
 	return (help.end);
