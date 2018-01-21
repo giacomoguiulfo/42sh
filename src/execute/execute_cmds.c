@@ -87,25 +87,26 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 	pre_execution_io(shell, node, &this_path);
 	if (node->this->binary && node->type && node->type[0] == '|' && node->type[1] != '|')
 	{
-		ft_dprintf(2, "-Starting piped exec\n");
-		piped_execution(shell, node, this_path, path);
-		ft_dprintf(2, "-Finished piped exec\n");
+		ft_dprintf(2, "pipe if statement\n");
+		node = piped_execution(shell, node, this_path, path);
 	}
-	if (node)
+	else
 	{
+		ft_dprintf(2, "Executing: %s\n", node->this->binary);
 		if (node->this->binary)
 			execution(shell, node, this_path, path);
 		ft_dprintf(2, "After normal execution\n");
 		restore_io(shell);
 		ft_dprintf(2, "After normal execution\n");
-		if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
-			recursive_execute(shell, node->left, path);
-		else if (node->left && node->type && node->type[0] == '|'
-			&& node->type[1] == '|' && node->ret > 0)
-			recursive_execute(shell, node->left, path);
-		if (node->right && node->right->this && node->right->type[0] != '|')
-			recursive_execute(shell, node->right, path);
 	}
+	if (node->left && node->type && node->type[0] == '&' && node->ret < 1)
+		recursive_execute(shell, node->left, path);
+	else if (node->left && node->type && node->type[0] == '|'
+		&& node->type[1] == '|' && node->ret > 0)
+		recursive_execute(shell, node->left, path);
+	if (node->right)
+		recursive_execute(shell, node->right, path);
+	ft_dprintf(2, "No execution\n");
 }
 
 void	execute_ast_cmds(t_astree *head)

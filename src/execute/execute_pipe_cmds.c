@@ -126,7 +126,7 @@ t_astree *get_end(t_astree *node)
 	return (node);
 }
 
-void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path)
+t_astree *piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path)
 {
 	int 		pid;
 	int 		status;
@@ -149,10 +149,7 @@ void	piped_execution(t_shell *shell, t_astree *node, char *this_path, char *path
 		dup2(sh_singleton()->stdin_backup, 0);
 		dup2(sh_singleton()->stdout_backup, 1);
 	}
-	if (end->right)
-		recursive_execute(shell, node->right, path);
-	else if (end->left)
-		recursive_execute(shell, node->left, path);
+	return (end);
 }
 
 
