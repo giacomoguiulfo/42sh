@@ -80,16 +80,17 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 {
 	char	*this_path;
 
-	pre_execution_io(shell, node, &this_path);
 	if (node->this->binary && node->type &&
 		node->type[0] == '|' && node->type[1] != '|')
 		node = piped_execution(node, path);
 	else
 	{
+		pre_execution_io(shell, node, &this_path);
 		if (node->this->binary)
 			execution(shell, node, this_path, path);
-		restore_io(shell);
 	}
+	restore_io(shell);
+	ft_dprintf(2, "Ret: %d\n", node->ret);
 	if (node->left && node->type &&
 		node->type[0] == '&' && node->ret < 1)
 		recursive_execute(shell, node->left, path);

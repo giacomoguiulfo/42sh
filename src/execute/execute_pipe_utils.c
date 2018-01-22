@@ -15,7 +15,7 @@
 
 t_astree		*get_end(t_astree *node)
 {
-	while (node->right && node->right->type && node->right->type[0] == '|')
+	while (node->right && node->right->type && node->right->type[0] == '|' && node->right->type[1] != '|')
 		node = node->right;
 	node = node->right;
 	return (node);
