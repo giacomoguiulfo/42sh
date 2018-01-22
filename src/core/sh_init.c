@@ -24,7 +24,6 @@ void		sh_init_termios(void)
 	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
-	// term.c_cc[0] = 0;
 	tcsetattr(STDIN, TCSANOW, &term);
 }
 

@@ -25,7 +25,7 @@ static void	terminal_reset(void)
 	tcsetattr(0, TCSADRAIN, &term);
 }
 
-static void shell_free(t_shell *shell)
+static void	shell_free(t_shell *shell)
 {
 	history_cleanup(shell->history);
 	ft_sstrdel(&shell->argv);
