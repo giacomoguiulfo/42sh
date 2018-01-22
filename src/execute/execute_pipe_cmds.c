@@ -31,9 +31,9 @@ static void	child_process(t_pipeline this)
 	if (this.end->prev)
 	{
 		this.end = this.end->prev;
-		make_process(this, this.end->pipe_fd[1]);
+		make_process(this, this.pipefd[1]);
 	}
-	close(this.end->pipe_fd[0]);
+	close(this.pipefd[0]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -46,10 +46,10 @@ static void	parent_process(t_pipeline this, int out)
 	if (out != 1)
 		dup2(out, 1);
 	if (this.end->prev)
-		dup2(this.end->pipe_fd[0], 0);
+		dup2(this.pipefd[0], 0);
 	if (!this.end->prev)
-		close(this.end->pipe_fd[0]);
-	close(this.end->pipe_fd[1]);
+		close(this.pipefd[0]);
+	close(this.pipefd[1]);
 	if ((builtin = msh_run_builtin(this.end->this->binary)))
 		this.end->ret = builtin((const char **)this.end->this->args);
 	else
@@ -65,7 +65,7 @@ static void	parent_process(t_pipeline this, int out)
 int			piped_fork(t_pipeline this, int out)
 {
 	this.test = NULL;
-	pipe(this.end->pipe_fd);
+	pipe(this.pipefd);
 	this.end->pid = fork();
 	if (this.end->pid == 0)
 		child_process(this);
