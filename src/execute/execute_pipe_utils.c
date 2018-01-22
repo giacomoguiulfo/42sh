@@ -21,10 +21,10 @@ t_astree		*get_end(t_astree *node)
 	return (node);
 }
 
-void			make_process(t_pipeline this, int in, int out)
+void			make_process(t_pipeline this, int out)
 {
-	this.this_path = build_bin_path(this.path, this.node->this->binary);
-	setup_io(this.shell, this.node->this->redirs);
+	this.this_path = build_bin_path(this.path, this.end->this->binary);
+	setup_io(this.shell, this.end->this->redirs);
 	if (this.this_path)
-		this.node->ret = piped_fork(this, in, out);
+		this.node->ret = piped_fork(this, out);
 }

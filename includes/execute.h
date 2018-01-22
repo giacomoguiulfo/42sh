@@ -56,7 +56,7 @@ bool				check_reg_file(mode_t st_mode);
 t_builtin			*msh_run_builtin(char *name);
 
 t_astree			*get_end(t_astree *node);
-int					piped_fork(t_pipeline this, int in, int out);
-void				make_process(t_pipeline this, int in, int out);
+int					piped_fork(t_pipeline this, int out);
+void				make_process(t_pipeline this, int out);
 
 #endif

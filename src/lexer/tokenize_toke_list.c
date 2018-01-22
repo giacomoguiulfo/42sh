@@ -23,6 +23,7 @@ static void	init(t_tokelist *node)
 	node->redir_prefix_fd = -2;
 	node->redir_suffix_fd = -2;
 	node->redir_suffix_file = NULL;
+	node->redir_turn_off = false;
 	node->heredoc[0] = -2;
 	node->heredoc[1] = -2;
 }

@@ -28,54 +28,54 @@
 
 static void	child_process(t_pipeline this)
 {
-	if (this.node->prev)
+	if (this.end->prev)
 	{
-		this.node = this.node->prev;
-		make_process(this, this.pipefd[0], this.pipefd[1]);
+		this.end = this.end->prev;
+		make_process(this, this.end->pipe_fd[1]);
 	}
-	close(this.node->pipe_fd[0]);
+	close(this.end->pipe_fd[0]);
 	exit(EXIT_SUCCESS);
 }
 
-static void	parent_process(t_pipeline this, int in, int out)
+static void	parent_process(t_pipeline this, int out)
 {
 	t_builtin *builtin;
 
-	while (WIFEXITED(&this.status))
+	while (WIFEXITED(this.status))
 		;
 	if (out != 1)
 		dup2(out, 1);
-	if (this.node->prev)
-		dup2(this.node->pipe_fd[0], 0);
-	if (!this.node->prev)
-		close(this.node->pipe_fd[0]);
-	close(this.node->pipe_fd[1]);
-	if ((builtin = msh_run_builtin(this.node->this->binary)))
-		this.node->ret = builtin((const char **)this.node->this->args);
+	if (this.end->prev)
+		dup2(this.end->pipe_fd[0], 0);
+	if (!this.end->prev)
+		close(this.end->pipe_fd[0]);
+	close(this.end->pipe_fd[1]);
+	if ((builtin = msh_run_builtin(this.end->this->binary)))
+		this.end->ret = builtin((const char **)this.end->this->args);
 	else
 	{
-		if (execve(this.this_path, this.node->this->args,
+		if (execve(this.this_path, this.end->this->args,
 			this.shell->env) == -1)
 			ft_dprintf(2, "Trash: permission denied: %s\n",
-				this.node->this->binary);
+				this.end->this->binary);
 	}
 	exit(EXIT_FAILURE);
 }
 
-int			piped_fork(t_pipeline this, int in, int out)
+int			piped_fork(t_pipeline this, int out)
 {
 	this.test = NULL;
-	pipe(this.node->pipe_fd);
-	this.node->pid = fork();
-	if (this.node->pid == 0)
+	pipe(this.end->pipe_fd);
+	this.end->pid = fork();
+	if (this.end->pid == 0)
 		child_process(this);
-	else if (this.node->pid < 0)
+	else if (this.end->pid < 0)
 	{
 		ft_dprintf(2, "Trash: unable to fork process: %d\n", this.pid);
 		exit(EXIT_FAILURE);
 	}
 	else
-		parent_process(this, in, out);
+		parent_process(this, out);
 	sh_init_termios();
 	return (this.status);
 }
@@ -99,8 +99,11 @@ t_astree	*piped_execution(t_astree *node, char *path)
 	pipeline_constructor(node, &help, path);
 	help.pid = fork();
 	if (help.pid == 0)
-		make_process(help, 0, 1);
+		make_process(help, 1);
 	else
+	{
 		wait(&help.status);
+		restore_io(help.shell);
+	}
 	return (help.end);
 }
