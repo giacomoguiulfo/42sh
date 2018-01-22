@@ -6,14 +6,14 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2018/01/17 17:26:56 by gguiulfo         ###   ########.fr        #
+#    Updated: 2018/01/22 10:55:11 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= 21sh
 
-# DEBUG		:= 0
-DEBUG		:= 1
+DEBUG		:= 0
+# DEBUG		:= 1
 
 CC			?= gcc
 CFLAGS		+= -std=c99

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 22:14:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 16:05:37 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/22 13:15:48 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft.h"
 #include <sys/stat.h>
 #include <unistd.h>
+#include <limits.h>
 
 #define CD_ENOENT		"cd: %s: No such file or directory"
 #define CD_ENOTDIR		"cd: %s: Not a directory"
@@ -39,13 +40,18 @@ static t_optsdata g_cdopts =
 ** Set PWD env variable value to cwd.
 */
 
-static void	cd_setpwd(void)
+static void	cd_setpwd(char *dir)
 {
 	char	*cwd;
+	char	*pwd;
 
+	pwd = NULL;
 	cwd = getcwd(NULL, 0);
-	builtin_setenv((char*[]){"cd", "PWD", cwd, NULL});
+	if (dir)
+		ft_asprintf(&pwd, "%.*s/%s", ft_strlenrchr(cwd, '/'), cwd, dir);
+	builtin_setenv((char*[]){"cd", "PWD", (dir) ? pwd : cwd, NULL});
 	ft_strdel(&cwd);
+	ft_strdel(&pwd);
 }
 
 /*
@@ -56,20 +62,17 @@ static void	cd_setpwd(void)
 ** @return:		0 when success, non-zero if there is an error.
 */
 
-static int	cd_symlink(char *operand, struct stat *sb)
+static int	cd_symlink(char *operand)
 {
-	char *linkname;
+	char		linkname[PATH_MAX + 1];
+	ssize_t	ret;
 
-	linkname = ft_memalloc(sb->st_size + 1);
-	if (readlink(operand, linkname, sb->st_size + 1))
-		return (SH_ERR(CD_EPERM, operand));
+	if ((ret = readlink(operand, linkname, PATH_MAX + 1)) == -1)
+		return (SH_ERR2_R1(CD_EPERM, operand));
+	linkname[ret] = '\0';
 	if (chdir(linkname))
-	{
-		ft_strdel(&linkname);
-		return (SH_ERR(CD_EPERM, operand));
-	}
-	cd_setpwd();
-	ft_strdel(&linkname);
+		return (SH_ERR2_R1(CD_EPERM, operand));
+	cd_setpwd(operand);
 	return (0);
 }
 
@@ -78,18 +81,21 @@ static int	cd_routine(char *operand, int flags)
 	struct stat sb;
 
 	if (access(operand, F_OK))
-		return (SH_ERR(CD_ENOENT, operand));
+		return (SH_ERR2_R1(CD_ENOENT, operand));
 	if (!ft_isdir(operand))
-		return (SH_ERR(CD_ENOTDIR, operand));
-	if (access(operand, X_OK) && lstat(operand, &sb))
-		return (SH_ERR(CD_EACCES, operand));
+		return (SH_ERR2_R1(CD_ENOTDIR, operand));
+	if (access(operand, X_OK))
+		return (SH_ERR2_R1(CD_EACCES, operand));
+	if (lstat(operand, &sb))
+		return (SH_ERR2_R1(CD_EACCES, operand));
 	if (CD_HAS_OPT_P(flags) && S_ISLNK(sb.st_mode))
-		return (cd_symlink(operand, &sb));
+		return (cd_symlink(operand));
 	if (chdir(operand))
-		return (SH_ERR(CD_EPERM, operand));
-	cd_setpwd();
+		return (SH_ERR2_R1(CD_EPERM, operand));
+	cd_setpwd(NULL);
 	return (0);
 }
+
 
 static char	*cd_operand(char *arg)
 {
@@ -118,7 +124,7 @@ int			builtin_cd(char **av)
 	if (!operand)
 	{
 		builtin_setenv((char*[]){"setenv", "OLDPWD", oldpwd, NULL});
-		cd_setpwd();
+		cd_setpwd(NULL);
 	}
 	else if ((ret = cd_routine(operand, data.flags)) == 0)
 		builtin_setenv((char*[]){"setenv", "OLDPWD", oldpwd, NULL});

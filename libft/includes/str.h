@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/15 20:27:34 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/16 11:58:45 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/22 12:15:25 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlenchr(char *str, char c);
+size_t	ft_strlenrchr(char *str, char c);
 char	*ft_strmap(char const *s, char (*f)(char));
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strncat(char *s1, const char *s2, size_t n);

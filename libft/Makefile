@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/06/20 11:36:52 by gguiulfo          #+#    #+#              #
-#    Updated: 2018/01/16 12:03:02 by gguiulfo         ###   ########.fr        #
+#    Updated: 2018/01/22 12:15:51 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,6 +198,7 @@ ft_strjoin 					\
 ft_strlcat 					\
 ft_strlen 					\
 ft_strlenchr				\
+ft_strlenrchr				\
 ft_strmap 					\
 ft_strmapi 					\
 ft_strncat 					\
