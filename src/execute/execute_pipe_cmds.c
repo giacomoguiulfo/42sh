@@ -6,7 +6,7 @@
 /*   By: rschramm <rschramm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/04 01:53:12 by rschramm          #+#    #+#             */
-/*   Updated: 2018/01/12 15:12:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/22 12:18:40 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ static void	child_process(t_pipeline this)
 	if (this.node->prev)
 	{
 		this.node = this.node->prev;
-		make_process(this, this.pipefd[0], this.pipefd[1]);
+		make_process(this, this.pipefd[1]);
 	}
 	close(this.node->pipe_fd[0]);
 	exit(EXIT_SUCCESS);
 }
 
-static void	parent_process(t_pipeline this, int in, int out)
+static void	parent_process(t_pipeline this, int out)
 {
 	t_builtin *builtin;
 
-	while (WIFEXITED(&this.status))
+	while (WIFEXITED(this.status))
 		;
 	if (out != 1)
 		dup2(out, 1);
@@ -62,7 +62,7 @@ static void	parent_process(t_pipeline this, int in, int out)
 	exit(EXIT_FAILURE);
 }
 
-int			piped_fork(t_pipeline this, int in, int out)
+int			piped_fork(t_pipeline this, int out)
 {
 	this.test = NULL;
 	pipe(this.node->pipe_fd);
@@ -75,7 +75,7 @@ int			piped_fork(t_pipeline this, int in, int out)
 		exit(EXIT_FAILURE);
 	}
 	else
-		parent_process(this, in, out);
+		parent_process(this, out);
 	sh_init_termios();
 	return (this.status);
 }
@@ -99,7 +99,7 @@ t_astree	*piped_execution(t_astree *node, char *path)
 	pipeline_constructor(node, &help, path);
 	help.pid = fork();
 	if (help.pid == 0)
-		make_process(help, 0, 1);
+		make_process(help, 1);
 	else
 		wait(&help.status);
 	return (help.end);

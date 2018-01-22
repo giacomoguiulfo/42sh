@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 21:04:59 by gguiulfo          #+#    #+#             */
-/*   Updated: 2018/01/11 17:12:08 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2018/01/22 12:17:51 by rschramm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool				check_reg_file(mode_t st_mode);
 t_builtin			*msh_run_builtin(char *name);
 
 t_astree			*get_end(t_astree *node);
-int					piped_fork(t_pipeline this, int in, int out);
-void				make_process(t_pipeline this, int in, int out);
+int					piped_fork(t_pipeline this, int out);
+void				make_process(t_pipeline this, int out);
 
 #endif

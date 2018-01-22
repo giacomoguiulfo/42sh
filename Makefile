@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/16 07:02:04 by gguiulfo          #+#    #+#              #
-#    Updated: 2018/01/12 14:16:06 by gguiulfo         ###   ########.fr        #
+#    Updated: 2018/01/22 12:14:28 by rschramm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ execute/execute_build_path\
 execute/execute_builtins\
 execute/execute_heredoc\
 execute/execute_cmds\
-execute/execute_pipes\
+execute/execute_pipe_utils\
 execute/execute_pipe_cmds\
 execute/execute_redirections\
 execute/execute_utils\
