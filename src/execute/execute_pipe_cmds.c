@@ -83,12 +83,12 @@ int			piped_fork(t_pipeline this, int out)
 static void	pipeline_constructor(t_astree *n, t_pipeline *h, char *p)
 {
 	h->end = get_end(n);
+	h->node = h->end;
 	h->test = NULL;
 	h->this_path = NULL;
 	h->path = p;
 	h->pipefd[0] = 0;
 	h->pipefd[1] = 1;
-	h->node = n;
 	h->shell = sh_singleton();
 }
 
@@ -105,5 +105,5 @@ t_astree	*piped_execution(t_astree *node, char *path)
 		wait(&help.status);
 		restore_io(help.shell);
 	}
-	return (help.end);
+	return (help.node);
 }

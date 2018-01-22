@@ -34,9 +34,9 @@ typedef struct		s_pipeline
 	int				pid;
 	int				status;
 	int				pipefd[2];
-	struct s_astree	*node;
 	struct s_shell	*shell;
 	struct s_astree	*end;
+	struct s_astree *node;
 }					t_pipeline;
 
 void				check_pipes(t_astree *node);

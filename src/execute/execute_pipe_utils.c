@@ -26,5 +26,5 @@ void			make_process(t_pipeline this, int out)
 	this.this_path = build_bin_path(this.path, this.end->this->binary);
 	setup_io(this.shell, this.end->this->redirs);
 	if (this.this_path)
-		this.node->ret = piped_fork(this, out);
+		this.end->ret = piped_fork(this, out);
 }
