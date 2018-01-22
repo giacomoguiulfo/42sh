@@ -90,7 +90,6 @@ void	recursive_execute(t_shell *shell, t_astree *node, char *path)
 			execution(shell, node, this_path, path);
 	}
 	restore_io(shell);
-	ft_dprintf(2, "Ret: %d\n", node->ret);
 	if (node->left && node->type &&
 		node->type[0] == '&' && node->ret < 1)
 		recursive_execute(shell, node->left, path);
