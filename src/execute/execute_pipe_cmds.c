@@ -37,7 +37,7 @@ static void	child_process(t_pipeline this)
 	exit(EXIT_SUCCESS);
 }
 
-static void	parent_process(t_pipeline this, int out)
+static int	parent_process(t_pipeline this, int out)
 {
 	t_builtin *builtin;
 
@@ -59,7 +59,7 @@ static void	parent_process(t_pipeline this, int out)
 			ft_dprintf(2, "Trash: permission denied: %s\n",
 				this.node->this->binary);
 	}
-	exit(EXIT_FAILURE);
+	return (this.status);
 }
 
 int			piped_fork(t_pipeline this, int out)
@@ -75,7 +75,10 @@ int			piped_fork(t_pipeline this, int out)
 		exit(EXIT_FAILURE);
 	}
 	else
-		parent_process(this, out);
+	{
+		this.node->ret = parent_process(this, out);
+		exit(EXIT_FAILURE);
+	}
 	sh_init_termios();
 	return (this.status);
 }
@@ -88,7 +91,7 @@ static void	pipeline_constructor(t_astree *n, t_pipeline *h, char *p)
 	h->path = p;
 	h->pipefd[0] = 0;
 	h->pipefd[1] = 1;
-	h->node = n;
+	h->node = h->end;
 	h->shell = sh_singleton();
 }
 
