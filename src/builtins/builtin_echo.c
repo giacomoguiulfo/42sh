@@ -26,7 +26,7 @@ int	builtin_echo(char **av)
 	while (*av)
 	{
 		ft_putstr(*av);
-		(av + 1) ? ft_putchar(' ') : 0;
+		*(av + 1) ? ft_putchar(' ') : 0;
 		av++;
 	}
 	ft_putchar('\n');
